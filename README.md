@@ -1,4 +1,4 @@
-# sk
+# cc
 ## Prerequisites
 
 You will need [Leiningen][] 2.0.0 or above installed.
@@ -14,4 +14,4 @@ To start a web server for the application, run:
 ## License
 
 Copyright © 2017 LS
-# Skeleton Template
+# Cuadrantes
