@@ -20,37 +20,6 @@
   PRIMARY KEY (id)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
-(def appointments-sql
-  "CREATE TABLE appointments (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  student_id int(11) DEFAULT NULL,
-  user_id int(11) DEFAULT NULL,
-  title TEXT DEFAULT NULL,
-  a_date date DEFAULT NULL,
-  start_time time DEFAULT NULL,
-  end_time time DEFAULT NULL,
-  allday char(1) DEFAULT NULL COMMENT 'T=Yes,F=No',
-  status char(1) DEFAULT NULL COMMENT 'T=Pending\nX=Remove\nO=Completed on time\nL=Completed late\nE=Completed before time\nS=Reprogrammed by user\nZ=Cancelled by user',
-  PRIMARY KEY (id)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
-
-(def student-sql
-  "CREATE TABLE student (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  first_name varchar(45) DEFAULT NULL,
-  last_name varchar(45) DEFAULT NULL,
-  dob date DEFAULT NULL,
-  gender char(1) DEFAULT NULL COMMENT 'M=Male,F=Female',
-  enrollment_date date DEFAULT NULL,
-  withdrawn_date date DEFAULT NULL,
-  address varchar(200) DEFAULT NULL,
-  city varchar(100) DEFAULT NULL,
-  state varchar(50) DEFAULT 'Baja California',
-  phone varchar(50) DEFAULT NULL,
-  cell varchar(50) DEFAULT NULL,
-  PRIMARY KEY (id)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
-
 (def cuadrantes-sql
   "CREATE TABLE cuadrantes (
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -248,6 +217,7 @@
   (Query! db rodadas_link-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :rodadas rodadas-rows)
+  (Insert-multi db :rodadas_link rodadas_link-rows)
   (Insert-multi db :cuadrantes cuadrantes-rows))
 
 (defn reset-database []
