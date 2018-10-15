@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>LS</title>
+    <!-- scripts and styles -->
+    {% style "/easyui/themes/default/easyui.css" %}
+    {% style "/easyui/themes/icon.css" %}
+    {% style "/easyui/themes/color.css" %}
+    {% style "/css/layout.css" %}
+    {% style "/fullcalendar/lib/cupertino/jquery-ui.min.css" %}
+    {% style "/fullcalendar/fullcalendar.min.css" %}
+    <link href="/fullcalendar/fullcalendar.print.min.css" rel="stylesheet" media="print" />
+    {% style "/css/jquery.timepicker.css" %}
+    {% script "/easyui/jquery.min.js" %}
+    {% script "/easyui/jquery.easyui.min.js" %}
+    {% script "/easyui/datagrid-detailview.js" %}
+    {% script "/easyui/plugins/jquery.datagrid.js" %}
+    {% script "/fullcalendar/lib/moment.min.js" %}
+    {% script "/fullcalendar/fullcalendar.min.js" %}
+    {% script "/fullcalendar/locale-all.js" %}
+    {% script "/js/jquery.maskedinput.min.js" %}
+    {% script "/js/chart.js" %}
+    {% script "/js/layout.js" %}
+    {% script "/easyui/locale/easyui-lang-es.js" %}
+    <script type="text/javascript">
+     $(window).load(function () {
+         $(".loader").fadeOut("slow");
+     })
+    </script>
+</head>
+<body class="easyui-layout">
+    <div class="loader"></div>
+    <div class="easyui-layout"  style="width:100%;height:100%;">
+        <div data-options="region:'north'" style="height:20px;">
+            {% block header %}<div style="float:left;padding-left:3px;">Sitio: {% site_name %}</div><div style="float:right;padding-right:3px;">Usuario: {% username %}</div>{% endblock %}
+        </div>
+        <div data-options="region:'west',
+                           hideCollapsedContent:false,
+                           href:'/get_menus',
+                           split:true,
+                           collapsible:true,
+                           collapsed:true,
+                           expandMode:'dock',
+                           width:'30%',
+                           onLoad:menu,
+                           cache:true"
+             id="menu-selection"
+             title="Menu" style="padding:10px">
+        </div>
+        <div id="content" region="center" title="{{title}}"  style="padding:5px;">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% block scripts %} {% endblock %}
+    <div id="left_menu" data-options="region:'south',split:true" style="height:30px;">
+            {% block footer %}@copyright Lucero Systems {% now yyyy %} {% endblock %}
+    </div>
+    </div>
+</body>

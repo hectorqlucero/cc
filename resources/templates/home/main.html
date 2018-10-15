@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+{% csrf-field %}
+<div id="calendar"></div>
+{% endblock %}
+{% block scripts %}
+<script>
+ $(document).ready(function() {
+     var initialLocaleCode = 'es';
+
+     $('#calendar').fullCalendar({
+         defaultView: 'month',
+         theme: true,
+         height: "parent",
+         contentHeight: "auto",
+         aspectRatio: 2,
+         header: {
+             left: 'prev,next today',
+             center: 'title',
+             right: 'month,agendaWeek,agendaDay,listMonth'
+         },
+         locale: initialLocaleCode,
+         buttonIcons: true, // show the prev/next text
+         weekNumbers: true,
+         showNonCurrentDates: false,
+         navLinks: true, // can click day/week names to navigate views
+         editable: true,
+         eventLimit: true, // allow "more" link when too many events
+         displayEventTime: true,
+         timeFormat: 'h(:mm) t',
+         events: {{events|safe}},
+         color: 'deepskyblue',
+         textColor: 'white',
+         eventMouseover: function(calEvent, jsEvent) {
+             var tooltip = '<div class="tooltipevent" style="z-index:100001;border:1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow::0 2px 3px #999;position:absolute;padding:5px;text-align:left;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Descripcion:</strong></br> ' + calEvent.description + '</p><p><strong>Donde:</strong></br>' + calEvent.donde + '</p><p><strong>Lider:</strong></br>' + calEvent.leader + '</p><p><strong>Email:</strong></br>' + calEvent.email + '</p><p><strong>Confirmados:</strong></br>' + calEvent.confirmados + '</p></div>';
+             var $tooltip = $(tooltip).appendTo('body');
+
+             $(this).mouseover(function(e) {
+                 $tooltip.fadeIn('500');
+                 $tooltip.fadeTo('10', 1.9);
+             }).mousemove(function(e) {
+                 var pLeft;
+                 var pTop;
+                 var offset = 10;
+                 var CursorX = e.pageX;
+                 var CursorY = e.pageY;
+                 var WindowWidth = $(window).width();
+                 var WindowHeight = $(window).height();
+                 var toolTip = $('.tooltipevent');
+                 var TTWidth = toolTip.width();
+                 var TTHeight = toolTip.height();
+                 if(CursorX-offset >= (WindowWidth/4)*3) {
+                     pLeft = CursorX - TTWidth - offset;
+                 } else {
+                     pLeft = CursorX + offset;
+                 }
+                 if(CursorY-offset >= (WindowHeight/4)*3) {
+                     pTop = CursorY - TTHeight - offset;
+                 } else {
+                     pTop = CursorY + offset;
+                 }
+                 $tooltip.css('top', pTop);
+                 $tooltip.css('left', pLeft);
+             });
+         },
+
+         eventMouseout: function(calEvent, jsEvent) {
+             $(this).css('z-index', 8);
+             $('.tooltipevent').remove();
+         },
+     });
+ });
+ $(".tooltipevent").css("overflow-y","scroll");
+</script>
+{% endblock %}
+

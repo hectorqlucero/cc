@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+{% csrf-field %}
+<table id="dg"
+       class="easyui-datagrid datagrid-searchable"
+       style="width: 100%"
+       data-options="url: '/admin/cuadrantes/json/grid',
+           toolbar: '#toolbar',
+           queryParams: {'__anti-forgery-token':token},
+           pagination: true,
+           rownumbers: true,
+           nowrap: false,
+           autoRowHeight: false,
+           fitColumns: true,
+           autoSizeColumn: true,
+           singleSelect: true">
+    <thead>
+        <tr>
+            <th data-options="field: 'name', sortable: false">Nombre del Cuadrante</th>
+            <th data-options="field: 'leader', sortable: false">Lider</th>
+            <th data-options="field: 'leader_phone', sortable: false">Telefono</th>
+            <th data-options="field: 'leader_cell', sortable: false">Cell</th>
+            <th data-options="field: 'leader_email', sortable: false">Email</th>
+            <th data-options="field: 'notes', sortable: false, width: 100">Observaciones</th>
+            <th data-options="field: 'status', sortable: false">Status</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-add',plain: true"
+       onclick="defaultGridNewItem()">Crear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-edit',plain: true"
+       onclick="defaultGridEditItem({})">Editar</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-remove',plain: true"
+       onclick="defaultGridDeleteItem()">Remover</a>
+    <div style="float: right">
+        <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Busqueda'" title="Buscar">
+    </div>
+</div>
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px">
+    <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="hidden" id="id"  name="id">
+        <div class="fitem">
+            <label for="name">Cuadrante(<small>nombre ex: Cuadrante Rosita</small>):</label>
+            <input id="name" name="name" class="easyui-textbox" data-options="required: true,width:'80%'">
+        </div>
+        <div class="fitem">
+            <label for="leader">Lider:</label>
+            <input id="leader" name="leader" class="easyui-textbox" data-options="required: true,width:'50%'">
+        </div>
+        <div class="fitem">
+            <label for="leader_phone">Telefono:</label>
+            <input id="leader_phone" name="leader_phone" class="easyui-textbox type-phone" data-options="required: false">
+        </div>
+        <div class="fitem">
+            <label for="leader_cell">Cell:</label>
+            <input id="leader_cell" name="leader_cell" class="easyui-textbox type-phone" data-options="required: false">
+        </div>
+        <div class="fitem">
+            <label for="leader_email">Email:</label>
+            <input id="leader_email" name="leader_email" type="email" class="easyui-textbox"
+                   data-options="validType:'email',required:true,width:'80%'">
+        </div>
+        <div class="fitem">
+            <label for="notes">Observaciones:</label>
+            <input id="notes" name="notes" type="email" class="easyui-textbox" multiline="true" style="width:100%;height:120px;">
+        </div>
+        <div style="margin-bottom:3px;">
+                <input class="easyui-radiobutton" id="status" name="status" value="T" data-options="label:'Activo:',labelPosition:'before'">
+        </div>
+        <div style="margin-bottom:3px;">
+            <input class="easyui-radiobutton" id="status" name="status" value="F" data-options="label:'Inactivo:',labelPosition:'before'">
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-ok'"
+       onclick="defaultGridSaveItem()">Postear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-cancel'"
+       onclick="defaultGridDialogClose()">Cancelar</a>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="/js/defaultGrid.js"></script>
+{% endblock %}

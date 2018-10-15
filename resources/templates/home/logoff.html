@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Logging off...</p>
+{% endblock %}
+{% block scripts %}
+<script>
+    function createCookie(name, value, days) {
+        var exp;
+        if(days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            exp = "; expires=" + date.toUTCString();
+        } else {
+            exp = "";
+        }
+
+        document.cookie = name + "=" + value + exp + "; path=/";
+    }
+
+    function eraseCookie(name) {
+        sessionStorage.removeItem("calls-menu-index");
+        createCookie(name, "", -1);
+    }
+
+    $(document).ready(function() {
+        eraseCookie("user_id");
+        window.location.href = "/";
+    });
+</script>
+{% endblock %}

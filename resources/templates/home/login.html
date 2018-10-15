@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<form class="fm" method="post" novalidate>
+    {% csrf-field %}
+    <div class="fitem">
+        <label for="username">Email:</label>
+        <input name="username" class="easyui-textbox" id="username"
+               data-options="required: true">
+    </div>
+    <div class="fitem">
+        <label for="password">Contraseña:</label>
+        <input name="password" type="password" class="easyui-textbox" id="password"
+               data-options="required: true">
+    </div>
+    <div class="fitem">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="submit">Accessar Sitio</a>
+    </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $("a#submit").click(function() {
+            $("form.fm").form("submit");
+        });
+
+        $("form.fm").form("submit", {
+            onSubmit: function() {
+                return $(this).form("enableValidation").form("validate");
+            },
+            success: function(data) {
+                try {
+                    var dta = JSON.parse(data);
+                    if(dta.hasOwnProperty('url')) {
+                        window.location.href = dta.url;
+                    } else if(dta.hasOwnProperty('error')) {
+                        $.messager.alert('Error', dta.error, 'error');
+                    }
+                } catch(e) {
+                    console.error("Invalid JSON");
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

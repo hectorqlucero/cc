@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+{% csrf-field %}
+<table id="dg"
+       class="easyui-datagrid datagrid-searchable"
+       style="width: 100%"
+       data-options="url: '/appointments/json/grid',
+           toolbar: '#toolbar',
+           queryParams: {'__anti-forgery-token':token},
+           pagination: true,
+           rownumbers: true,
+           nowrap: false,
+           fitcolumns: true,
+           autoSizeColumn: true,
+           singleSelect: true">
+    <thead>
+        <tr>
+            <th data-options="field: 'student_id', sortable: true">Student</th>
+            <th data-options="field: 'username', sortable: true">Teacher</th>
+            <th data-options="field: 'title', sortable: true">Description</th>
+            <th data-options="field: 'a_date', sortable: true">Date</th>
+            <th data-options="field: 'start_time', sortable: true">Start</th>
+            <th data-options="field: 'end_time', sortable: true">End</th>
+            <th data-options="field: 'status', sortable: true">Status</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar" >
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-add',plain: true"
+       onclick="defaultGridNewItem()">Create</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-edit',plain: true"
+       onclick="defaultGridEditItem({})">Edit</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-remove',plain: true"
+       onclick="defaultGridDeleteItem()">Remove</a>
+    <div style="float: right">
+        <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Search here'" title="Search here">
+    </div>
+</div>
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px">
+    <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="hidden" id="id" name="id">
+        <div class="fitem">
+            <label for="student_id">Student:</label>
+            <input id="student_id" name="student_id" class="easyui-combobox" style="width: 30%;"
+                   data-options="url: '/table_ref/get_students',method:'GET',limitToList: true">
+        </div>
+        <div class="fitem">
+            <label for="user_id">Teacher:</label>
+            <input id="user_id" name="user_id" class="easyui-combobox" style="width: 30%;"
+                   data-options="url: '/table_ref/get_users',method:'GET',limitToList: true">
+        </div>
+        <div class="fitem">
+            <label for="title">Description:</label>
+            <input id="title" name="title" class="easyui-textbox"
+                   data-options="multiline: true,
+                       width: '100%',
+                       height: '90%'">
+        </div>
+        <div class="fitem">
+            <label for="a_date">Date:</label>
+            <input id="a_date" name="a_date" class="easyui-datebox">
+        </div>
+        <div class="fitem">
+            <label for="start_time">Start Time:</label>
+            <input id="start_time" type="time" name="start_time" class="easyui-textbox">
+        </div>
+        <div class="fitem">
+            <label for="end_time">End Time:</label>
+            <input id="end_time" type="time" name="end_time" class="easyui-textbox">
+        </div>
+        <div class="fitem">
+            <label for="allday">All Day?</label>
+            <input id="allday" name="allday" class="easyui-switchbutton"
+                   data-options="onText: 'Yes', offText:'No', value:'T'">
+        </div>
+        <div class="fitem">
+            <label for="status">Status:</label>
+            <input id="status" name="status" class="easyui-combobox" style="width: 30%;"
+                   data-options="url: '/table_ref/appointment_options',method:'GET',limitToList: true">
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-ok'"
+       onclick="defaultGridSaveItem()">Save</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-cancel'"
+       onclick="defaultGridDialogClose()">Cancel</a>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript"  src="/js/defaultGrid.js"></script>
+{% endblock %}

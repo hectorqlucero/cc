@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<form id="fm"  class="fm"  method="post" action="/entrenamiento/rodadas/asistir" novalidate>
+    {% csrf-field %}
+    <input name="id"  id="id"  type="hidden">
+    <input name="rodadas_id"  id="rodadas_id" type="hidden" value="{{ rodadas_id }}">
+    <div class="fitem">
+        <label for="user">Nombre:</label>
+        <input name="user" class="easyui-textbox" id="user" data-options="required:true,width:'80%'">
+    </div>
+    <div class="fitem">
+        <label for="comentarios">Comentarios:</label>
+        <input id="comentarios" name="comentarios" type="email" class="easyui-textbox" multiline="true" style="width:100%;height:120px;">
+    </div>
+    <div class="fitem">
+        <label for="email">Email:</label>
+        <input id="email" name="email" class="easyui-validatebox" data-options="required:true,validType:'email'" style="width:50%">
+    </div>
+    <div class="fitem">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="submit">Confirmar Asistencia</a>
+        <a href="javascript:void(0)"  class="easyui-linkbutton" id="regresar" onclick="goBack()">Regresar al calendario</a>
+    </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+ function goBack() {
+     window.location.href = "/main";
+ }
+
+ $(document).ready(function() {
+     $("a#submit").click(function() {
+         $("form.fm").form("submit");
+     });
+
+     $("form.fm").form("submit", {
+         queryParams: {'__anti-forgery-token': token},
+         onSubmit: function() {
+             return $(this).form("enableValidation").form("validate");
+         },
+         success: function(result) {
+             var json = JSON.parse(result);
+             if(json.error && json.success) {
+                 $.messager.show({
+                     title: 'Error',
+                     msg: json.success + "<br>" + json.error
+                 });
+             } else if (json.error) {
+                 $.messager.show({
+                     title: 'Error',
+                     msg: json.error
+                 });
+             } else if (json.success) {
+                 $.messager.show({
+                     title: 'Success',
+                     msg: json.success
+                 });
+                 window.location.href="/main";
+             }
+         }
+     });
+ });
+</script>
+{% endblock %}
