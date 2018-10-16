@@ -103,7 +103,7 @@
     (generate-string {:success "Removido appropiadamente!"})))
 
 (defroutes users-routes
-  (GET "/admin/users" request [] (users request))
+  (GET "/admin/users" request [] (if (= (user-level) "S") (users request)))
   (POST "/admin/users/json/grid" request [] (grid-json request))
   (GET "/admin/users/json/form/:id" [id] (form-json id))
   (POST "/admin/users/save" request [] (users-save request))

@@ -5,6 +5,7 @@
             [clojurewerkz.money.amounts :as ma]
             [clojurewerkz.money.currencies :as mc]
             [clojurewerkz.money.format :as mf]
+            [noir.session :as session]
             [date-clj :as d])
   (:import java.text.SimpleDateFormat
            java.util.Calendar))
@@ -399,3 +400,8 @@
 
 (defn fix-hour [v]
   (str v ":00"))
+
+(defn user-level []
+  (let [id (session/get :user_id)
+        type (:level (first (Query db ["select level from users where id = ?" id])))]
+    type))
