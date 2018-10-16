@@ -93,8 +93,8 @@
       (generate-string {:error "No se pudo remover!"}))))
 
 (defroutes cuadrantes-routes
-  (GET "/admin/cuadrantes" request [] (cuadrantes request))
-  (POST "/admin/cuadrantes/json/grid" request [] (grid-json request))
-  (GET "/admin/cuadrantes/json/form/:id" [id] (form-json id))
-  (POST "/admin/cuadrantes/save" request [] (cuadrantes-save request))
-  (POST "/admin/cuadrantes/delete" request [] (cuadrantes-delete request)))
+  (GET "/admin/cuadrantes" request [] (if-not (= (user-level) "U") (cuadrantes request)))
+  (POST "/admin/cuadrantes/json/grid" request [] (if-not (= (user-level "U")) (grid-json request)))
+  (GET "/admin/cuadrantes/json/form/:id" [id] (if-not (= (user-level "U")) (form-json id)))
+  (POST "/admin/cuadrantes/save" request [] (if-not (= (user-level) "U") (cuadrantes-save request)))
+  (POST "/admin/cuadrantes/delete" request [] (if-not (= (user-level) "U") (cuadrantes-delete request))))

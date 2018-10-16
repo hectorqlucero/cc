@@ -1,5 +1,6 @@
 (ns cc.routes.home
   (:require [cc.models.crud :refer :all]
+            [cc.models.util :refer [user-level]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
             [noir.response :refer [redirect]]
@@ -84,11 +85,12 @@
 
 (defn get-menus []
   (let [user_id (session/get :user_id)
-        type    (or (:level (first (Query db ["select level from users where id = ?" user_id]))) "U")]
+        type    (user-level)]
     (case type
       "A" (render-file "amenus.html" {})
       "S" (render-file "smenus.html" {})
-      "U" (render-file "menus.html" {}))))
+      "U" (render-file "imenus.html" {})
+      (render-file "menus.html" {}))))
 
 (defn process-event [request]
   (let [row    (:params request)
