@@ -45,15 +45,16 @@
   (repeat-event)
   (let [rows   (Query db [rodadas-sql])
         rows (map #(assoc % :confirmados (process-confirmados (:id %))) rows)
+        admins (str "<a id=\"btn\" href=\"/login\"><button class='btn btn-info'>Administradores</button></a>")
         events (generate-string rows)]
-    (render-file "home/main.html" {:title  "Calendario de Eventos - Haz click en el evento para confirmar asistencia"
+    (render-file "home/main.html" {:title  (str "Calendario de Eventos - Haz click en el evento para confirmar asistencia  " admins)
                                    :events events})))
 ;;END calendar events
 
 (defn login [_]
   (if (some? (session/get :user_id))
     (redirect "/main")
-    (render-file "home/login.html" {:title "Accesar el Sito - Si no estas registrado puedes accessar el calendario de eventos haciendo click en el menu!"})))
+    (render-file "home/login.html" {:title "Accesar el Sito!"})))
 
 (defn login! [username password]
   (let [row    (first (Query db ["select * from users where username = ?" username]))
@@ -96,7 +97,8 @@
 
 (defroutes home-routes
   (GET "/" request [] (main request))
-  (POST "/" [username password] (login! username password))
+  (GET "/login" request [] (login request))
+  (POST "/login" [username password] (login! username password))
   (GET "/process_event" request [] (process-event request))
   (GET "/main" request [] (main request))
   (GET "/get_menus" [] (get-menus))

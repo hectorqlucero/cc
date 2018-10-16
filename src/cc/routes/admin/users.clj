@@ -17,7 +17,7 @@
    "lastname"
    "firstname"
    "username"
-   "FORMATDATETIME(dob,'MM/dd/yyyy')"
+   "DATE_FORMAT(dob,'%m/%d/%Y')"
    "cell"
    "phone"
    "fax"
@@ -31,7 +31,7 @@
    "firstname"
    "username"
    "password"
-   "FORMATDATETIME(dob,'MM/dd/yyyy') as dob"
+   "DATE_FORMAT(dob,'%m/%d/%Y') as dob"
    "cell"
    "phone"
    "fax"
@@ -61,7 +61,7 @@
   firstname,
   username,
   password,
-  FORMATDATETIME(dob,'MM/dd/yyyy') as dob,
+  DATE_FORMAT(dob,'%m/%d/%Y') as dob,
   cell,
   phone,
   fax,
@@ -76,24 +76,24 @@
     (generate-string (first record))))
 ;;end users form
 
-(defn users-save [request]
-  (let [row      (:params request)
-        id       (fix-id (:id row))
+(defn users-save [{params :params}]
+  (let [id       (fix-id (:id params))
         postvars {:id        id
-                  :lastname  (capitalize (:lastname row))
-                  :firstname (capitalize (:firstname row))
-                  :username  (lower-case (:username row))
-                  :password  (if (> (count (:password row)) 60)
-                               (:password row)
-                               (crypt/encrypt (:password row)))
-                  :dob       (format-date-internal (:dob row))
-                  :cell      (or (:cell row) nil)
-                  :phone     (:phone row)
-                  :fax       (:fax row)
-                  :email     (lower-case (:email row))
-                  :level     (:level row)
-                  :active    (:active row "F")}]
-    (if (Save db :users postvars ["id = ?" id])
+                  :lastname  (capitalize (:lastname params))
+                  :firstname (capitalize (:firstname params))
+                  :username  (lower-case (:username params))
+                  :password  (if (> (count (:password params)) 60)
+                               (:password params)
+                               (crypt/encrypt (:password params)))
+                  :dob       (format-date-internal (:dob params))
+                  :cell      (:cell params nil)
+                  :phone     (:phone params)
+                  :fax       (:fax params)
+                  :email     (lower-case (:email params))
+                  :level     (:level params)
+                  :active    (:active params "F")}
+        result   (Save db :users postvars ["id = ? " id])]
+    (if (seq result)
       (generate-string {:success "Correctamente processado!"})
       (generate-string {:error "No se pudo processar!"}))))
 
