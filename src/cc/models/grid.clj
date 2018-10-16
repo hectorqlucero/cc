@@ -1,6 +1,6 @@
 (ns cc.models.grid
-  (:require [cc.models.util :refer [parse-int]]
-            [cc.models.crud :refer [db Query]]))
+  (:require [cc.models.crud :refer [db Query]]
+            [cc.models.util :refer [parse-int]]))
 
 (defn convert-search-columns [fields]
   (let [fields (map #(str "COALESCE("%",'')") fields)]

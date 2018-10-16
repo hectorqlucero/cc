@@ -1,15 +1,13 @@
 (ns cc.models.util
   (:require [cc.models.crud :refer :all]
+            [clj-time.core :as t]
+            [clj-time.format :as f]
             [clojurewerkz.money.amounts :as ma]
             [clojurewerkz.money.currencies :as mc]
             [clojurewerkz.money.format :as mf]
-            [date-clj :as d]
-            [clj-time.core :as t]
-            [clj-time.local :as l]
-            [clj-time.format :as f]
-            [clj-time.coerce :as c])
-  (:import (java.text SimpleDateFormat DecimalFormat)
-           (java.util Calendar)))
+            [date-clj :as d])
+  (:import java.text.SimpleDateFormat
+           java.util.Calendar))
 
 ;;Example here: (t/from-time-zone (t/now) tz) -> gives me a joda datetime with correct timezone
 ;;(def halloween-2016 (t/date-time 2016 10 31 18 0 0))

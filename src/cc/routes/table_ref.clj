@@ -1,8 +1,8 @@
 (ns cc.routes.table_ref
-  (:require [cheshire.core :refer :all]
-            [compojure.core :refer :all]
-            [cc.models.crud :refer :all]
-            [cc.models.util :refer :all]))
+  (:require [cc.models.crud :refer :all]
+            [cc.models.util :refer :all]
+            [cheshire.core :refer :all]
+            [compojure.core :refer :all]))
 
 (def get_users-sql
   "SELECT id AS value, concat(firstname,' ',lastname) AS text FROM users order by firstname,lastname")

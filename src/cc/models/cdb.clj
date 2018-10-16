@@ -1,8 +1,6 @@
 (ns cc.models.cdb
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [today-internal]]
-            [noir.util.crypt :as crypt]
-            [clojure.java.jdbc :as j]))
+            [noir.util.crypt :as crypt]))
 
 (def users-sql
   "CREATE TABLE users (

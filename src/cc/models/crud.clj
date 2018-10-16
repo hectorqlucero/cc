@@ -1,6 +1,6 @@
 (ns cc.models.crud
-  (:require [clojure.java.jdbc :as j]
-            [clojure.java.io :as io]))
+  (:require [clojure.java.io :as io]
+            [clojure.java.jdbc :as j]))
 
 (defn get-config []
   (binding [*read-eval* false]
