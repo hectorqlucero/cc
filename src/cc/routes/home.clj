@@ -84,10 +84,11 @@
 
 (defn get-menus []
   (let [user_id (session/get :user_id)
-        type    (:level (first (Query db ["select level from users where id = ?" user_id])))]
-    (if (= type "A")
-      (render-file "amenus.html" {})
-      (render-file "imenus.html" {}))))
+        type    (or (:level (first (Query db ["select level from users where id = ?" user_id]))) "U")]
+    (case type
+      "A" (render-file "amenus.html" {})
+      "S" (render-file "smenus.html" {})
+      "U" (render-file "menus.html" {}))))
 
 (defn process-event [request]
   (let [row    (:params request)

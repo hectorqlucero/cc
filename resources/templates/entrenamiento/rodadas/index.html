@@ -74,14 +74,21 @@
         </div>
         <div class="fitem">
             <label for="leader_email">Lider Email:</label>
-            <input id="leader_email" name="leader_email" class="easyui-validatebox" data-options="validType:'email'" style="width:50%">
+            <input id="leader_email" name="leader_email" class="easyui-validatebox" data-options="required:true,validType:'email'" style="width:50%">
         </div>
+        {% ifunequal user "Anonimo" %}
+        <input type="hidden" id="anonimo" name="anonimo" value="F">
         <div style="margin-bottom:3px;">
             <input class="easyui-radiobutton" id="repetir" name="repetir" value="T" data-options="label:'Repetir:',labelPosition:'before'">
         </div>
         <div style="margin-bottom:3px;">
             <input class="easyui-radiobutton" id="repetir" name="repetir" value="F" data-options="label:'No Repetir:',labelPosition:'before'">
         </div>
+        {% endifunequal %}
+        {% ifequal user "Anonimo" %}
+        <input type="hidden" id="repetir" name="repetir" value="F">
+        <input type="hidden" id="anonimo" name="anonimo" value="T">
+        {% endifequal %}
     </form>
 </div>
 <div id="dlg-buttons">

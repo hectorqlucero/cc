@@ -4,11 +4,13 @@
             [cc.models.util :refer :all]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
+            [noir.session :as session]
             [selmer.parser :refer [render-file]]))
 
 (defn rodadas
   []
-  (render-file "entrenamiento/rodadas/index.html" {:title "Entrenamiento - Rodadas"}))
+  (render-file "entrenamiento/rodadas/index.html" {:title "Entrenamiento - Rodadas"
+                                                   :user  (or (session/get :user_id) "Anonimo")}))
 
 ;;start rodadas grid
 (def search-columns
@@ -33,12 +35,17 @@
   [{params :params}]
   (try
     (let [table    "rodadas"
+          user     (or (session/get :user_id) "Anonimo")
           scolumns (convert-search-columns search-columns)
           aliases  aliases-columns
           join     ""
           search   (grid-search (:search params nil) scolumns)
+          search   (if (= user "Anonimo")
+                     (grid-search-extra search "anonimo = 'T'")
+                     (grid-search-extra search "anonimo = 'F'"))
           order    (grid-sort (:sort params nil) (:order params nil))
           offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
+          sql      (grid-sql table aliases join search order offset)
           rows     (grid-rows table aliases join search order offset)]
       (generate-string rows))
     (catch Exception e (.getMessage e))))
@@ -54,7 +61,8 @@
   TIME_FORMAT(hora,'%H:%i') as hora,
   leader,
   leader_email,
-  repetir
+  repetir,
+  anonimo
   FROM rodadas
   WHERE id = ?")
 
@@ -96,6 +104,9 @@
   [{params :params}]
   (try
     (let [id       (fix-id (:id params))
+          user     (or (session/get :user_id) "Anonimo")
+          repetir  (if (= user "Anonimo") "F" (:repetir params))
+          anonimo  (if (= user "Anonimo") "T" "F")
           postvars {:id                id
                     :descripcion       (:descripcion params)
                     :descripcion_corta (:descripcion_corta params)
@@ -104,7 +115,8 @@
                     :hora              (fix-hour (:hora params))
                     :leader            (:leader params)
                     :leader_email      (:leader_email params)
-                    :repetir           (:repetir params)}
+                    :repetir           repetir
+                    :anonimo           anonimo}
           result   (Save db :rodadas postvars ["id = ?" id])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})

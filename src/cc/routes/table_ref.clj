@@ -7,9 +7,6 @@
 (def get_users-sql
   "SELECT id AS value, concat(firstname,' ',lastname) AS text FROM users order by firstname,lastname")
 
-(def get_students-sql
-  "SELECT id AS value, concat(last_name,' ',first_name) AS text FROM student WHERE enrollment_date IS NOT NULL order by last_name,first_name")
-
 (defn months []
   (list
    {:value 1 :text "Enero"}
@@ -44,7 +41,6 @@
 
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
-  (GET "/table_ref/get_students" [] (generate-string (Query db [get_students-sql])))
   (GET "/table_ref/months" [] (generate-string (months)))
   (GET "/table_ref/years/:pyears/:nyears" [pyears nyears] (generate-string (years pyears nyears)))
   (GET "/table_ref/appointment_options" [] (generate-string (appointment-options))))

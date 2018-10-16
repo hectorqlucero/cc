@@ -13,7 +13,7 @@
   cell varchar(45) DEFAULT NULL,
   phone varchar(45) DEFAULT NULL,fax varchar(45) DEFAULT NULL,
   email varchar(100) DEFAULT NULL,
-  level char(1) DEFAULT NULL COMMENT 'A=Administrator,U=User',
+  level char(1) DEFAULT NULL COMMENT 'A=Administrador,U=Usuario,S=Sistema',
   active char(1) DEFAULT NULL COMMENT 'T=Active,F=Not active',
   PRIMARY KEY (id)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
@@ -42,6 +42,7 @@
   leader varchar(100) DEFAULT NULL,
   leader_email varchar(100) DEFAULT NULL,
   repetir char(1) DEFAULT NULL COMMENT 'T=Si,F=No',
+  anonimo char(1) DEFAULT \"F\" COMMENT 'T=Si,F=No',
   PRIMARY KEY (id)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
@@ -77,7 +78,8 @@
     :hora              "20:00:00"
     :leader            "Christian"
     :leader_email      "christian@rositas.com"
-    :repetir           "T"}
+    :repetir           "T"
+    :anonimo           "F"}
    {:descripcion_corta "Santa Isabel"
     :descripcion       "Salimos del Parque Hidalgo hacia la Santa Isabel.  Hidratacion en la OXXO que esta en la Lazaro Cardenas.  No olividen traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
@@ -85,7 +87,8 @@
     :hora              "20:00:00"
     :leader            "Ruth"
     :leader_email      "ruth@rositas.com"
-    :repetir           "T"}
+    :repetir           "T"
+    :anonimo           "F"}
    {:descripcion_corta "Canalera"
     :descripcion       "Salimos por el canal de la Independencia a veces hasta el aeropuerto.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
@@ -93,7 +96,8 @@
     :hora              "20:00:00"
     :leader            "Humberto"
     :leader_email      "humberto@rositas.com"
-    :repetir           "T"}
+    :repetir           "T"
+    :anonimo           "F"}
    {:descripcion_corta "Adorada"
     :descripcion       "Ruta que puede variar entre el Campestre y el Panteon rumbo al aeropuerto.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
@@ -101,7 +105,8 @@
     :hora              "20:00:00"
     :leader            "Martha Parada"
     :leader_email      "adorada@rositas.com"
-    :repetir           "T"}
+    :repetir           "T"
+    :anonimo           "F"}
    {:descripcion_corta "Culinaria"
     :descripcion       "Salimos del parque Hidalgo hacia el panteon que esta rumbo al aeropuerto. No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
@@ -109,7 +114,8 @@
     :hora              "20:00:00"
     :leader            "Chefsito"
     :leader_email      "chefsito@rositas.com"
-    :repetir           "T"}
+    :repetir           "T"
+    :anonimo           "F"}
    {:descripcion_corta "Intermedia"
     :descripcion       "Salimos del parque Hidalgo hacia el hotel que esta despues del OXXO.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
@@ -117,7 +123,8 @@
     :hora              "20:00:00"
     :leader            "Humberto"
     :leader_email      "humberto@rositas.com"
-    :repetir           "T"}
+    :repetir           "T"
+    :anonimo           "F"}
    {:descripcion_corta "Pedacera"
     :descripcion       "Salimos del parque Hidalgo hacia el aeropuerto.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
@@ -125,7 +132,8 @@
     :hora              "20:00:00"
     :leader            "Oscar Raul"
     :leader_email      "oscarraul@rositas.com"
-    :repetir           "T"}
+    :repetir           "T"
+    :anonimo           "F"}
    {:descripcion_corta "Familiar"
     :descripcion       "Salimos del Parque Hidalgo con ruta indefinida.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
@@ -133,7 +141,8 @@
     :hora              "20:00:00"
     :leader            "Jose el Pechocho"
     :leader_email      "pechocho@rositas.com"
-    :repetir           "T"}])
+    :repetir           "T"
+    :anonimo           "F"}])
 
 (def rodadas_link-rows
   [{:rodadas_id  "1"
@@ -197,7 +206,7 @@
     :username  "hectorqlucero@gmail.com"
     :password  (crypt/encrypt "elmo1200")
     :dob       "1957-02-07"
-    :level     "A"
+    :level     "S"
     :active    "T"}
    {:lastname  "Lucero"
     :firstname "Martha"
