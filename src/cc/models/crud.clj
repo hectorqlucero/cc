@@ -28,6 +28,7 @@
          :elideSetAutoCommits             true
          :alwaysSendSetIsolation          false
          :enableQueryTimeouts             false
+         :character-encoding              "UTF-8"
          :zeroDateTimeBehavior            "CONVERT_TO_NULL"}) ; Database connection
 
 (def SALT "897sdn9j98u98kj")                                ; encryption salt for DB
