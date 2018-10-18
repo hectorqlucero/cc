@@ -18,8 +18,9 @@
 ;; End documentation for email
 
 (defn send-email [body]
-  (send-message {:host "smtp.gmail.com"
-                 :user "hectorqlucero@gmail.com"
-                 :pass "patito6853."
-                 :ssl  true} body))
+  (send-message {:host "mail.gmx.com"
+                 :user "hectorqlucero@gmx.com"
+                 :pass "Patito6853."
+                 :tls  true}
+                body))
 
