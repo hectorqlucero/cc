@@ -2,7 +2,7 @@
   (:require [cc.models.crud :refer :all]
             [cc.models.grid :refer :all]
             [cc.models.util :refer :all]
-            [cc.models.email :refer [send-email]]
+            [cc.models.email :refer [send-email host]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
             [noir.session :as session]
@@ -117,7 +117,7 @@
           result     (Save db :rodadas_link postvars ["rodadas_id = ? and email = ?" rodadas_id email])]
       (if (seq result)
         (do
-          (send-email body)
+          (send-email host body)
           (generate-string {:success "Correctamente Processado!"}))
         (generate-string {:error "No se pudo processar!"})))
     (catch Exception e (.getMessage e))))

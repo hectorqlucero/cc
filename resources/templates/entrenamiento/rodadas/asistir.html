@@ -17,48 +17,46 @@
         <input id="email" name="email" class="easyui-validatebox" data-options="required:true,validType:'email'" style="width:50%">
     </div>
     <div class="fitem">
-        <a href="javascript:void(0)" class="easyui-linkbutton" id="submit">Confirmar Asistencia</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="submitbtn" onclick="saveData()">Confirmar Asistencia</a>
         <a href="javascript:void(0)"  class="easyui-linkbutton" id="regresar" onclick="goBack()">Regresar al calendario</a>
     </div>
 </form>
 {% endblock %}
 {% block scripts %}
 <script>
- function goBack() {
-     window.location.href = "/main";
- }
+    function goBack() {
+        window.location.href = "/main";
+    }
 
- $(document).ready(function() {
-     $("a#submit").click(function() {
-         $("form.fm").form("submit");
-     });
-
-     $("form.fm").form("submit", {
-         queryParams: {'__anti-forgery-token': token},
-         onSubmit: function() {
-             return $(this).form("enableValidation").form("validate");
-         },
-         success: function(result) {
-             var json = JSON.parse(result);
-             if(json.error && json.success) {
-                 $.messager.show({
-                     title: 'Error',
-                     msg: json.success + "<br>" + json.error
-                 });
-             } else if (json.error) {
-                 $.messager.show({
-                     title: 'Error',
-                     msg: json.error
-                 });
-             } else if (json.success) {
-                 $.messager.show({
-                     title: 'Success',
-                     msg: json.success
-                 });
-                 window.location.href="/main";
-             }
-         }
-     });
- });
+    function saveData() {
+        $("#fm").form("submit", {
+            queryParams: {'__anti-forgery-token': token},
+            onSubmit: function() {
+                $("#submitbtn").linkbutton('disable');
+                return $(this).form("enableValidation").form("validate");
+            },
+            success: function(result) {
+                var json = JSON.parse(result);
+                if(json.error && json.success) {
+                    $.messager.show({
+                        title: 'Error',
+                        msg: json.success + "<br>" + json.error
+                    });
+                } else if (json.error) {
+                    $.messager.show({
+                        title: 'Error',
+                        msg: json.error
+                    });
+                } else if (json.success) {
+                    $.messager.show({
+                        title: 'Success',
+                        msg: json.success
+                    });
+                    window.location.href="/main";
+                    $("#submitbtn").linkbutton('enable');
+                }
+            }
+        });
+    }
 </script>
 {% endblock %}
