@@ -2,6 +2,7 @@
   (:require [cc.models.crud :refer :all]
             [cc.models.grid :refer :all]
             [cc.models.util :refer :all]
+            [cc.models.email :refer [send-email]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
             [noir.session :as session]
@@ -74,6 +75,24 @@
     (catch Exception e (.getMessage e))))
 ;;end rodadas form
 
+;;Start form-assistir
+(defn email-body[rodadas_id user email comentarios]
+  (let [row               (first (Query db ["SELECT leader,leader_email,descripcion_corta FROM rodadas WHERE id = ?" rodadas_id]))
+        leader            (:leader row)
+        leader_email      (:leader_email row)
+        descripcion_corta (:descripcion_corta row)
+        content           (str "<strong>Hola " leader ":</strong></br></br>"
+                               "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que asistire a la rodada.</br>"
+                               "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer click en el email arriva!</i></br></br>"
+                               "<strong>Commentarios:</strong> " comentarios "</br></br>"
+                               "<small>Este es un aplicacion para todos los ciclistas de Mexicali. se acceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Click aqui para mandar sugerencias</a></small>")
+        body              {:from    "hectorqlucero@gmx.com"
+                           :to      leader_email
+                           :subject (str descripcion_corta " - Confirmar asistencia")
+                           :body    [{:type    "text/html"
+                                      :content content}]}]
+    body))
+
 (defn form-asistir
   [rodadas_id]
   (let [row        (first (Query db ["select descripcion_corta,DATE_FORMAT(fecha,'%m/%d/%Y') as fecha,TIME_FORMAT(hora,'%h:%i %p') as hora from rodadas where id = ?" rodadas_id]))
@@ -93,12 +112,15 @@
                       :user        (:user params)
                       :comentarios (:comentarios params)
                       :email       email}
-          result     (Save db :rodadas_link postvars ["rodadas_id = ? and email = ?" rodadas_id email])
-          ]
+          body       (email-body rodadas_id (:user params) email (:comentarios params))
+          result     (Save db :rodadas_link postvars ["rodadas_id = ? and email = ?" rodadas_id email])]
       (if (seq result)
-        (generate-string {:success "Correctamente Processado!"})
+        (do
+          (send-email body)
+          (generate-string {:success "Correctamente Processado!"}))
         (generate-string {:error "No se pudo processar!"})))
     (catch Exception e (.getMessage e))))
+;;End form-assistir
 
 (defn rodadas-save
   [{params :params}]

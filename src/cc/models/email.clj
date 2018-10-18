@@ -23,4 +23,12 @@
                  :pass "Patito6853."
                  :tls  true}
                 body))
+(comment
+  (def body
+    {:from "hectorqlucero@gmx.com"
+     :to "hectorqlucero@gmail.com"
+     :subject "Hi!"
+     :body [{:type "text/html"
+             :content "<b>Test!</b>"}]}))
 
+;;(send-email body)
