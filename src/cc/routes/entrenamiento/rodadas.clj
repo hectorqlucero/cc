@@ -88,6 +88,7 @@
                                "<small>Este es un aplicacion para todos los ciclistas de Mexicali. se acceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Click aqui para mandar sugerencias</a></small>")
         body              {:from    "hectorqlucero@gmx.com"
                            :to      leader_email
+                           :cc      "hectorqlucero@gmail.com"
                            :subject (str descripcion_corta " - Confirmar asistencia")
                            :body    [{:type    "text/html"
                                       :content content}]}]
