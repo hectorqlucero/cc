@@ -89,8 +89,8 @@
                                "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que asistire a la rodada.</br>"
                                "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
                                "<strong>Comentarios:</strong> " comentarios "</br></br>"
-                               "<small>Este es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")
-        body              {:from    "hectorqlucero@gmx.com"
+                               "<small>Esta es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")
+        body              {:from    "hectorqlucero@gmail.com"
                            :to      leader_email
                            :cc      "hectorqlucero@gmail.com"
                            :subject (str descripcion_corta " - Confirmar asistencia")
@@ -150,17 +150,42 @@
         (generate-string {:error "No se pudo processar!"})))
     (catch Exception e (.getMessage e))))
 
+;;Start rodadas-delete
+(defn build-recipients [rodadas_id]
+  (into [] (map #(first (vals %)) (Query db ["SELECT email from rodadas_link where rodadas_id = ?" rodadas_id]))))
+
+(defn email-delete-body [rodadas_id]
+  (let [row               (first (Query db ["SELECT leader,leader_email,descripcion_corta FROM rodadas where id = ?" rodadas_id]))
+        leader            (:leader row)
+        leader_email      (:leader_email row)
+        descripcion_corta (:descripcion_corta row)
+        content           (str "<strong>Hola:</strong></br></br>La rodada organizada por: " leader " <a href='mailto:"leader_email"'>" leader_email "</a> se cancelo.  Disculpen la inconveniencia que esto pueda causar.</br>"
+                               "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
+                               "Muchas gracias por su participacion y esperamos que la proxima vez se pueda realizar la rodada.</br></br>"
+                               "<small>Esta es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")
+        recipients        (build-recipients rodadas_id)
+        body              {:from    "hectorqlucero@gmail.com"
+                           :to      recipients
+                           :cc      "hectorqlucero@gmail.com"
+                           :subject (str descripcion_corta " - Cancelacion")
+                           :body    [{:type    "text/html;charset=utf-8"
+                                      :content content}]}]
+    body))
+
 (defn rodadas-delete
   [{params :params}]
   (try
     (let [id     (:id params nil)
           result (if-not (nil? id)
-                   (Delete db :rodadas ["id = ?" id])
+                   (do
+                     (send-email host (email-delete-body id))
+                     (Delete db :rodadas ["id = ?" id]))
                    nil)]
       (if (seq result)
         (generate-string {:success "Removido appropiadamente!"})
         (generate-string {:error "No se pudo remover!"})))
     (catch Exception e (.getMessage e))))
+;;End rodadas-delete
 
 (defroutes rodadas-routes
   (GET "/entrenamiento/rodadas" [] (rodadas))

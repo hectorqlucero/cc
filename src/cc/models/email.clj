@@ -28,13 +28,13 @@
 ;; :ssl  true}
 
 (def host
-  {:host "mail.gmx.com"
-   :user "hectorqlucero@gmx.com"
-   :pass "Patito6853."
-   :tls  true})
+  {:host "smtp.gmail.com"
+   :user "hectorqlucero@gmail.com"
+   :pass "patito6853."
+   :ssl  true})
 
 (def body
-  {:from    "hectorqlucero@gmx.com"
+  {:from    "hectorqlucero@gmail.com"
    :to      "marthalucero56@gmail.com"
    :subject "Hi!"
    :body    [{:type    "text/html;charset=utf-8"
