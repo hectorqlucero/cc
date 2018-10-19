@@ -1,8 +1,8 @@
 (ns cc.routes.entrenamiento.rodadas
   (:require [cc.models.crud :refer :all]
+            [cc.models.email :refer [host send-email]]
             [cc.models.grid :refer :all]
             [cc.models.util :refer :all]
-            [cc.models.email :refer [send-email host]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
             [noir.session :as session]
@@ -37,13 +37,17 @@
   (try
     (let [table    "rodadas"
           user     (or (session/get :user_id) "Anonimo")
+          level    (user-level)
+          email    (user-email)
           scolumns (convert-search-columns search-columns)
           aliases  aliases-columns
           join     ""
           search   (grid-search (:search params nil) scolumns)
-          search   (if (= user "Anonimo")
-                     (grid-search-extra search "anonimo = 'T'")
-                     (grid-search-extra search "anonimo = 'F'"))
+          search   (cond
+                     (= user "Anonimo") (grid-search-extra search "anonimo = 'T'")
+                     (= level "U")      (grid-search-extra search (str "leader_email = '" email "'"))
+                     (= level "A")      (grid-search-extra search (str "leader_email = '" email "'"))
+                     :else (grid-search (:search params nil) scolumns))
           order    (grid-sort (:sort params nil) (:order params nil))
           offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
           sql      (grid-sql table aliases join search order offset)

@@ -405,3 +405,8 @@
   (let [id (session/get :user_id)
         type (:level (first (Query db ["select level from users where id = ?" id])))]
     type))
+
+(defn user-email []
+  (let [id (session/get :user_id)
+        email (:username (first (Query db ["select username from users where id = ?" id])))]
+    email))
