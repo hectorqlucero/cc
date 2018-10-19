@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block meta %}
+<meta http-equiv="Refresh"  content="120">
+{% endblock %}
 {% block content %}
 {% csrf-field %}
 <div id="calendar"></div>

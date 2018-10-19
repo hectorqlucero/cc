@@ -48,7 +48,7 @@
         rows (map #(assoc % :confirmados (process-confirmados (:id %))) rows)
         admins (str "<a id=\"btn\" href=\"/login\"><button class='btn btn-info'>Administradores</button></a>")
         events (generate-string rows)]
-    (render-file "home/main.html" {:title  (str "Calendario de Eventos - Haz click en el evento para confirmar asistencia  " admins)
+    (render-file "home/main.html" {:title  (str "Calendario de Eventos - Haz clic en el evento para confirmar asistencia  " admins)
                                    :events events})))
 ;;END calendar events
 

@@ -87,9 +87,9 @@
         descripcion_corta (:descripcion_corta row)
         content           (str "<strong>Hola " leader ":</strong></br></br>"
                                "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que asistire a la rodada.</br>"
-                               "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer click en el email arriva!</i></br></br>"
-                               "<strong>Commentarios:</strong> " comentarios "</br></br>"
-                               "<small>Este es un aplicacion para todos los ciclistas de Mexicali. se acceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Click aqui para mandar sugerencias</a></small>")
+                               "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
+                               "<strong>Comentarios:</strong> " comentarios "</br></br>"
+                               "<small>Este es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")
         body              {:from    "hectorqlucero@gmx.com"
                            :to      leader_email
                            :cc      "hectorqlucero@gmail.com"
