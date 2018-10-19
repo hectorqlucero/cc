@@ -22,7 +22,7 @@
    "phone"
    "fax"
    "email"
-   "CASE WHEN level ='A' THEN 'Administrador' WHEN level = 'U' THEN 'Usuario' END"
+   "CASE WHEN level ='A' THEN 'Administrador' WHEN level = 'U' THEN 'Usuario'  WHEN level = 'S' THEN 'Sistema' END"
    "CASE WHEN active = 'T' THEN 'Activo' WHEN active = 'F' THEN 'Inactivo' END"])
 
 (def aliases-columns
@@ -36,7 +36,7 @@
    "phone"
    "fax"
    "email"
-   "CASE WHEN level = 'A' THEN 'Administrador' WHEN level = 'U' THEN 'Usuario' END AS level"
+   "CASE WHEN level = 'A' THEN 'Administrador' WHEN level = 'U' THEN 'Usuario' WHEN level='S' THEN 'Sistema' END AS level"
    "CASE WHEN active = 'T' THEN 'Activo' WHEN active = 'F' THEN 'Inactivo' END AS active"])
 
 (defn grid-json
