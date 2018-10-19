@@ -90,7 +90,7 @@
                            :to      leader_email
                            :cc      "hectorqlucero@gmail.com"
                            :subject (str descripcion_corta " - Confirmar asistencia")
-                           :body    [{:type    "text/html"
+                           :body    [{:type    "text/html;charset=utf-8"
                                       :content content}]}]
     body))
 

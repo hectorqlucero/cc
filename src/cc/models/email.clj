@@ -37,7 +37,7 @@
   {:from    "hectorqlucero@gmx.com"
    :to      "marthalucero56@gmail.com"
    :subject "Hi!"
-   :body    [{:type    "text/html"
+   :body    [{:type    "text/html;charset=utf-8"
               :content "<b>Testing</b>"}]})
 
 (defn send-email [host body]
