@@ -27,6 +27,7 @@
   :jvm-opts ["-Duser.timezone=UTC"]
   :main ^:ccip-aot cc.core
   :aot [cc.core]
+  :uberjar-name "cc.jar"
   :plugins [[lein-ancient "0.6.10"]
             [lein-pprint "1.1.2"]]
   :ring {:handler cc.core/app
