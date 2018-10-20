@@ -2,9 +2,13 @@
 {% block meta %}
 <meta http-equiv="Refresh"  content="120">
 {% endblock %}
+{% block head %}
+{% endblock %}
 {% block content %}
 {% csrf-field %}
 <div id="calendar"></div>
+<div id="dialog" title="Detalles">
+</div>
 {% endblock %}
 {% block scripts %}
 <script>
@@ -34,6 +38,12 @@
          events: {{events|safe}},
          color: 'deepskyblue',
          textColor: 'white',
+         eventLimit: true,
+         eventClick: function(calEvent, jsEvent) {
+             var datos = 'Descripcion: ' + calEvent.description + '\nDonde: ' + calEvent.donde + '\nLider: ' + calEvent.leader + '\nEmal: ' + calEvent.email + '\nConfirmados: ' + calEvent.confirmados + '\n\nOprimir Cancel para regresar al Calendario, OK para confirmar asistencia'
+             var r = confirm(datos);
+             if (! r) return false;
+         },
          eventMouseover: function(calEvent, jsEvent) {
              var tooltip = '<div class="tooltipevent" style="z-index:100001;border:1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow::0 2px 3px #999;position:absolute;padding:5px;text-align:left;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Descripcion:</strong></br> ' + calEvent.description + '</p><p><strong>Donde:</strong></br>' + calEvent.donde + '</p><p><strong>Lider:</strong></br>' + calEvent.leader + '</p><p><strong>Email:</strong></br>' + calEvent.email + '</p><p><strong>Confirmados:</strong></br>' + calEvent.confirmados + '</p></div>';
              var $tooltip = $(tooltip).appendTo('body');
