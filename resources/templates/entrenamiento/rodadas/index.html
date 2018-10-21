@@ -17,12 +17,14 @@
     <thead>
         <tr>
             <th data-options="field: 'descripcion_corta', sortable: false">Titulo</th>
-            <th data-options="field: 'descripcion', sortable: false">Descripcion</th>
-            <th data-options="field: 'punto_reunion', sortable: false">Donde</th>
-            <th data-options="field: 'repetir', sortable: true">Repetir</th>
             <th data-options="field: 'fecha', sortable: true">Fecha</th>
             <th data-options="field: 'hora', sortable: true">Salida</th>
             <th data-options="field: 'leader', sortable: true">Lider</th>
+            <th data-options="field: 'punto_reunion', sortable: false">Punto de Reunión</th>
+            <th data-options="field: 'nivel', sortable: false">Nivel</th>
+            <th data-options="field: 'distancia', sortable: false">Distancia</th>
+            <th data-options="field: 'velocidad', sortable: false">Velocidad</th>
+            <th data-options="field: 'descripcion', sortable: false">Datos Adicionales</th>
         </tr>
     </thead>
 </table>
@@ -57,8 +59,20 @@
             <input id="descripcion" name="descripcion" type="email" class="easyui-textbox" multiline="true" style="width:100%;height:120px;">
         </div>
         <div class="fitem">
-            <label for="punto_reunion">Donde(<small>ex. Parque Hidalgo</small>):</label>
+            <label for="punto_reunion">Punto de Reunión(<small>ex. Parque Hidalgo</small>):</label>
             <input id="punto_reunion" name="punto_reunion" type="email" class="easyui-textbox" multiline="true" style="width:100%;height:120px;">
+        </div>
+        <div class="fitem">
+            <label for="nivel">Nivel:</label>
+            <input id="nivel" name="nivel" class="easyui-combobox" data-options="url:'/table_ref/nivel_options',method:'GET'">
+        </div>
+        <div class="fitem">
+            <label for="distancia">Distancia:</label>
+            <input id="distancia" name="distancia" class="easyui-textbox" data-options="required: true,width:'50%'">
+        </div>
+        <div class="fitem">
+            <label for="velocidad">Velocidad:</label>
+            <input id="velocidad" name="velocidad" class="easyui-textbox" data-options="required: true,width:'50%'">
         </div>
         <div class="fitem">
             <label for="fecha">Fecha/Rodada:</label>
@@ -78,6 +92,10 @@
         </div>
         {% ifunequal user "Anonimo" %}
         <input type="hidden" id="anonimo" name="anonimo" value="F">
+        <div class="fitem">
+            <label for="cuadrante">Cuadrante/Grupo Ciclista:</label>
+            <input id="cuadrante" name="cuadrante" class="easyui-combobox" data-options="method:'GET',url:'/table_ref/get_cuadrantes'" style="width:50%">
+        </div>
         <div style="margin-bottom:3px;">
             <input class="easyui-radiobutton" id="repetir" name="repetir" value="T" data-options="label:'Repetir:',labelPosition:'before'">
         </div>
@@ -88,6 +106,7 @@
         {% ifequal user "Anonimo" %}
         <input type="hidden" id="repetir" name="repetir" value="F">
         <input type="hidden" id="anonimo" name="anonimo" value="T">
+        <input type="hidden" id="cuadrante" name="cuadrante" value="">
         {% endifequal %}
     </form>
 </div>

@@ -16,6 +16,9 @@
   descripcion as description,
   CONCAT(fecha,'T',hora) as start,
   punto_reunion as donde,
+  CASE WHEN nivel = 'P' THEN 'Principiantes' WHEN nivel = 'M' THEN 'Medio' WHEN nivel = 'A' THEN 'Avanzado' WHEN nivel = 'T' THEN 'TODOS' END as nivel,
+  distancia as distancia,
+  velocidad as velocidad,
   leader as leader,
   leader_email as email,
   CONCAT('/entrenamiento/rodadas/asistir/',id) as url

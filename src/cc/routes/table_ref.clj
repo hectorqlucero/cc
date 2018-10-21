@@ -7,6 +7,9 @@
 (def get_users-sql
   "SELECT id AS value, concat(firstname,' ',lastname) AS text FROM users order by firstname,lastname")
 
+(def get_cuadrantes-sql
+  "SELECT id AS value, name AS text FROM cuadrantes order by name")
+
 (defn months []
   (list
    {:value 1 :text "Enero"}
@@ -39,8 +42,17 @@
    {:value "S" :text "Re-programmado por usuario"}
    {:value "Z" :text "Cancelado por usuario"}))
 
+(defn nivel-options []
+  (list
+   {:value "P" :text "Principiantes"}
+   {:value "M" :text "Medio"}
+   {:value "A" :text "Avanzado"}
+   {:value "T" :text "TODOS"}))
+
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
+  (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))
   (GET "/table_ref/months" [] (generate-string (months)))
   (GET "/table_ref/years/:pyears/:nyears" [pyears nyears] (generate-string (years pyears nyears)))
-  (GET "/table_ref/appointment_options" [] (generate-string (appointment-options))))
+  (GET "/table_ref/appointment_options" [] (generate-string (appointment-options)))
+  (GET "/table_ref/nivel_options" [] (generate-string (nivel-options))))

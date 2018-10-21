@@ -19,6 +19,9 @@
    "descripcion_corta"
    "descripcion"
    "punto_reunion"
+   "CASE WHEN nivel = 'P' THEN 'Principiantes' WHEN nivel = 'M' THEN 'Medio' WHEN nivel = 'A' THEN 'Avanzado' WHEN nivel = 'T' THEN 'TODOS' END"
+   "distancia"
+   "velocidad"
    "CASE WHEN repetir = 'T' THEN 'Si' ELSE 'No' END"
    "DATE_FORMAT(fecha,'%m/%d/%Y')"
    "TIME_FORMAT(hora,'%h:%i %p')"
@@ -28,6 +31,9 @@
   ["id"
    "descripcion_corta"
    "descripcion"
+   "CASE WHEN nivel = 'P' THEN 'Principiantes' WHEN nivel = 'M' THEN 'Medio' WHEN nivel = 'A' THEN 'Avanzado' WHEN nivel = 'T' THEN 'TODOS' END AS nivel"
+   "distancia"
+   "velocidad"
    "punto_reunion"
    "CASE WHEN repetir = 'T' THEN 'Si' ELSE 'No' END as repetir"
    "DATE_FORMAT(fecha,'%m/%d/%Y') as fecha"
@@ -64,10 +70,14 @@
   descripcion,
   descripcion_corta,
   punto_reunion,
+  nivel,
+  distancia,
+  velocidad,
   DATE_FORMAT(fecha,'%m/%d/%Y') as fecha,
   TIME_FORMAT(hora,'%H:%i') as hora,
   leader,
   leader_email,
+  cuadrante,
   repetir,
   anonimo
   FROM rodadas
@@ -144,10 +154,14 @@
                     :descripcion       (:descripcion params)
                     :descripcion_corta (:descripcion_corta params)
                     :punto_reunion     (:punto_reunion params)
+                    :nivel             (:nivel params)
+                    :distancia         (:distancia params)
+                    :velocidad         (:velocidad params)
                     :fecha             (format-date-internal (:fecha params))
                     :hora              (fix-hour (:hora params))
                     :leader            (:leader params)
                     :leader_email      (:leader_email params)
+                    :cuadrante         (:cuadrante params)
                     :repetir           repetir
                     :anonimo           anonimo}
           result   (Save db :rodadas postvars ["id = ?" id])]
