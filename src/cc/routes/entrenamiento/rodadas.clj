@@ -80,13 +80,13 @@
 ;;end rodadas form
 
 ;;Start form-assistir
-(defn email-body[rodadas_id user email comentarios]
+(defn email-body[rodadas_id user email comentarios asistir_desc]
   (let [row               (first (Query db ["SELECT leader,leader_email,descripcion_corta FROM rodadas WHERE id = ?" rodadas_id]))
         leader            (:leader row)
         leader_email      (:leader_email row)
         descripcion_corta (:descripcion_corta row)
         content           (str "<strong>Hola " leader ":</strong></br></br>"
-                               "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que asistire a la rodada.</br>"
+                               "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que <strong>"  asistir_desc "</strong> a la rodada.</br>"
                                "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
                                "<strong>Comentarios:</strong> " comentarios "</br></br>"
                                "<small>Esta es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")
@@ -111,14 +111,18 @@
 (defn form-asistir-save
   [{params :params}]
   (try
-    (let [rodadas_id (fix-id (:rodadas_id params))
-          email      (:email params)
-          postvars   {:rodadas_id  rodadas_id
-                      :user        (:user params)
-                      :comentarios (:comentarios params)
-                      :email       email}
-          body       (email-body rodadas_id (:user params) email (:comentarios params))
-          result     (Save db :rodadas_link postvars ["rodadas_id = ? and email = ?" rodadas_id email])]
+    (let [rodadas_id   (fix-id (:rodadas_id params))
+          email        (:email params)
+          asistir_desc (if (= (:asistir params) "T")
+                         "ASISTIRE"
+                         "NO ASISTIRE")
+          postvars     {:rodadas_id  rodadas_id
+                        :user        (:user params)
+                        :comentarios (:comentarios params)
+                        :email       email
+                        :asistir     (:asistir params)}
+          body         (email-body rodadas_id (:user params) email (:comentarios params) asistir_desc)
+          result       (Save db :rodadas_link postvars ["rodadas_id = ? and email = ?" rodadas_id email])]
       (if (seq result)
         (do
           (send-email host body)

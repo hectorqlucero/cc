@@ -16,6 +16,12 @@
         <label for="email">Email:</label>
         <input id="email" name="email" class="easyui-validatebox" data-options="required:true,validType:'email'" style="width:50%">
     </div>
+    <div style="margin-bottom:20px">
+        <input class="easyui-radiobutton" name="asistir" value="T" label="Si Asistire" checked>
+    </div>
+    <div style="margin-bottom:20px">
+        <input class="easyui-radiobutton" name="asistir" value="F" label="No Asistire">
+    </div>
     <div class="fitem">
         <a href="javascript:void(0)" class="easyui-linkbutton" id="submitbtn" onclick="saveData()">Confirmar Asistencia</a>
         <a href="javascript:void(0)"  class="easyui-linkbutton" id="regresar" onclick="goBack()">Regresar al calendario</a>

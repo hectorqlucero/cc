@@ -35,7 +35,7 @@
   (Query! db "UPDATE rodadas SET fecha = DATE_ADD(fecha,INTERVAL 7 DAY) WHERE fecha < CURRENT_DATE()")))
 
 (defn process-confirmados [rodadas_id]
-  (let [rows (Query db ["select email from rodadas_link where rodadas_id = ?" rodadas_id])
+  (let [rows (Query db ["select email from rodadas_link where rodadas_id = ? and asistir = ?" rodadas_id "T"])
         data (if (seq rows)
                (subs (clojure.string/triml (apply str (map #(str ", " (:email %)) rows))) 2)
                "ninguno")]

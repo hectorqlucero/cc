@@ -53,6 +53,7 @@
   user varchar(200) DEFAULT NULL,
   comentarios TEXT DEFAULT NULL,
   email varchar(100) DEFAULT NULL,
+  asistir char(1) DEFAULT \"T\" COMMENT 'T=Si,F=No',
   PRIMARY KEY (id),
   KEY rodadas_id (rodadas_id),
   CONSTRAINT rodadas_link_ibfk_1 FOREIGN KEY (rodadas_id) REFERENCES rodadas (id) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -77,7 +78,7 @@
     :fecha             "2018-10-08"
     :hora              "20:00:00"
     :leader            "Christian"
-    :leader_email      "christian@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}
    {:descripcion_corta "Santa Isabel"
@@ -86,7 +87,7 @@
     :fecha             "2018-10-09"
     :hora              "20:00:00"
     :leader            "Ruth"
-    :leader_email      "ruth@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}
    {:descripcion_corta "Canalera"
@@ -95,7 +96,7 @@
     :fecha             "2018-10-08"
     :hora              "20:00:00"
     :leader            "Humberto"
-    :leader_email      "humberto@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}
    {:descripcion_corta "Adorada"
@@ -104,7 +105,7 @@
     :fecha             "2018-10-10"
     :hora              "20:00:00"
     :leader            "Martha Parada"
-    :leader_email      "adorada@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}
    {:descripcion_corta "Culinaria"
@@ -113,7 +114,7 @@
     :fecha             "2018-10-11"
     :hora              "20:00:00"
     :leader            "Chefsito"
-    :leader_email      "chefsito@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}
    {:descripcion_corta "Intermedia"
@@ -122,7 +123,7 @@
     :fecha             "2018-10-11"
     :hora              "20:00:00"
     :leader            "Humberto"
-    :leader_email      "humberto@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}
    {:descripcion_corta "Pedacera"
@@ -131,7 +132,7 @@
     :fecha             "2018-10-11"
     :hora              "20:00:00"
     :leader            "Oscar Raul"
-    :leader_email      "oscarraul@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}
    {:descripcion_corta "Familiar"
@@ -140,7 +141,7 @@
     :fecha             "2018-10-12"
     :hora              "20:00:00"
     :leader            "Jose el Pechocho"
-    :leader_email      "pechocho@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"
     :anonimo           "F"}])
 
