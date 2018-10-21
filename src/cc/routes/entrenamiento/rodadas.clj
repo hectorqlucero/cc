@@ -19,6 +19,7 @@
    "descripcion_corta"
    "descripcion"
    "punto_reunion"
+   "CASE WHEN repetir = 'T' THEN 'Si' ELSE 'No' END"
    "DATE_FORMAT(fecha,'%m/%d/%Y')"
    "TIME_FORMAT(hora,'%h:%i %p')"
    "leader"])
@@ -28,6 +29,7 @@
    "descripcion_corta"
    "descripcion"
    "punto_reunion"
+   "CASE WHEN repetir = 'T' THEN 'Si' ELSE 'No' END as repetir"
    "DATE_FORMAT(fecha,'%m/%d/%Y') as fecha"
    "TIME_FORMAT(hora,'%h:%i %p') as hora"
    "leader"])
