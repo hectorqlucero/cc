@@ -5,13 +5,12 @@
             [cc.models.util :refer :all]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
-            [noir.session :as session]
             [selmer.parser :refer [render-file]]))
 
 (defn rodadas
   []
   (render-file "entrenamiento/rodadas/index.html" {:title "Entrenamiento - Rodadas"
-                                                   :user  (or (session/get :user_id) "Anonimo")}))
+                                                   :user  (or (get-session-id) "Anonimo")}))
 
 ;;start rodadas grid
 (def search-columns
@@ -44,7 +43,7 @@
   [{params :params}]
   (try
     (let [table    "rodadas"
-          user     (or (session/get :user_id) "Anonimo")
+          user     (or (get-session-id) "Anonimo")
           level    (user-level)
           email    (user-email)
           scolumns (convert-search-columns search-columns)
@@ -147,7 +146,7 @@
   [{params :params}]
   (try
     (let [id       (fix-id (:id params))
-          user     (or (session/get :user_id) "Anonimo")
+          user     (or (get-session-id) "Anonimo")
           repetir  (if (= user "Anonimo") "F" (:repetir params))
           anonimo  (if (= user "Anonimo") "T" "F")
           postvars {:id                id
