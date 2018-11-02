@@ -8,7 +8,8 @@
             [noir.session :as session]
             [date-clj :as d])
   (:import java.text.SimpleDateFormat
-           java.util.Calendar))
+           java.util.Calendar
+           (java.util UUID)))
 
 ;;Example here: (t/from-time-zone (t/now) tz) -> gives me a joda datetime with correct timezone
 ;;(def halloween-2016 (t/date-time 2016 10 31 18 0 0))
@@ -49,6 +50,11 @@
 (def internal-time-parser (f/formatter tz "H:k:s" "h:m a"))
 
 (def external-time-parser (f/formatter tz "h:m a" "H:k:s"))
+
+(defn get-session-id []
+  (try
+    (session/get :user_id)
+    (catch Exception e nil)))
 
 (defn current_date []
   "Get current date formatted MM/dd/YYYY"
@@ -402,11 +408,44 @@
   (str v ":00"))
 
 (defn user-level []
-  (let [id (session/get :user_id)
-        type (:level (first (Query db ["select level from users where id = ?" id])))]
+  (let [id   (get-session-id)
+        type (if (nil? id)
+               nil
+               (:level (first (Query db ["select level from users where id = ?" id]))))]
     type))
 
 (defn user-email []
-  (let [id (session/get :user_id)
-        email (:username (first (Query db ["select username from users where id = ?" id])))]
+  (let [id    (get-session-id)
+        email (if (nil? id)
+                nil
+                (:username (first (Query db ["select username from users where id = ?" id]))))]
     email))
+
+(defn get-photo-val [table-name field-name id-name id-value]
+  (if (or
+       (nil? table-name)
+       (nil? field-name)
+       (nil? id-name)
+       (nil? id-value))
+    nil
+    ((keyword field-name) (first (Query db (str "SELECT " field-name " FROM " table-name " WHERE " id-name " = " id-value))))))
+
+(defn build-photo-html [photo-val uuid]
+  (if (or
+       (nil? photo-val)
+       (nil? uuid))
+    nil
+    (str "<img src='" (:path config)  photo-val "?t=" uuid "' onError=\"this.src='/images/placeholder_profile.png'\" width='95' height='71'></img>")))
+
+(defn get-photo [table-name field-name id-name id-value]
+  (let [photo-val   (get-photo-val table-name field-name id-name id-value)
+        uuid        (str (UUID/randomUUID))
+        placeholder "<img src='/images/placeholder_profile.png' width='95' height='71'></img>"
+        photo       (build-photo-html photo-val uuid)]
+    (if (empty? photo-val) placeholder photo)))
+
+(defn get-thumbnail [photo-val]
+  (let [uuid (str (UUID/randomUUID))
+        placeholder "<img src='/images/placeholder_profile.png' width='42' height='42'></img>"
+        photo (str "<img src='/uploads/patient_images/" photo-val "?t=" uuid "'  onError=\"this.src='/images/placeholder_profile.png'\" width='42' height='42'></img>")]
+    (if (empty? photo-val) placeholder photo)))

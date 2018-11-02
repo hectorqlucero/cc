@@ -1,6 +1,6 @@
 (ns cc.routes.home
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [user-level]]
+            [cc.models.util :refer [get-session-id user-level]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
             [noir.response :refer [redirect]]
@@ -56,7 +56,7 @@
 ;;END calendar events
 
 (defn login [_]
-  (if (some? (session/get :user_id))
+  (if-not (nil? (get-session-id))
     (redirect "/main")
     (render-file "home/login.html" {:title "Accesar el Sito!"})))
 
@@ -87,13 +87,11 @@
   (render-file "home/logoff.html" {}))
 
 (defn get-menus []
-  (let [user_id (session/get :user_id)
-        type    (user-level)]
-    (case type
-      "A" (render-file "amenus.html" {})
-      "S" (render-file "smenus.html" {})
-      "U" (render-file "imenus.html" {})
-      (render-file "menus.html" {}))))
+  (case (user-level)
+    "A" (render-file "amenus.html" {})
+    "S" (render-file "smenus.html" {})
+    "U" (render-file "imenus.html" {})
+    (render-file "menus.html" {})))
 
 (defn process-event [request]
   (let [row    (:params request)
