@@ -51,10 +51,10 @@
           join     ""
           search   (grid-search (:search params nil) scolumns)
           search   (cond
-                     (= user "Anonimo") (grid-search-extra search "anonimo = 'T'")
-                     (= level "U")      (grid-search-extra search (str "leader_email = '" email "'"))
-                     (= level "A")      (grid-search-extra search (str "leader_email = '" email "'"))
-                     :else (grid-search (:search params nil) scolumns))
+                     (= user "Anonimo") (grid-search-extra search "anonimo = 'T' and rodada = 'T'")
+                     (= level "U")      (grid-search-extra search (str "leader_email = '" email "'" " and rodada = 'T'"))
+                     (= level "A")      (grid-search-extra search (str "leader_email = '" email "'" " and rodada = 'T'"))
+                     :else (grid-search-extra search "rodada = 'T'"))
           order    (grid-sort (:sort params nil) (:order params nil))
           offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
           sql      (grid-sql table aliases join search order offset)
@@ -97,7 +97,7 @@
         leader_email      (:leader_email row)
         descripcion_corta (:descripcion_corta row)
         content           (str "<strong>Hola " leader ":</strong></br></br>"
-                               "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que <strong>"  asistir_desc "</strong> a la rodada.</br>"
+                               "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que <strong>"  asistir_desc "</strong> al evento.</br>"
                                "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
                                "<strong>Comentarios:</strong> " comentarios "</br></br>"
                                "<small>Esta es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")

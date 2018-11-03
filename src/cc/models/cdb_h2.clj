@@ -51,11 +51,17 @@
   descripcion_corta varchar(100),
   descripcion varchar(5000) DEFAULT NULL,
   punto_reunion varchar(1000) DEFAULT NULL,
+  nivel CHAR(1) DEFAULT NULL COMMENT 'P=Principiantes,M=Medio,A=Avanzado,T=Todos',
+  distancia varchar(100) DEFAULT NULL,
+  velocidad varchar(100) DEFAULT NULL,
+  cuadrante INT(11) DEFAULT NULL,
   fecha date DEFAULT NULL,
   hora time DEFAULT NULL,
   leader varchar(100) DEFAULT NULL,
   leader_email varchar(100) DEFAULT NULL,
   repetir CHAR(1) DEFAULT NULL COMMENT 'T=Si,F=No',
+  anonimo CHAR(1) DEFAULT 'F' COMMENT 'T=Si,F=No',
+  rodada CHAR(1) DEFAULT 'T' COMMENT 'T=Si,F=No',
   PRIMARY KEY (id)
   )")
 
@@ -66,6 +72,7 @@
   user varchar(200) DEFAULT NULL,
   comentarios varchar(1000) DEFAULT NULL,
   email varchar(100) DEFAULT NULL,
+  asistir CHAR(1) DEFAULT 'T' COMMENT 'T=Si,F=No',
   PRIMARY KEY (id),
   foreign key (rodadas_id) references rodadas (id)
   )")
@@ -127,66 +134,101 @@
   [{:descripcion_corta "San Lunes"
     :descripcion       "Ruta que puede variar por las calles de la ciudad. Se rodaran por lo menos 20 kilometros.  No olvidar traer casco, luces, auga y un tubo de repuesto."
     :punto_reunion     "Parue Hidalgo"
+    :nivel             "P"
+    :distancia         "20/28 Km"
+    :velocidad         "18-25Km/hr"
     :fecha             "2018-10-08"
     :hora              "20:00:00"
-    :leader            "Christian"
-    :leader_email      "christian@rositas.com"
+    :leader            "Hector Lucero"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}
    {:descripcion_corta "Santa Isabel"
     :descripcion       "Salimos del Parque Hidalgo hacia la Santa Isabel.  Hidratacion en la OXXO que esta en la Lazaro Cardenas.  No olividen traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
+    :nivel             "T"
+    :distancia         "30 Km"
+    :velocidad         "Lights: 18-25Km/hr, Intermedios: 25-30Km/hr"
     :fecha             "2018-10-09"
     :hora              "20:00:00"
     :leader            "Ruth"
-    :leader_email      "ruth@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}
    {:descripcion_corta "Canalera"
     :descripcion       "Salimos por el canal de la Independencia a veces hasta el aeropuerto.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
+    :nivel             "M"
+    :distancia         "30/50 Km"
+    :velocidad         "25-35Km/hr"
     :fecha             "2018-10-08"
     :hora              "20:00:00"
     :leader            "Humberto"
-    :leader_email      "humberto@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}
    {:descripcion_corta "Adorada"
     :descripcion       "Ruta que puede variar entre el Campestre y el Panteon rumbo al aeropuerto.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
+    :nivel             "P"
+    :distancia         "20/28 Km"
+    :velocidad         "18-25Km/hr"
     :fecha             "2018-10-10"
     :hora              "20:00:00"
     :leader            "Martha Parada"
-    :leader_email      "adorada@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
+    :repetir           "T"}
+   {:descripcion_corta "Circuito Obregon"
+    :descripcion       "Hoy toca Circuito Ciclista Obregón los esperamos a las 8:00 PM en el punto de Reunión de Rectoría de la UABC/Biblioteca del Estado. El circuito tiene una longuitud de 3.2 Kilómetros con muy buena iluminado y el formato que se manejara para rodar será de las primeras 9 vueltas serán controladas a 30 kilómetros por hora como máximo y después se comenzara a aumentar la velocidad. Los ciclistas que lleguen más tarde se pueden acoplar al grupo o grupos. Así que a rodar con precaución y llevar sus luces si cuentan con ellas para iluminar esa mancha ciclista por toda la Av. Obregón, A Darle..."
+    :punto_reunion     "Rectoría de la UABC/Biblioteca del Estado"
+    :nivel             "T"
+    :distancia         "20/50 Km"
+    :velocidad         "10-40Km/hr"
+    :fecha             "2018-10-10"
+    :hora              "20:00:00"
+    :leader            "Melissa Utsler"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}
    {:descripcion_corta "Culinaria"
     :descripcion       "Salimos del parque Hidalgo hacia el panteon que esta rumbo al aeropuerto. No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
+    :nivel             "P"
+    :distancia         "20/28 Km"
+    :velocidad         "18-25Km/hr"
     :fecha             "2018-10-11"
     :hora              "20:00:00"
     :leader            "Chefsito"
-    :leader_email      "chefsito@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}
    {:descripcion_corta "Intermedia"
     :descripcion       "Salimos del parque Hidalgo hacia el hotel que esta despues del OXXO.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
+    :nivel             "P"
+    :distancia         "30 Km"
+    :velocidad         "25-35Km/hr"
     :fecha             "2018-10-11"
     :hora              "20:00:00"
     :leader            "Humberto"
-    :leader_email      "humberto@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}
    {:descripcion_corta "Pedacera"
     :descripcion       "Salimos del parque Hidalgo hacia el aeropuerto.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
+    :nivel             "P"
+    :distancia         "50/60 Km"
+    :velocidad         "30-40Km/hr"
     :fecha             "2018-10-11"
     :hora              "20:00:00"
     :leader            "Oscar Raul"
-    :leader_email      "oscarraul@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}
    {:descripcion_corta "Familiar"
     :descripcion       "Salimos del Parque Hidalgo con ruta indefinida.  No olviden traer casco, luces, agua y un tubo de repuesto."
     :punto_reunion     "Parque Hidalgo"
+    :nivel             "P"
+    :distancia         "20/28 Km"
+    :velocidad         "18-25Km/hr"
     :fecha             "2018-10-12"
     :hora              "20:00:00"
     :leader            "Jose el Pechocho"
-    :leader_email      "pechocho@rositas.com"
+    :leader_email      "hectorqlucero@gmail.com"
     :repetir           "T"}])
 
 (def user-rows
@@ -250,8 +292,8 @@
 
 (defn migrate []
   "migrate by the seat of my pants"
-  (Query! db "DROP table IF EXISTS rodadas")
   (Query! db "DROP table IF EXISTS rodadas_link")
+  (Query! db "DROP table IF EXISTS rodadas")
   (Query! db rodadas-sql)
   (Query! db rodadas_link-sql)
   (Insert-multi db :rodadas rodadas-rows)
