@@ -49,12 +49,12 @@
 (defroutes public-routes
   home-routes
   entrenamiento-routes
-  calendario-routes)
+  calendario-routes
+  table_ref-routes)
 
 (defroutes protected-routes
   appointments-routes
-  admin-routes
-  table_ref-routes)
+  admin-routes)
 
 (defroutes app-routes
   (route/resources "/")
