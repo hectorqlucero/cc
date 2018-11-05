@@ -47,6 +47,7 @@
   cuadrante int(11) DEFAULT NULL,
   repetir char(1) DEFAULT NULL COMMENT 'T=Si,F=No',
   anonimo char(1) DEFAULT \"F\" COMMENT 'T=Si,F=No',
+  rodada char(1) DEFAULT \"T\" COMMENT 'T=Si,F=No',
   PRIMARY KEY (id)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
@@ -449,4 +450,4 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db rodadas_link-sql)
   (Insert-multi db :rodadas rodadas-rows)
   (Insert-multi db :rodadas_link rodadas_link-rows))
-;;(reset-database)
+;;(migrate)
