@@ -49,10 +49,14 @@
    {:value "A" :text "Avanzado"}
    {:value "T" :text "TODOS"}))
 
+(defn get-help []
+  (str "<a href='/uploads/lucero-systems.pdf'></a>"))
+
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))
   (GET "/table_ref/months" [] (generate-string (months)))
   (GET "/table_ref/years/:pyears/:nyears" [pyears nyears] (generate-string (years pyears nyears)))
   (GET "/table_ref/appointment_options" [] (generate-string (appointment-options)))
-  (GET "/table_ref/nivel_options" [] (generate-string (nivel-options))))
+  (GET "/table_ref/nivel_options" [] (generate-string (nivel-options)))
+  (GET "/table_ref/help" [] (get-help)))

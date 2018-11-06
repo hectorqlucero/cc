@@ -49,10 +49,11 @@
   (purge)
   (repeat-event)
   (let [rows   (Query db [rodadas-sql])
-        rows (map #(assoc % :confirmados (process-confirmados (:id %))) rows)
+        rows   (map #(assoc % :confirmados (process-confirmados (:id %))) rows)
         admins (str "<a id=\"btn\" href=\"/login\"><button class='btn btn-info'>Administradores</button></a>")
+        help   (str "<a id=\"btn\" href='/uploads/help.pdf' target='_blank'><button class='btn btn-info'>Ayuda: Como usar?</button></a>")
         events (generate-string rows)]
-    (render-file "home/main.html" {:title  (str "Calendario de Eventos - Haz clic en el evento para confirmar asistencia  " admins)
+    (render-file "home/main.html" {:title  (str "Calendario de Eventos - Haz clic en el evento para confirmar asistencia  " admins "   " help)
                                    :events events})))
 ;;END calendar events
 
