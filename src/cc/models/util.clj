@@ -37,6 +37,7 @@
 ;;within: (t/within? this-week (t/plus (t/now) (t/days 3))) -> you get true or false
 ;;overlaps?: (t/overlaps? this-week last-week)
 ;;extend: (t/extend this-week (t/months 6))
+
 (def tz (t/time-zone-for-id (:tz config)))
 
 (def internal-date-parser (f/formatter tz "YYYY-MM-dd" "MM/dd/YYYY"))
