@@ -156,7 +156,7 @@
     :velocidad         "18-25Km/hr"
     :fecha             "2018-10-08"
     :hora              "20:00:00"
-    :leader            "Christian"
+    :leader            "Hector Lucero"
     :leader_email      "hectorqlucero@gmail.com"
     :cuadrante         1
     :repetir           "T"
