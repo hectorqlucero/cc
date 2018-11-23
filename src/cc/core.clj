@@ -4,6 +4,7 @@
             [cc.routes.admin :refer [admin-routes]]
             [cc.routes.appointments :refer [appointments-routes]]
             [cc.routes.entrenamiento :refer [entrenamiento-routes]]
+            [cc.routes.cartas :refer [cartas-routes]]
             [cc.routes.calendario :refer [calendario-routes]]
             [cc.routes.home :refer [home-routes]]
             [cc.routes.table_ref :refer [table_ref-routes]]
@@ -49,6 +50,7 @@
 (defroutes public-routes
   home-routes
   entrenamiento-routes
+  cartas-routes
   calendario-routes
   table_ref-routes)
 
