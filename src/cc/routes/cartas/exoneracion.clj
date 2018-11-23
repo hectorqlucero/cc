@@ -183,7 +183,7 @@ personales."))
    [[:cell {:colspan 3 :align :center :style :bold} "PARTICIPANTE"]]
    [[:cell {:style :bold} (str "Categoria: " (:categoria row))] [:cell {:style :bold :colspan 2} (str "Bicicleta:" (:bicicleta row))]]
    [[:cell {:style :bold} (str "Nombre completo: " (build-name row))] [:cell {:style :bold} (str "Equipo: " (:equipo row))] [:cell {:style :bold} (str "Numero de Participacion: " (:no_participacion row))]]
-   [[:cell {:style :bold} (str "Dirección: " (:direccion row))] [:cell {:style :bold} (str "Pais: " (:pais row))] [:cell {:style :bold} (str "Ciudas: " (:ciudad row))]]
+   [[:cell {:style :bold} (str "Dirección: " (:direccion row))] [:cell {:style :bold} (str "Pais: " (:pais row))] [:cell {:style :bold} (str "Ciudad: " (:ciudad row))]]
    [[:cell {:style :bold} (str "Telefono: " (:telefono row))] [:cell {:style :bold} (str "Celular: " (:celular row))] [:cell {:style :bold} (str "Email: " (:email row))]]
    [[:cell {:style :bold :colspan 3} (str "Nombre del padre o tutor (En su caso): ")]]
    [[:cell {:style :bold :colspan 3} (str "Firma del participante y/o tutor: ")]]
