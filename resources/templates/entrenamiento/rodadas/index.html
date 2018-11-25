@@ -41,6 +41,10 @@
        class="easyui-linkbutton"
        data-options="iconCls: 'icon-remove',plain: true"
        onclick="defaultGridDeleteItem()">Remover</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-back',plain: true"
+       onclick="calendarItem()">Regresar al Calendario</a>
     <div style="float: right">
         <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Busqueda'" title="Buscar">
     </div>
@@ -123,4 +127,9 @@
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="/js/defaultGrid.js"></script>
+<script>
+ function calendarItem() {
+     window.location.href = "/main";
+ }
+</script>
 {% endblock %}
