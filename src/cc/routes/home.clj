@@ -22,6 +22,7 @@
   leader as leader,
   leader_email as email,
   rodada as rodada,
+  repetir,
   CONCAT('/entrenamiento/rodadas/asistir/',id) as url
   FROM rodadas
   ORDER BY fecha,hora ")

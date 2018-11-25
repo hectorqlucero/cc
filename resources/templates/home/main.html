@@ -48,7 +48,11 @@
              }
              var r = confirm(datos);
              if(calEvent.rodada == 'T') {
-                 if (! r) return false;
+                 if (calEvent.repetir == 'T') {
+                     return false;
+                 } else {
+                     if (! r) return false;
+                 }
              } else {
                  return false;
              }
