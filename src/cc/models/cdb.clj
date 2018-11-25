@@ -64,6 +64,27 @@
   CONSTRAINT rodadas_link_ibfk_1 FOREIGN KEY (rodadas_id) REFERENCES rodadas (id) ON DELETE CASCADE ON UPDATE NO ACTION
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
+(def cartas-sql
+  "CREATE TABLE `cartas` (
+                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                       `categoria` char(1) DEFAULT NULL COMMENT 'A=Abierta,N=Novatos',
+                       `sexo` char(1) DEFAULT NULL COMMENT 'V=Varonil,F=Femenil',
+                       `bicicleta` char(1) DEFAULT NULL COMMENT 'F=Fija,S=SS,O=Otra',
+                       `no_participacion` varchar(50) DEFAULT NULL,
+                       `nombre` varchar(100) DEFAULT NULL,
+                       `apellido_paterno` varchar(100) DEFAULT NULL,
+                       `apellido_materno` varchar(100) DEFAULT NULL,
+                       `equipo` varchar(100) DEFAULT NULL,
+                       `direccion` varchar(100) DEFAULT NULL,
+                       `pais` varchar(100) DEFAULT NULL,
+                       `ciudad` varchar(100) DEFAULT NULL,
+                       `telefono` varchar(50) DEFAULT NULL,
+                       `celular` varchar(50) DEFAULT NULL,
+                       `email` varchar(100) DEFAULT NULL,
+                       `tutor` varchar(100) DEFAULT NULL,
+                       PRIMARY KEY (`id`)
+                       ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+
 (def cuadrantes-rows
   [{:name         "Rositas"
     :leader       "Rossy Rutiaga"
@@ -422,6 +443,7 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db cuadrantes-sql)
   (Query! db rodadas-sql)
   (Query! db rodadas_link-sql)
+  (Query! db cartas-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :rodadas rodadas-rows)
   (Insert-multi db :rodadas_link rodadas_link-rows)
@@ -437,6 +459,7 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db cuadrantes-sql)
   (Query! db rodadas-sql)
   (Query! db rodadas_link-sql)
+  (Query! db cartas-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :cuadrantes cuadrantes-rows)
   (Insert-multi db :rodadas rodadas-rows)
