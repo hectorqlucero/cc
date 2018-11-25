@@ -1,8 +1,9 @@
 (ns cc.models.email
-  (:require [postal.core :refer [send-message]]))
-;;(send-message {:host "smtp.gmail.com"
-;;               :user "hectorqlucero@gmail.com"
-;;               :pass "patito6853."
+  (:require [postal.core :refer [send-message]]
+            [cc.models.crud :refer [config]]))
+;;(send-message {:host "email-host"
+;;               :user "email-user"
+;;               :pass "email-password"
 ;;               :ssl  true}
 ;;              {:from    "me@draines.com"
 ;;               :to      "foo@example.com"
@@ -18,19 +19,19 @@
 ;;{:code 0, :error :SUCCESS, :message "message sent"}      ;Returned error messages
 ;;
 ;;{:host "mail.gmx.com"
-;; :user "hectorqlucero@gmx.com"
-;; :pass "Patito6853."
+;; :user "xxxxxxx@gmx.com"
+;; :pass "xxxxxxx"
 ;; :tls  true}
 ;;
 ;;{:host "smtp.gmail.com"
-;; :user "hectorqlucero@gmx.com"
-;; :pass "patito6853."
+;; :user "xxxxxxx@gmx.com"
+;; :pass "xxxxxxxx"
 ;; :ssl  true}
 
 (def host
-  {:host "smtp.gmail.com"
-   :user "hectorqlucero@gmail.com"
-   :pass "patito6853."
+  {:host (:email-host config)
+   :user (:email-user config)
+   :pass (:email-pwd config)
    :ssl  true})
 
 (def body

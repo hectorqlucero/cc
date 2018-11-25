@@ -35,50 +35,53 @@
 (def KEY "897sdn9j98u98kjz")
 
 (defn aes-in [value & alias]
+  "Encrypt a value MySQL"
   (str "AES_ENCRYPT('" value "','" SALT "')"
        (if (seq alias)
          (str " as " (first alias)))))
 
 (defn aes-out [value & alias]
+  "Decrypt a value MySQL"
   (str "AES_DECRYPT('" value "','" SALT "')"
        (if (seq alias)
          (str " as " (first alias)))))
 
 (defn aes-sel [field & alias]
+  "Return field decrypted MySQL"
   (str "AES_DECRYPT(" field ",'" SALT "')"
        (if (seq alias)
          (str " as " (first alias)))))
 
-(def phone_macc "(___) ___-____")
+(def phone_mask "(___) ___-____")
 
-(def phone_macc_ext "(___) ___-____ x_____")
+(def phone_mask_ext "(___) ___-____ x_____")
 
-(def date_macc "mm/dd/YYYY")
+(def date_mask "mm/dd/YYYY")
 
-(def n4_macc "____")
+(def n4_mask "____")
 
-(def n5_macc "_____")
+(def n5_mask "_____")
 
 (defn cleanup_blanks [v]
   (when-not (clojure.string/blank? v) v))
 
 (defn cleanup_phones [v]
-  (when-not (= v phone_macc) v))
+  (when-not (= v phone_mask) v))
 
 (defn cleanup_phones_ext [v]
-  (when-not (= v phone_macc_ext) v))
+  (when-not (= v phone_mask_ext) v))
 
 (defn cleanup_dates [v]
-  (when-not (= v date_macc) v))
+  (when-not (= v date_mask) v))
 
 (defn cleanup_n4 [v]
-  (when-not (= v n4_macc) v))
+  (when-not (= v n4_mask) v))
 
 (defn cleanup_n5 [v]
-  (when-not (= v n5_macc) v))
+  (when-not (= v n5_mask) v))
 
 (defn cleanup [row]
-  "Cleanup row - convert maccs or blanks into nil"
+  "Cleanup row - convert masks or blanks into nil"
   (apply merge
          (for [[k v] row]
            (let [value (and (cleanup_blanks v)
@@ -130,6 +133,7 @@
         result))))
 
 (defn get-table-columns [table]
+  "Get table column names in a vector"
   (let [the-fields (Query db (str "DESCRIBE " table))
         tfields (map #(:field %) the-fields)]
     (into [] tfields)))

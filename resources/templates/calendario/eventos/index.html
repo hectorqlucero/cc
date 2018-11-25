@@ -20,7 +20,7 @@
             <th data-options="field: 'descripcion', sortable: false">Datos Adicionales</th>
             <th data-options="field: 'punto_reunion', sortable: false">Punto de Reunión</th>
             <th data-options="field: 'fecha', sortable: true">Fecha</th>
-            <th data-options="field: 'leader', sortable: true">Lider</th>
+            <th data-options="field: 'leader', sortable: true">Quién Organiza</th>
         </tr>
     </thead>
 </table>
@@ -46,7 +46,7 @@
     <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="id"  name="id">
         <div class="fitem">
-            <label for="descripcion_corta">Titulo para el Calendario(<small>ex: Santa Isabel</small>):</label>
+            <label for="descripcion_corta">Titulo para el Calendario(<small>ex: VI Gran Fondo</small>):</label>
 
             <input id="descripcion_corta"  name="descripcion_corta" class="easyui-validatebox" data-options="required: true,validType:['length[0,20]']">
         </div>
@@ -67,12 +67,12 @@
             <input id="hora" name="hora" type="time" class="easyui-textbox" style="width:20%">
         </div>
         <div class="fitem">
-            <label for="leader">Lider:</label>
+            <label for="leader">Quién Organiza:</label>
             <input id="leader" name="leader" class="easyui-textbox" data-options="required: true,width:'50%'">
         </div>
         <div class="fitem">
-            <label for="leader_email">Lider Email:</label>
-            <input id="leader_email" name="leader_email" class="easyui-validatebox" data-options="required:true,validType:'email'" style="width:50%">
+            <label for="leader_email">Organizador Email:</label>
+            <input id="leader_email" name="leader_email" class="easyui-validatebox" data-options="required:false,validType:'email'" style="width:50%">
         </div>
         {% ifunequal user "Anonimo" %}
         <input type="hidden" id="anonimo" name="anonimo" value="F">

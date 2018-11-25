@@ -40,19 +40,25 @@
          textColor: 'white',
          eventLimit: true,
          eventClick: function(calEvent, jsEvent) {
+             var tdesc = calEvent.email || "";
              if (calEvent.rodada == 'T') {
-                 var datos = 'Descripcion: ' + calEvent.description + '\nNivel: ' + calEvent.nivel + '\nDistancia: ' + calEvent.distancia + '\nVelocidad: ' + calEvent.velocidad + '\nPunto de reunión: ' + calEvent.donde + '\nLider: ' + calEvent.leader + '\nEmal: ' + calEvent.email + '\nConfirmados: ' + calEvent.confirmados + '\n\nOprimir Cancel para regresar al Calendario, OK para confirmar asistencia'
+                 var datos = 'Descripcion: ' + calEvent.description + '\nNivel: ' + calEvent.nivel + '\nDistancia: ' + calEvent.distancia + '\nVelocidad: ' + calEvent.velocidad + '\nPunto de reunión: ' + calEvent.donde + '\nLider: ' + calEvent.leader + '\nEmal: ' + tdesc + '\nConfirmados: ' + calEvent.confirmados + '\n\nOprimir Cancel para regresar al Calendario, OK para confirmar asistencia';
              } else {
-                 var datos = 'Descripcion: ' + calEvent.description + '\nPunto de reunión: ' + calEvent.donde + '\nLider: ' + calEvent.leader + '\nEmal: ' + calEvent.email + '\nConfirmados: ' + calEvent.confirmados + '\n\nOprimir Cancel para regresar al Calendario, OK para confirmar asistencia'
+                 var datos = 'Descripcion: ' + calEvent.description + '\nPunto de reunión: ' + calEvent.donde + '\nQuién Organiza: ' + calEvent.leader + '\nEmal: ' + tdesc;
              }
              var r = confirm(datos);
-             if (! r) return false;
+             if(calEvent.rodada == 'T') {
+                 if (! r) return false;
+             } else {
+                 return false;
+             }
          },
          eventMouseover: function(calEvent, jsEvent) {
+             var tdesc = calEvent.email || "";
              if (calEvent.rodada == 'T') {
-                 var tooltip = '<div class="tooltipevent" style="z-index:100001;border:1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow::0 2px 3px #999;position:absolute;padding:5px;text-align:left;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Descripcion:</strong></br> ' + calEvent.description + '</p><p><strong>Nivel:</strong></br> ' + calEvent.nivel + '<p><strong>Distancia:</strong></br> ' + calEvent.distancia + '<p><strong>Velocidad:</strong></br>' + calEvent.velocidad + '<p><strong>Punto de reunión:</strong></br>' + calEvent.donde + '</p><p><strong>Lider:</strong></br>' + calEvent.leader + '</p><p><strong>Email:</strong></br>' + calEvent.email + '</p><p><strong>Confirmados:</strong></br>' + calEvent.confirmados + '</p></div>';
+                 var tooltip = '<div class="tooltipevent" style="z-index:100001;border:1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow::0 2px 3px #999;position:absolute;padding:5px;text-align:left;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Descripcion:</strong></br> ' + calEvent.description + '</p><p><strong>Nivel:</strong></br> ' + calEvent.nivel + '<p><strong>Distancia:</strong></br> ' + calEvent.distancia + '<p><strong>Velocidad:</strong></br>' + calEvent.velocidad + '<p><strong>Punto de reunión:</strong></br>' + calEvent.donde + '</p><p><strong>Lider:</strong></br>' + calEvent.leader + '</p><p><strong>Email:</strong></br>' + tdesc + '</p><p><strong>Confirmados:</strong></br>' + calEvent.confirmados + '</p></div>';
              } else {
-                 var tooltip = '<div class="tooltipevent" style="z-index:100001;border:1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow::0 2px 3px #999;position:absolute;padding:5px;text-align:left;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Descripcion:</strong></br> ' + calEvent.description + '<p><strong>Punto de reunión:</strong></br>' + calEvent.donde + '</p><p><strong>Lider:</strong></br>' + calEvent.leader + '</p><p><strong>Email:</strong></br>' + calEvent.email + '</p><p><strong>Confirmados:</strong></br>' + calEvent.confirmados + '</p></div>';
+                 var tooltip = '<div class="tooltipevent" style="z-index:100001;border:1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow::0 2px 3px #999;position:absolute;padding:5px;text-align:left;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Descripcion:</strong></br> ' + calEvent.description + '<p><strong>Punto de reunión:</strong></br>' + calEvent.donde + '</p><p><strong>Quién Organiza:</strong></br>' + calEvent.leader + '</p><p><strong>Email:</strong></br>' + tdesc + '</p></div>';
              }
              var $tooltip = $(tooltip).appendTo('body');
 
