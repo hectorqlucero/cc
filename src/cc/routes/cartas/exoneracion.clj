@@ -206,9 +206,7 @@ personales."))
                             :width-percent    100
                             :horizontal-align :center}
                            [100]
-                           [[:pdf-cell {:style :bold :size 12 :leading 13 :align :center} h1]]
-                           [[:pdf-cell {:style :bold :size 12 :leading 13 :align :center} h2]]
-                           [[:pdf-cell {:style :bold :size 12 :leading 13 :align :center} h3]]]}
+                           [[:pdf-cell {:align :center} [:image {:scale 9.5} "uploads/logo.jpg"]]]]}
           :footer        "page" :left-margin 10
           :right-margin  10
           :top-margin    40
