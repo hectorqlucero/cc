@@ -450,3 +450,10 @@
         placeholder "<img src='/images/placeholder_profile.png' width='42' height='42'></img>"
         photo (str "<img src='/uploads/patient_images/" photo-val "?t=" uuid "'  onError=\"this.src='/images/placeholder_profile.png'\" width='42' height='42'></img>")]
     (if (empty? photo-val) placeholder photo)))
+
+(defn capitalize-words
+  "Captitalizar todas las palabras en una hilera"
+  [s]
+  (->> (clojure.string/split (str s) #"\b")
+       (map clojure.string/capitalize)
+       (clojure.string/join)))
