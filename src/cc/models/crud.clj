@@ -7,7 +7,7 @@
     (read-string (str (slurp (io/resource "private/config.clj"))))))
 
 (def config (get-config))
-(Query db "select * from users")
+
 (def db {:classname                       (:db-class config)
          :subprotocol                     (:db-protocol config)
          :subname                         (:db-name config)
