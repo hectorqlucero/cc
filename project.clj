@@ -7,7 +7,7 @@
                  [clojure-csv/clojure-csv "2.0.2"]
                  [compojure "1.6.1"]
                  [lib-noir "0.9.9"]
-                 [com.draines/postal "2.0.2"]
+                 [com.draines/postal "2.0.3"]
                  [cheshire "5.8.1"]
                  [clj-pdf "2.2.33" :exclusions [commons-codec]]
                  [pdfkit-clj "0.1.7"]
