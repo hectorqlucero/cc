@@ -1,12 +1,20 @@
 (ns cc.routes.home
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [get-session-id user-level]]
+            [cc.models.util :refer [get-session-id user-level parse-int]]
+            [cc.routes.table_ref :refer [months]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
             [noir.response :refer [redirect]]
             [noir.session :as session]
             [noir.util.crypt :as crypt]
             [selmer.parser :refer [render-file]]))
+
+;; Get month by month integer
+(def column-to-field
+  (apply hash-map
+         (mapcat
+           #(vector (% :value) (% :text))
+           (months))))
 
 ;;START calendar events
 (def rodadas-sql
@@ -25,6 +33,7 @@
   repetir,
   CONCAT('/entrenamiento/rodadas/asistir/',id) as url
   FROM rodadas
+  WHERE rodada = 'T'
   ORDER BY fecha,hora ")
 
 (defn purge []
@@ -56,6 +65,21 @@
         events (generate-string rows)]
     (render-file "home/main.html" {:title  (str "Calendario de Eventos - Haz clic en el evento para confirmar asistencia  " admins "   " help)
                                    :events events})))
+;;END calendar events
+
+(defn eventos [req]
+  (purge)
+  (repeat-event)
+  (let [rows   (Query db [rodadas-sql])
+        title  (str "CALENDARIO 2019")
+        year   "2019"
+        rows   (map #(assoc % :confirmados (process-confirmados (:id %))) rows)
+        admins (str "<a id=\"btn\" href=\"/login\"><button class='btn btn-info'>Administradores</button></a>")
+        help   (str "<a id=\"btn\" href='/uploads/help.pdf' target='_blank'><button class='btn btn-info'>Ayuda: Como usar?</button></a>")
+        events (generate-string rows)]
+    (render-file "eventos.html" {:title title
+                                 :rows rows
+                                 :year year})))
 ;;END calendar events
 
 (defn login [_]
@@ -102,8 +126,35 @@
         status (:status row)]
     (generate-string (Update db :appointments {:status status} ["id = ?" id]))))
 
+(def eventos-sql
+  "
+  SELECT
+  id,
+  DAY(fecha) as day,
+  descripcion_corta,
+  punto_reunion,
+  TIME_FORMAT(hora,'%h:%i %p') as hora,
+  leader
+  FROM rodadas
+  WHERE
+  repetir = 'F'
+  AND rodada = 'F'
+  AND YEAR(fecha) = ?
+  AND MONTH(fecha) = ?
+  ORDER BY
+  DAY(fecha),
+  hora ")
+
+(defn display-eventos [year month]
+  (let [rows (Query db [eventos-sql year month])]
+    (render-file "calendario.html" {:title (column-to-field (parse-int month))
+                                    :year year
+                                    :rows rows})))
+
 (defroutes home-routes
-  (GET "/" request [] (main request))
+  (GET "/" request [] (eventos request))
+  (GET "/eventos" request [] (eventos request))
+  (GET "/eventos/:year/:month" [year month] (display-eventos year month))
   (GET "/login" request [] (login request))
   (POST "/login" [username password] (login! username password))
   (GET "/process_event" request [] (process-event request))

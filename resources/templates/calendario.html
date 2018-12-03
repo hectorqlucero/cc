@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block h_loader %}{% endblock %}
+{% block b_loader %}{% endblock %}
+{% block content %}
+<h4 style="color:#fa981b;text-transform:uppercase;">{{ title }}</h4>
+{% for item in rows %}
+<div class="row">
+	<div class="col-sm-1" style="vertical-align:middle;background-color:#8c169e;color:#ffffff;text-align:center;height:12%;margin-left:20px;font-weight:bold;font-size:1.7rem;">
+		<p">{{item.day}}</p>
+	</div>
+	<div class="col-sm-10">
+		<h3 style="font-size:1.2rem;color:#8c169e;text-transform:uppercase;font-weight:bold;">{{ item.descripcion_corta }}</h3>
+		<p>
+		<strong>LUGAR</strong>
+		<span class="vertical-divider-secondary" style="color:#fa981b;">|</span>
+		{{ item.punto_reunion }}
+		</p>
+		<p>
+		<strong>HORA</strong>
+		<span class="vertical-divider-secondary" style="color:#fa981b;">|</span>
+		{{ item.hora }}
+		<div style="color:#fa981b;font-weight:bold;">
+		{{ item.leader }}
+		</div>
+		</P
+		<div style="width:10%;margin-left:20px;">&nbsp;</div>
+	</div>
+</div>
+{% endfor %}
+{% endblock %}
