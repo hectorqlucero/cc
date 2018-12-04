@@ -1,4 +1,15 @@
 {% extends "base.html" %}
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% style "/css/layout.css" %}
+{% script "/easyui/jquery.min.js" %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% endblock %}
 {% block content %}
 <form class="fm" method="post" novalidate>
     {% csrf-field %}
