@@ -32,6 +32,11 @@
 (add-tag! :site_name
           (fn [_ _]
             (str (:site-name config))))
+(add-tag! :user_status
+          (fn [_ _]
+            (if (session/get :user_id)
+              (str "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
+              (str "<li class=\"nav-item\"><a href=\"/login\" class=\"nav-link\">Entrar</a></li>"))))
 
 (defn wrap-login [hdlr]
   (fn [req]

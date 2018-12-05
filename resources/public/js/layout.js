@@ -14,6 +14,7 @@ const maxImageWidth = 128;
 
 $.parser.onComplete = function () {
 }
+
 function menu() {
     var menuIndex = parseInt(sessionStorage.getItem("calls-menu-index")) || 0;
     $("#menu-accordion").accordion({
