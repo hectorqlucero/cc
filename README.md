@@ -4,6 +4,7 @@ Calendar software designed with the cycling community in mind:
 * Create cycling events
 * Display training events
 * Create training events
+* Option to repeat regular training events every week ex. repeat automatically the monday event for next monday.
 * Allow any user to confirm asistance to any training event
 	* When confirming assistance on a training event the creator of the event will receive an email with details entered by the confirming cyclist
 	* When the creator of the event deletes the event, all users who confirmed attendance will receive an email that the training event has been cancelled.
