@@ -24,7 +24,7 @@ function defaultGridNewItem() {
     // Clear the file container if anything is there from a previous edit
     $('.file-container').empty().removeAttr('style');
     // Open a new dialog, clear the contained form and center it vertically to the middle of the screen
-    dialog.dialog('open').dialog('center').dialog('setTitle', 'New Item');
+    dialog.dialog('open').dialog('center').dialog('setTitle', 'Nuevo Record');
     form.form('clear');
     windowHeight = $(window).height() - ($(window).height() * 0.2);
     dialog.dialog('resize', {height: windowHeight}).dialog('center');
@@ -38,7 +38,7 @@ function defaultGridEditItem(params) {
     if (row) {
         try {
             // Open a dialog and center it to the middle of the screen
-            dialog.dialog('open').dialog('center').dialog('setTitle', 'Edit Item');
+            dialog.dialog('open').dialog('center').dialog('setTitle', 'Editar Record');
             windowHeight = $(window).height() - ($(window).height() * 0.2);
             dialog.dialog('resize', {height: windowHeight}).dialog('center');
             // Create the request to obtain the form data from the backend code
