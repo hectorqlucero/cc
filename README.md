@@ -41,7 +41,9 @@ Example configuration(cc/resources/private/config.clj):
 
 `
 {:db-protocol 		"mysql"
+
  :db-name 		"//localhost:3306/cc?characterEncoding=UTF-8"
+
  :db-user		"your-user-here"
  :db-pwd		"your-password-here"
  :db-class		"com.mysql.cj.jdbc.Driver"
