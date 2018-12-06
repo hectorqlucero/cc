@@ -34,7 +34,7 @@ Calendar software designed with the cycling community in mind:
 
 1. clone the repository
 2. In the models/cdb.clj file, you will find a way of creating all database tables needed with sample data.
-3. Create the followind folder on: cc/resources/private
+3. Create the following folder on: cc/resources/private
 4. Create a configuration file on: cc/resources/private/config.clj
 
 Example configuration(cc/resources/private/config.clj):
