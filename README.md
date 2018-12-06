@@ -37,6 +37,7 @@ Calendar software designed with the cycling community in mind:
 4. Create a configuration file on: cc/resources/private/config.clj
 
 Example configuration(cc/resources/private/config.clj):
+
 `
 {:db-protocol 		"mysql"
  :db-name 		"//localhost:3306/cc?characterEncoding=UTF-8"
