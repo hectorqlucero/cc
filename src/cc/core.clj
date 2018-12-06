@@ -32,11 +32,24 @@
 (add-tag! :site_name
           (fn [_ _]
             (str (:site-name config))))
+
 (add-tag! :user_status
-          (fn [_ _]
-            (if (session/get :user_id)
-              (str "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
-              (str "<li class=\"nav-item\"><a href=\"/login\" class=\"nav-link\">Entrar</a></li>"))))
+          (fn [_ -]
+            (let [user-id (session/get :user_id nil)
+                  nivel (if user-id (:level (first (Query db ["SELECT level FROM users WHERE id = ?" user-id]))))]
+              (if user-id
+                (do
+                  (case nivel
+                    "A" (str
+                          "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
+                          "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
+                    "S" (str
+                          "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
+                          "<li class=\"nav-item\"><a href=\"/admin/users\" class=\"nav-link\">Usuarios</a></li>"
+                          "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
+                    "U" (str "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>"))
+                  )
+                (str "<li class=\"nav-item\"><a href=\"/login\" class=\"nav-link\">Entrar</a></li>")))))
 
 (defn wrap-login [hdlr]
   (fn [req]

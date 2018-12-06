@@ -84,7 +84,7 @@
 
 (defn login [_]
   (if-not (nil? (get-session-id))
-    (redirect "/main")
+    (redirect "/eventos")
     (render-file "home/login.html" {:title "Accesar el Sito!"})))
 
 (defn login! [username password]
@@ -95,7 +95,7 @@
         (if (crypt/compare password (:password row))
           (do
             (session/put! :user_id (:id row))
-            (generate-string {:url "/main"}))
+            (generate-string {:url "/eventos"}))
           (generate-string {:error "Hay problemas para accesar el sitio!"})))
       (generate-string {:error "El usuario esta inactivo!"}))))
 
@@ -111,7 +111,7 @@
 
 (defn logoff []
   (session/clear!)
-  (render-file "home/logoff.html" {}))
+  (redirect "/"))
 
 (defn get-menus []
   (case (user-level)
