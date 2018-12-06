@@ -96,6 +96,6 @@
        (wrap-defaults (-> site-defaults
                           (assoc-in [:security :anti-forgery] true)
                           (assoc-in [:session :store] (cookie-store {:key KEY}))
-                          (assoc-in [:session :cookie-attrs] {:max-age 3600})
+                          (assoc-in [:session :cookie-attrs] {:max-age 18000})
                           (assoc-in [:session :cookie-name] "LS"))))
    {:port (:port config)}))
