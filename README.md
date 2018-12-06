@@ -29,9 +29,36 @@ Calendar software designed with the cycling community in mind:
 	* Can modify/delete any cycling club information
 * System users
 	* God mode - can do everything that is possible in the software...
+## Instructions
+
+1. clone the repository
+2. In the models/cdb.clj file, you will find a way of creating all database tables needed with sample data.
+3. Create the followind folder on: cc/resources/private
+4. Create a configuration file on: cc/resources/private/config.clj
+
+Example configuration(cc/resources/private/config.clj):
+`code()`
+{:db-protocol 		"mysql"
+ :db-name 		"//localhost:3306/cc?characterEncoding=UTF-8"
+ :db-user		"your-user-here"
+ :db-pwd		"your-password-here"
+ :db-class		"com.mysql.cj.jdbc.Driver"
+ :email-host		"your-email-smtp-server"
+ :email-user		"your-email-user"
+ :email-password 	"your-email-password"
+ :port			3000
+ :tz			"US/Pacific"
+ :site-name		"Site Name"
+ :base-url		"http://0.0.0.0:3000/"
+ :uploads		"./uploads"
+ :path			"/uploads/"}
+
 ## Prerequisites
 
-You will need [Leiningen][] 2.0.0 or above installed and java jdk8 or above.
+You will need:
+* [Leiningen][] 2.0.0 or above installed
+* jdk8 or above
+* MySQL
 
 [leiningen]: https://github.com/technomancy/leiningen
 
@@ -41,10 +68,10 @@ To start a web server for the application, run:
 
     lein run
 
+## Demo
+http://lucero-systems.cf
+
 ## License
 
 Copyright © 2019 LS
 # Cuadrantes
-
-## Demo
-http://lucero-systems.cf
