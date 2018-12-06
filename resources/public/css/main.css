@@ -61,6 +61,10 @@ body {
   color: #212529;
   text-align: left;
   background-color: #fff; }
+ 
+ .evento_image {
+	 cursor: pointer;
+	 cursor: hand;}
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
