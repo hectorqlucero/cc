@@ -84,7 +84,7 @@
   (try
     (let [id       (fix-id (:id params))
           user     (or (get-session-id) "Anonimo")
-          repetir  (if (= user "Anonimo") "F" (:repetir params))
+          repetir  "F"
           anonimo  (if (= user "Anonimo") "T" "F")
           postvars {:id                id
                     :descripcion       (:descripcion params)
