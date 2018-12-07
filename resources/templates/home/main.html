@@ -1,13 +1,4 @@
 {% extends "base.html" %}
-{% block head %}
-    {% script "/easyui/jquery.min.js" %}
-    {% style "/fullcalendar/lib/cupertino/jquery-ui.min.css" %}
-    {% style "/fullcalendar/fullcalendar.min.css" %}
-    <link href="/fullcalendar/fullcalendar.print.min.css" rel="stylesheet" media="print" />
-    {% script "/fullcalendar/lib/moment.min.js" %}
-    {% script "/fullcalendar/fullcalendar.min.js" %}
-    {% script "/fullcalendar/locale-all.js" %}
-{% endblock %}
 {% block h_loader %}{% endblock %}
 {% block b_loader %}{% endblock %}
 {% block content %}
@@ -17,6 +8,13 @@
 </div>
 {% endblock %}
 {% block scripts %}
+{% script "/easyui/jquery.min.js" %}
+{% style "/fullcalendar/lib/cupertino/jquery-ui.min.css" %}
+{% style "/fullcalendar/fullcalendar.min.css" %}
+<link href="/fullcalendar/fullcalendar.print.min.css" rel="stylesheet" media="print" />
+{% script "/fullcalendar/lib/moment.min.js" %}
+{% script "/fullcalendar/fullcalendar.min.js" %}
+{% script "/fullcalendar/locale-all.js" %}
 <script>
  $(document).ready(function() {
      var initialLocaleCode = 'es';
