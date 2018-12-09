@@ -1,15 +1,11 @@
 {% extends "base.html" %}
+
 {% block head %}
 {% style "/easyui/themes/default/easyui.css" %}
 {% style "/easyui/themes/icon.css" %}
 {% style "/easyui/themes/color.css" %}
-{% script "/easyui/jquery.min.js" %}
-{% script "/easyui/jquery.easyui.min.js" %}
-{% script "/easyui/datagrid-detailview.js" %}
-{% script "/easyui/plugins/jquery.datagrid.js" %}
-{% script "/js/jquery.maskedinput.min.js" %}
-{% script "/easyui/locale/easyui-lang-es.js" %}
 {% endblock %}
+
 {% block content %}
 {% csrf-field %}
 <table id="dg"
@@ -164,11 +160,12 @@
        onclick="defaultGridDialogClose()">Cancelar</a>
 </div>
 {% endblock %}
+
 {% block scripts %}
-<script type="text/javascript" src="/js/defaultGrid.js"></script>
-<script>
- function calendarItem() {
-     window.location.href = "/main";
- }
-</script>
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script type="text/javascript"  src="/js/defaultGrid.js"></script>
 {% endblock %}

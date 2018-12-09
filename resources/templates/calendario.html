@@ -1,35 +1,45 @@
 {% extends "base.html" %}
-{% block h_loader %}{% endblock %}
-{% block b_loader %}{% endblock %}
+{% block loader_head %}{% endblock %}
+{% block loader_container %}{% endblock %}
+{% block loader_scripts %}{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-	<div class="col-3">
-		<a href="/eventos"><button type="button" class="btn btn-warning">Regresar</button></a>
-	</div>
-</div>
-<h4 style="color:#fa981b;text-transform:uppercase;">{{ title }}</h4>
+<h3 style="color:#127ba3;text-transform:uppercase;font-weight:bold;">{{ title }}</h3>
 {% for item in rows %}
 <div class="row">
-	<div class="col-sm-1" style="vertical-align:middle;background-color:#8c169e;color:#ffffff;text-align:center;height:12%;margin-left:20px;font-weight:bold;font-size:1.7rem;">
-		<p">{{item.day}}</p>
+	<div class="col-auto">
+		<a href="/eventos"><button class="btn btn-primary btn-lg">{{item.day}}</button></a>
 	</div>
-	<div class="col-sm-10">
-		<h3 style="font-size:1.2rem;color:#8c169e;text-transform:uppercase;font-weight:bold;">{{ item.descripcion_corta }}</h3>
-		<p>
-		<strong>LUGAR</strong>
-		<span class="vertical-divider-secondary" style="color:#fa981b;">|</span>
-		{{ item.punto_reunion }}
-		</p>
-		<p>
-		<strong>HORA</strong>
-		<span class="vertical-divider-secondary" style="color:#fa981b;">|</span>
-		{{ item.hora }}
-		<div style="color:#fa981b;font-weight:bold;">
-		{{ item.leader }}
+	<div class="col-auto">
+		<div class="row">
+			<div class="col-auto">
+				<h3 class="h3-primary" style="color:#127ba3;font-weight:bold;">{{ item.descripcion_corta }}</h3>
+			</div>
 		</div>
-		</P
-		<div style="width:10%;margin-left:20px;">&nbsp;</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>LUGAR</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;|&nbsp;</span>
+				{{ item.punto_reunion }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>FECHA</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;|&nbsp;</span>
+				{{ item.fecha }}&nbsp;(<span style="color:rgb(18,123,163);">{{ item.fecha_dow }}</span>)
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>HORA</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;&nbsp;&nbsp;|&nbsp;</span>
+				{{ item.hora }}
+			</div>
+		</div>
+		<div class="row warning">
+			<div class="col-auto" style="color:#127ba3;">
+				{{ item.leader }}
+			</div>
+		</div>
 	</div>
 </div>
+<div class="row"><div class="col-auto">&nbsp;</div></div>
 {% endfor %}
 {% endblock %}

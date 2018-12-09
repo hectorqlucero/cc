@@ -131,6 +131,8 @@
   SELECT
   id,
   DAY(fecha) as day,
+  CASE WHEN DAYNAME(fecha) = 'Sunday' THEN 'Domingo' WHEN DAYNAME(fecha) = 'Monday' THEN 'Lunes' WHEN DAYNAME(fecha) = 'Tuesday' THEN 'Martes' WHEN DAYNAME(fecha) = 'Wednesday' THEN 'Miercoles' WHEN DAYNAME(fecha) = 'Thursday' THEN 'Jueves' WHEN DAYNAME(fecha) = 'Friday' THEN 'Viernes' WHEN DAYNAME(fecha) = 'Saturday' THEN 'Sabado' END AS fecha_dow,
+  DATE_FORMAT(fecha,'%m/%d/%Y') AS fecha,
   descripcion_corta,
   punto_reunion,
   TIME_FORMAT(hora,'%h:%i %p') as hora,

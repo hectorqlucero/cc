@@ -1,19 +1,15 @@
 {% extends "base.html" %}
+
 {% block head %}
 {% style "/easyui/themes/default/easyui.css" %}
 {% style "/easyui/themes/icon.css" %}
 {% style "/easyui/themes/color.css" %}
-{% script "/easyui/jquery.min.js" %}
-{% script "/easyui/jquery.easyui.min.js" %}
-{% script "/easyui/datagrid-detailview.js" %}
-{% script "/easyui/plugins/jquery.datagrid.js" %}
-{% script "/js/jquery.maskedinput.min.js" %}
-{% script "/easyui/locale/easyui-lang-es.js" %}
 {% endblock %}
+
 {% block content %}
 <div class="container col-8">
 	<div class="card-header">
-	<h3 class="mb-0">Accesso al Sitio</h4>
+		<h4 class="mb-0"><span style="color:rgb(18,123,163);">Entrar al Sitio</span></h4>
 	</div>
 	<form class="fm" method="post" novalidate style="width:100%;background-color:#EFEFEF;">
 		{% csrf-field %}
@@ -32,6 +28,11 @@
 </div>
 {% endblock %}
 {% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
 <script>
     $(document).ready(function() {
         $("a#submit").click(function() {

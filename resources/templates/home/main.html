@@ -1,106 +1,139 @@
 {% extends "base.html" %}
-{% block h_loader %}{% endblock %}
-{% block b_loader %}{% endblock %}
-{% block content %}
-{% csrf-field %}
-<div id="calendar"></div>
-<div id="dialog" title="Detalles">
-</div>
-{% endblock %}
-{% block scripts %}
-{% script "/easyui/jquery.min.js" %}
-{% style "/fullcalendar/lib/cupertino/jquery-ui.min.css" %}
+
+{% block loader_head %}{% endblock %}
+{% block loader_container %}{% endblock %}
+{% block loader_scripts %}{% endblock %}
+
+{% block head %}
+{% style "/font/css/all.min.css" %}
 {% style "/fullcalendar/fullcalendar.min.css" %}
-<link href="/fullcalendar/fullcalendar.print.min.css" rel="stylesheet" media="print" />
+<link href='/fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<style>
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+  }
+
+  #top,
+  #calendar.fc-unthemed {
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+  }
+
+  #top {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+    line-height: 40px;
+    font-size: 12px;
+    color: #000;
+  }
+
+  #top .selector {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  #top select {
+    font: inherit; /* mock what Boostrap does, don't compete  */
+  }
+
+  .left { float: left }
+  .right { float: right }
+  .clear { clear: both }
+
+  #calendar {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 10px;
+  }
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+{% script "/font/js/all.min.js" %}
 {% script "/fullcalendar/lib/moment.min.js" %}
 {% script "/fullcalendar/fullcalendar.min.js" %}
 {% script "/fullcalendar/locale-all.js" %}
 <script>
- $(document).ready(function() {
-     var initialLocaleCode = 'es';
-
-     $('#calendar').fullCalendar({
-         defaultView: 'month',
-         theme: true,
-         height: $(window).height()*0.92,
-         contentHeight: "auto",
-         aspectRatio: 2,
-         header: {
-             left: 'prev,next today',
-             center: 'title',
-             right: 'month,agendaWeek,agendaDay,listMonth'
-         },
-         locale: initialLocaleCode,
-         buttonIcons: true, // show the prev/next text
-         weekNumbers: true,
-         showNonCurrentDates: false,
-         navLinks: true, // can click day/week names to navigate views
-         editable: true,
-         eventLimit: true, // allow "more" link when too many events
-         displayEventTime: true,
-         timeFormat: 'h(:mm) t',
-         events: {{events|safe}},
-         color: 'deepskyblue',
-         textColor: 'white',
-         eventLimit: true,
-         eventClick: function(calEvent, jsEvent) {
-             var tdesc = calEvent.email || "";
-             if (calEvent.rodada == 'T') {
-                 var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nNivel: ' + calEvent.nivel + '\nDistancia: ' + calEvent.distancia + '\nVelocidad: ' + calEvent.velocidad + '\nPunto de reunión: ' + calEvent.donde + '\nLider: ' + calEvent.leader + '\nEmal: ' + tdesc + '\nConfirmados: ' + calEvent.confirmados + '\n\nCancelar/Cancel: Regresar al Calendario\nAceptar/OK: Para confirmar asistencia';
-             } else {
-                 var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nPunto de reunión: ' + calEvent.donde + '\nQuién Organiza: ' + calEvent.leader + '\nEmal: ' + tdesc;
-             }
-             var r = confirm(datos);
-             if(calEvent.rodada == 'T') {
-                 if (calEvent.repetir == 'T') {
-                     return false;
-                 } else {
-                     if (! r) return false;
-                 }
-             } else {
-                 return false;
-             }
-         },
-         eventMouseover: function(calEvent, jsEvent) {
-             var tdesc = calEvent.email || "";
-             var tooltip = '<div class="tooltipevent" style="z-index:100001;border;1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow:0 2px 3px #999;position:absolute;padding:5px;text-align:left;border=radius:5px;moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Click para ver detalles o confirmar asistencia</p></div>';
-             var $tooltip = $(tooltip).appendTo('body');
-             $(this).mouseover(function(e) {
-                 $tooltip.fadeIn('500');
-                 $tooltip.fadeTo('10', 1.9);
-             }).mousemove(function(e) {
-                 var pLeft;
-                 var pTop;
-                 var offset = 10;
-                 var CursorX = e.pageX;
-                 var CursorY = e.pageY;
-                 var WindowWidth = $(window).width();
-                 var WindowHeight = $(window).height();
-                 var toolTip = $('.tooltipevent');
-                 var TTWidth = toolTip.width();
-                 var TTHeight = toolTip.height();
-                 if(CursorX-offset >= (WindowWidth/4)*3) {
-                     pLeft = CursorX - TTWidth - offset;
-                 } else {
-                     pLeft = CursorX + offset;
-                 }
-                 if(CursorY-offset >= (WindowHeight/4)*3) {
-                     pTop = CursorY - TTHeight - offset;
-                 } else {
-                     pTop = CursorY + offset;
-                 }
-                 $tooltip.css('top', pTop);
-                 $tooltip.css('left', pLeft);
-             });
-         },
-
-         eventMouseout: function(calEvent, jsEvent) {
-             $(this).css('z-index', 8);
-             $('.tooltipevent').remove();
-         },
-     });
- });
+	$(function() {
+		$('#calendar').fullCalendar({
+			defaultView: 'month',
+			themeSystem: 'bootstrap4',
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay,listMonth'
+			},
+			locale: 'es',
+			navLinks: true, // can click day/week names to navigate views
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			showNonCurrentDates: false,
+			displayEventTime: true,
+			timeFormat: 'h(:mm) t',
+			events: {{ events|safe }},
+			eventClick: function(calEvent, jsEvent) {
+				var tdesc = calEvent.email || "";
+				if (calEvent.rodada == 'T') {
+					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nNivel: ' + calEvent.nivel + '\nDistancia: ' + calEvent.distancia + '\nVelocidad: ' + calEvent.velocidad + '\nPunto de reunión: ' + calEvent.donde + '\nLider: ' + calEvent.leader + '\nEmal: ' + tdesc + '\nConfirmados: ' + calEvent.confirmados + '\n\nCancelar/Cancel: Regresar al Calendario\nAceptar/OK: Para confirmar asistencia';
+				} else {
+					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nPunto de reunión: ' + calEvent.donde + '\nQuién Organiza: ' + calEvent.leader + '\nEmal: ' + tdesc;
+				}
+				var r = confirm(datos);
+				if(calEvent.rodada == 'T') {
+					if (calEvent.repetir == 'T') {
+						return false;
+					} else {
+						if (! r) return false;
+					}
+				} else {
+					return false;
+				}
+			},
+			eventMouseover: function(calEvent, jsEvent) {
+				var tdesc = calEvent.email || "";
+				var tooltip = '<div class="tooltipevent" style="z-index:100001;border;1px solid #F1D031;color:#444;background:#FFFFA3;box-shadow:0 2px 3px #999;position:absolute;padding:5px;text-align:left;border=radius:5px;moz-border-radius:5px;-webkit-border-radius:5px;"><p><strong>Click para ver detalles o confirmar asistencia</p></div>';
+				var $tooltip = $(tooltip).appendTo('body');
+				$(this).mouseover(function(e) {
+					$tooltip.fadeIn('500');
+					$tooltip.fadeTo('10', 1.9);
+				}).mousemove(function(e) {
+					var pLeft;
+					var pTop;
+					var offset = 10;
+					var CursorX = e.pageX;
+					var CursorY = e.pageY;
+					var WindowWidth = $(window).width();
+					var WindowHeight = $(window).height();
+					var toolTip = $('.tooltipevent');
+					var TTWidth = toolTip.width();
+					var TTHeight = toolTip.height();
+					if(CursorX-offset >= (WindowWidth/4)*3) {
+						pLeft = CursorX - TTWidth - offset;
+					} else {
+						pLeft = CursorX + offset;
+					}
+					if(CursorY-offset >= (WindowHeight/4)*3) {
+						pTop = CursorY - TTHeight - offset;
+					} else {
+						pTop = CursorY + offset;
+					}
+					$tooltip.css('top', pTop);
+					$tooltip.css('left', pLeft);
+				});
+			},
+			eventMouseout: function(calEvent, jsEvent) {
+				$(this).css('z-index', 8);
+				$('.tooltipevent').remove();
+			},
+		});
+	});
  $(".tooltipevent").css("overflow-y","scroll");
 </script>
 {% endblock %}
-
+{% block content %}
+<div id="calendar"></div>
+{% endblock %}
