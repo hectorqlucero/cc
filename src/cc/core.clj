@@ -2,7 +2,6 @@
   (:gen-class)
   (:require [cc.models.crud :refer :all]
             [cc.routes.admin :refer [admin-routes]]
-            [cc.routes.appointments :refer [appointments-routes]]
             [cc.routes.entrenamiento :refer [entrenamiento-routes]]
             [cc.routes.cartas :refer [cartas-routes]]
             [cc.routes.calendario :refer [calendario-routes]]
@@ -73,7 +72,6 @@
   table_ref-routes)
 
 (defroutes protected-routes
-  appointments-routes
   admin-routes)
 
 (defroutes app-routes
