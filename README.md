@@ -1,4 +1,19 @@
 # cc
+This is a clojure full stack application which includes:
+* Clojure
+* Compojure
+* Ring
+* Session Management
+* Database MySQL
+* Bootstrap4
+* Email
+* PDF Report generation
+
+I wrote this application to make Clojure easier to grasp.  This is a fully functional fullstack clojure application that works and gives you a method to create a full system that includes a navigation bar with bootstrap4, session management, ability to send emails, produce PDF reports and user authentication using sessions.
+This was written out of my frustration of not finding examples of a full application that actually works in clojure.  Feel free to clone this application and if you follow directions you will have a fully functional app that works and has all aspects of a full system.  Authentication, menus, database crud, reporting and emailing.
+If anyone is interested you can reach me at hectorqlucero@gmail.com - concerning questions or observations concerning this software...
+I hope you enjoy this code as much as I enjoyed writing it.  I love clojure and this is an effort to make clojure easier to learn and to be productive right away instead of searching in a million web pages for bits of instructions here and there...
+
 Calendar software designed with the cycling community in mind:
 * Display cycling events
 * Create cycling events
