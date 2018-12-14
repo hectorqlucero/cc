@@ -1,6 +1,6 @@
 (ns cc.routes.home
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [get-session-id user-level parse-int get-month-name]]
+            [cc.models.util :refer [zpl get-session-id user-level parse-int get-month-name]]
             [cc.routes.table_ref :refer [months]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
