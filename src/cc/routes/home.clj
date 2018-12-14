@@ -160,16 +160,13 @@
   (template
     (list
       [:cell {:align :center :style :bold} (str $day)]
-      [:cell {:border true :align :left :style :bold} (str $descripcion_corta)
+      [:cell {:border false :align :left :style :bold} (str $descripcion_corta)
        [:table  {:background-color [222 222 222]
                  :widths [11 89]}
         [[:cell {:border false :align :left :style :bold} "LUGAR | "] [:cell {:border false :align :left} (str $punto_reunion)]]
         [[:cell {:border false :align :left :style :bold} "FECHA | "] [:cell {:border false :align :left} (str $fecha " (" $fecha_dow ")")]]
         [[:cell {:border false :align :left :style :bold} "HORA  | "] [:cell {:border false :align :left} (str $hora)]]
-        [[:cell {:border false :colspan 2 :align :left :style :bold} (str $leader)]]
-        ]
-       ]
-      )))
+        [[:cell {:border false :colspan 2 :align :left :style :bold} (str $leader)]]]])))
 
 (defn execute-report [year month]
   (let [h1 (clojure.string/upper-case (get-month-name (parse-int month)))
@@ -182,8 +179,7 @@
               [:table {:border false :background-color [233 233 233]
                        :widths [10 50]}]
               (t1 rows)
-              )
-            ] output-stream)))))
+              )] output-stream)))))
 
 (defn eventos-print [year month]
   (let [file-name (str "evento_" year "_" month ".pdf")]
