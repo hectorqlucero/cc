@@ -170,7 +170,7 @@
         ]
        ]
       )))
-(t1 (Query db [eventos-sql 2019 1]))
+
 (defn execute-report [year month]
   (let [h1 (clojure.string/upper-case (get-month-name (parse-int month)))
         rows (Query db [eventos-sql year month])]
