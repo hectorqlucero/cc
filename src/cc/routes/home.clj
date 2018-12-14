@@ -1,12 +1,14 @@
 (ns cc.routes.home
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [get-session-id user-level parse-int]]
+            [cc.models.util :refer [get-session-id user-level parse-int get-month-name]]
             [cc.routes.table_ref :refer [months]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
+            [clj-pdf.core :refer :all]
             [noir.response :refer [redirect]]
             [noir.session :as session]
             [noir.util.crypt :as crypt]
+            [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
 ;; Get month by month integer
@@ -151,12 +153,61 @@
   (let [rows (Query db [eventos-sql year month])]
     (render-file "calendario.html" {:title (column-to-field (parse-int month))
                                     :year year
+                                    :month month
                                     :rows rows})))
+;;Start events print month
+(def report-detail-template
+  (template
+    (list
+      [:cell {:colspan 3 :align :center :style :bold :background-color [233 233 233]} (str $day)]
+      [:cell {:align :left :style :bold} (str $descripcion_corta)]
+      [:cell {:align :left :style :bold} "LUGAR | "] [:cell {:align :left} (str $punto_reunion)]
+      [:cell {:align :left :style :bold} "FECHA | "] [:cell {:align :left} (str "(" $fecha ")")]
+      [:cell {:align :left :style :bold} "HORA  | " [:cell {:align :left} (str $hora)]]
+      [:cell {:colspan 2 :align :left :style :bold} (str $leader)])))
+
+(def t1
+  (template
+    (list
+      [:cell {:align :center :style :bold} (str $day)]
+      [:cell {:border true :align :left :style :bold} (str $descripcion_corta)
+       [:table  {:background-color [222 222 222]
+                 :widths [11 89]}
+        [[:cell {:border false :align :left :style :bold} "LUGAR | "] [:cell {:border false :align :left} (str $punto_reunion)]]
+        [[:cell {:border false :align :left :style :bold} "FECHA | "] [:cell {:border false :align :left} (str $fecha " (" $fecha_dow ")")]]
+        [[:cell {:border false :align :left :style :bold} "HORA  | "] [:cell {:border false :align :left} (str $hora)]]
+        [[:cell {:border false :colspan 2 :align :left :style :bold} (str $leader)]]
+        ]
+       ]
+      )))
+(t1 (Query db [eventos-sql 2019 1]))
+(defn execute-report [year month]
+  (let [h1 (clojure.string/upper-case (get-month-name (parse-int month)))
+        rows (Query db [eventos-sql year month])]
+  (piped-input-stream
+    (fn [output-stream]
+      (pdf [{:title h1
+             :header h1}
+            (into
+              [:table {:border false :background-color [233 233 233]
+                       :widths [10 50]}]
+              (t1 rows)
+              )
+            ] output-stream)))))
+
+(defn eventos-print [year month]
+  (let [file-name (str "evento_" year "_" month ".pdf")]
+    {:headers {"Content-type" "application/pdf"
+               "Content-disposition" (str "attachment;filename=" file-name)}
+     :body (execute-report year month)}))
+;;End events print month
+
 
 (defroutes home-routes
   (GET "/" request [] (eventos request))
   (GET "/eventos" request [] (eventos request))
   (GET "/eventos/:year/:month" [year month] (display-eventos year month))
+  (GET "/eventos/print/:year/:month" [year month] (eventos-print year month))
   (GET "/login" request [] (login request))
   (POST "/login" [username password] (login! username password))
   (GET "/process_event" request [] (process-event request))

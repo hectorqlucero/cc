@@ -3,6 +3,9 @@
 {% block loader_container %}{% endblock %}
 {% block loader_scripts %}{% endblock %}
 {% block content %}
+<div class="col-12 text-center">
+	<button class="btn btn-primary" onclick="printPDF()">Imprimir</button>
+</div>
 <h3 style="color:#127ba3;text-transform:uppercase;font-weight:bold;">{{ title }}</h3>
 {% for item in rows %}
 <div class="row">
@@ -42,4 +45,14 @@
 </div>
 <div class="row"><div class="col-auto">&nbsp;</div></div>
 {% endfor %}
+{% endblock %}
+{% block scripts %}
+<script>
+function printPDF() {
+	var year = "{{ year }}";
+	var month = "{{ month }}";
+	url = "/eventos/print/" + year + "/" + month;
+	window.location.href = url;
+}
+</script>
 {% endblock %}
