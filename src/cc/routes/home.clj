@@ -156,16 +156,6 @@
                                     :month month
                                     :rows rows})))
 ;;Start events print month
-(def report-detail-template
-  (template
-    (list
-      [:cell {:colspan 3 :align :center :style :bold :background-color [233 233 233]} (str $day)]
-      [:cell {:align :left :style :bold} (str $descripcion_corta)]
-      [:cell {:align :left :style :bold} "LUGAR | "] [:cell {:align :left} (str $punto_reunion)]
-      [:cell {:align :left :style :bold} "FECHA | "] [:cell {:align :left} (str "(" $fecha ")")]
-      [:cell {:align :left :style :bold} "HORA  | " [:cell {:align :left} (str $hora)]]
-      [:cell {:colspan 2 :align :left :style :bold} (str $leader)])))
-
 (def t1
   (template
     (list
