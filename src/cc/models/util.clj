@@ -195,6 +195,20 @@
     (mf/format (ma/amount-of mc/USD bd))
     (mf/format (ma/amount-of mc/USD 0))))
 
+(defn spl [n c p]
+  "n=number,c=pad number,p=padding str"
+  (loop [s (str n)]
+    (if (< (.length s) c)
+      (recur (str p s))
+      s)))
+
+(defn spr [n c p]
+  "n=number,c=zeropad number"
+  (loop [s (str n)]
+    (if (< (.length s) c)
+      (recur (str s p))
+      s)))
+
 (defn zpl [n c]
   "n=number,c=zeropad number"
   (loop [s (str n)]

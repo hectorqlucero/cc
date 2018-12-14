@@ -150,7 +150,8 @@
   hora ")
 
 (defn display-eventos [year month]
-  (let [rows (Query db [eventos-sql year month])]
+  (let [rows (Query db [eventos-sql year month])
+        rows (map #(assoc % :day (zpl (% :day) 2)) rows)]
     (render-file "calendario.html" {:title (column-to-field (parse-int month))
                                     :year year
                                     :month month
