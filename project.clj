@@ -2,7 +2,7 @@
   :description "Skeleton for Web app"
   :url "http://127.0.0.1:8080"
   :min-lein-version "2.0.0"
-  :dependencies [[org.clojure/clojure "1.9.0"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [clojure-csv/clojure-csv "2.0.2"]
                  [compojure "1.6.1"]
