@@ -57,81 +57,59 @@
 <div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
     <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="id"  name="id">
-	<div class="row">
-		<div class="form-group col-10">
-			<label for="username">Usuario/Email:</label>
-			<input id="username" name="username" class="form-control easyui-textbox" data-options="validType:'email',required: true">
-		</div>
+	<div class="form-group col-11">
+		<label for="username">Usuario/Email:</label>
+		<input id="username" name="username" class="form-control easyui-textbox" data-options="validType:'email',required: true">
 	</div>
-	<div class="row">
-		<div class="form-group col-8">
-			<label for="password">Contraseña:</label>
-			<input id="password" name="password" class="form-control easyui-passwordbox" data-options="required: false">
-		</div>
+	<div class="form-group col-11">
+		<label for="password">Contraseña:</label>
+		<input id="password" name="password" class="form-control easyui-passwordbox" data-options="required: false">
 	</div>
-	<div class="row">
-		<div class="form-group col-10">
-			<label for="firstname">Nombre:</label>
-			<input id="firstname" name="firstname" class="form-control easyui-textbox" data-options="required: true">
-		</div>
+	<div class="form-group col-11">
+		<label for="firstname">Nombre:</label>
+		<input id="firstname" name="firstname" class="form-control easyui-textbox" data-options="required: true">
 	</div>
-	<div class="row">
-		<div class="form-group col-10">
-			<label for="lastname">Apellido:</label>
-			<input id="lastname" name="lastname" class="form-control easyui-textbox" data-options="required: true">
-		</div>
+	<div class="form-group col-11">
+		<label for="lastname">Apellido:</label>
+		<input id="lastname" name="lastname" class="form-control easyui-textbox" data-options="required: true">
 	</div>
-	<div class="row">
-		<div class="form-group col-6">
-			<label for="dob">Fecha de nacimiento:</label>
-			<input id="dob" name="dob" class="form-control easyui-datebox" data-options="required: true">
-		</div>
+	<div class="form-group col-11">
+		<label for="dob">Fecha de nacimiento:</label>
+		<input id="dob" name="dob" class="form-control easyui-datebox" data-options="required: true">
 	</div>
-	<div class="row">
-		<div class="form-group col-6">
-			<label for="cell">Cell:</label>
-			<input id="cell" name="cell" class="form-control easyui-textbox type-phone" data-options="required: false">
-		</div>
+	<div class="form-group col-11">
+		<label for="cell">Cell:</label>
+		<input id="cell" name="cell" class="form-control easyui-textbox type-phone" data-options="required: false">
 	</div>
-	<div class="row">
-		<div class="form-group col-6">
-			<label for="phone">Telefono:</label>
-			<input id="phone" name="phone" class="form-control easyui-textbox type-phone" data-options="required: false">
-		</div>
+	<div class="form-group col-11">
+		<label for="phone">Telefono:</label>
+		<input id="phone" name="phone" class="form-control easyui-textbox type-phone" data-options="required: false">
 	</div>
-	<div class="row">
-		<div class="form-group col-6">
-			<label for="fax">Fax:</label>
-			<input id="fax" name="fax" class="form-control easyui-textbox type-phone" data-options="required: false">
-		</div>
+	<div class="form-group col-11">
+		<label for="fax">Fax:</label>
+		<input id="fax" name="fax" class="form-control easyui-textbox type-phone" data-options="required: false">
 	</div>
-	<div class="row">
-		<div class="form-group col-12">
-			<label for="email">Email:</label>
-			<input id="email" name="email" type="email" class="form-control easyui-validatebox"
-								    data-options="validType:'email',required:false">
-		</div>
+	<div class="form-group col-11">
+		<label for="email">Email:</label>
+		<input id="email" name="email" type="email" class="form-control easyui-validatebox"
+							    data-options="validType:'email',required:false">
 	</div>
-	<div class="row">
-		<div class="form-group col-8">
-			<label for="level">Nivel de Usuario:</label>
-			<select id="level" class=" form-control easyui-combobox" name="level">
-				<option value=""></option>
-				<option value="A">Administrador</option>
-				<option value="U">Usuario</option>
-				<option value="S">Sistema</option>
-			</select>
-		</div>
+	<div class="form-group col-11">
+		<label for="level">Nivel de Usuario:</label>
+		<select id="level" class=" form-control easyui-combobox" name="level">
+			<option value=""></option>
+			<option value="A">Administrador</option>
+			<option value="U">Usuario</option>
+			<option value="S">Sistema</option>
+		</select>
 	</div>
-	<div class="row">
-		<div class="form-group col-12">
-			<label>Activo?</label>
-			<div style="margin-bottom:3px">
-				<input class="form-control easyui-radiobutton" id="active" name="active" value="T" data-options="label:'Si',labelPosition:'after'">
-			</div>
-			<div style="margin-bottom:3px">
-				<input class="form-control easyui-radiobutton" id="active" name="active" value="F" data-options="label:'No',labelPosition:'after'">
-			</div>
+	<div class="form-group col-11">
+		<label>Activo?</label>
+		<div style="margin-bottom:3px">
+			<input class="form-control easyui-radiobutton" id="active" name="active" value="T" data-options="label:'Si',labelPosition:'after'">
+		</div>
+		<div style="margin-bottom:3px">
+			<input class="form-control easyui-radiobutton" id="active" name="active" value="F" data-options="label:'No',labelPosition:'after'">
 		</div>
 	</div>
     </form>

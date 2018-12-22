@@ -54,51 +54,37 @@
 <div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
     <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="id"  name="id">
-	<div class="row">
-		<div class="form-group col-10">
-			<label for="name">Cuadrante(<small>nombre ex: Cuadrante Rosita</small>):</label>
-			<input id="name" name="name" class="form-control easyui-textbox" data-options="required: true">
-		</div>
+	<div class="form-group col-11">
+		<label for="name">Cuadrante(<small>nombre ex: Cuadrante Rosita</small>):</label>
+		<input id="name" name="name" class="form-control easyui-textbox" data-options="required: true">
 	</div>
-	<div class="row">
-		<div class="form-group col-10">
-			<label for="leader">Lider:</label>
-			<input id="leader" name="leader" class="form-control easyui-textbox" data-options="required: true">
-		</div>
+	<div class="form-group col-11">
+		<label for="leader">Lider:</label>
+		<input id="leader" name="leader" class="form-control easyui-textbox" data-options="required: true">
 	</div>
-	<div class="row">
-		<div class="form-group col-6">
-			<label for="leader_phone">Telefono:</label>
-			<input id="leader_phone" name="leader_phone" class="form-control easyui-textbox type-phone" data-options="required: false">
-		</div>
+	<div class="form-group col-11">
+		<label for="leader_phone">Telefono:</label>
+		<input id="leader_phone" name="leader_phone" class="form-control easyui-textbox type-phone" data-options="required: false">
 	</div>
-	<div class="row">
-		<div class="form-group col-6">
-			<label for="leader_cell">Cell:</label>
-			<input id="leader_cell" name="leader_cell" class="form-control easyui-textbox type-phone" data-options="required: false">
-		</div>
+	<div class="form-group col-11">
+		<label for="leader_cell">Cell:</label>
+		<input id="leader_cell" name="leader_cell" class="form-control easyui-textbox type-phone" data-options="required: false">
 	</div>
-	<div class="row">
-		<div class="form-group col-12">
-			<label for="leader_email">Email:</label>
-			<input id="leader_email" name="leader_email" class="easyui-validatebox form-control" data-options="required:false,validType:'email'">
-		</div>
+	<div class="form-group col-11">
+		<label for="leader_email">Email:</label>
+		<input id="leader_email" name="leader_email" class="easyui-validatebox form-control" data-options="required:false,validType:'email'">
 	</div>
-	<div class="row">
-		<div class="form-group col-12">
-			<label for="notes">Observaciones:</label>
-			<input id="notes" name="notes" type="email" class="form-control easyui-textbox" multiline="true" style="width:100%;height:120px;">
-		</div>
+	<div class="form-group col-11">
+		<label for="notes">Observaciones:</label>
+		<input id="notes" name="notes" type="email" class="form-control easyui-textbox" data-options="height:120">
 	</div>
-	<div class="row">
-		<div class="form-group col-12">
-			<label>Activo?</label>
-			<div style="margin-bottom:3px;">
-				<input class="easyui-radiobutton" id="status" name="status" value="T" data-options="label:'Si',labelPosition:'after'">
-			</div>
-			<div style="margin-bottom:3px;">
-				<input class="easyui-radiobutton" id="status" name="status" value="F" data-options="label:'No',labelPosition:'after'">
-			</div>
+	<div class="form-group col-11">
+		<label>Activo?</label>
+		<div style="margin-bottom:3px;">
+			<input class="easyui-radiobutton" id="status" name="status" value="T" data-options="label:'Si',labelPosition:'after'">
+		</div>
+		<div style="margin-bottom:3px;">
+			<input class="easyui-radiobutton" id="status" name="status" value="F" data-options="label:'No',labelPosition:'after'">
 		</div>
 	</div>
     </form>
