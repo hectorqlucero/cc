@@ -15,7 +15,7 @@
 	<div class="col-auto">
 		<div class="row">
 			<div class="col-auto">
-				<h3 class="h3-primary" style="color:#127ba3;font-weight:bold;">{{ item.descripcion_corta }}</h3>
+				<h3 class="h3-primary" style="color:#127ba3;font-weight:bold;">{{ item.descripcion_corta }}</h3><button type="button" class="btn btn-info btn-lg btn-block" data-toggle="popover" data-placement="top" data-content="{{ item.descripcion }}">Detalles</button>
 			</div>
 		</div>
 		<div class="row">
@@ -48,6 +48,10 @@
 {% endblock %}
 {% block scripts %}
 <script>
+$(function() {
+	$('[data-toggle="popover"]').popover()
+})
+
 function printPDF() {
 	var year = "{{ year }}";
 	var month = "{{ month }}";
