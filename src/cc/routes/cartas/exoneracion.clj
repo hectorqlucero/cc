@@ -198,6 +198,7 @@ personales."))
      (fn [output-stream]
        (pdf
         [{:title         h1
+          :references {:logo (or [:image {:align :center :scale 9.5} "uploads/logo.jpg"] nil)}
           :header        {:x 20
                           :y 820
                           :table
@@ -206,22 +207,22 @@ personales."))
                             :width-percent    100
                             :horizontal-align :center}
                            [100]
-                           [[:pdf-cell {:align :center} [:image {:scale 9.5} "uploads/logo.jpg"]]]]}
+                           [[:pdf-cell [:reference :logo]]]]}
           :footer        "page" :left-margin 10
           :right-margin  10
           :top-margin    40
           :bottom-margin 25
           :size          :a4
-          :font          {:family :helvetica :size 8}
+          :font          {:family :helvetica :size 9}
           :align         :center
           :pages         true}
-         [:paragraph {:keep-together false :indent 30} build-body-p1]
+         [:paragraph {:align :left :indent-left 28 :indent-right 28} build-body-p1]
          [:spacer]
-         [:paragraph {:keep-together false :indent 30} (build-body-p2 row)]
+         [:paragraph {:align :left :indent-left 28 :indent-right 28} (build-body-p2 row)]
          [:spacer]
-         [:paragraph {:keep-together false :indent 30} build-body-p3]
+         [:paragraph {:align :left :indent-left 28 :indent-right 28} build-body-p3]
          [:spacer]
-         [:paragraph {:keep-together false :indent 30} build-body-p4]
+         [:paragraph {:align :left :indent-left 28 :indent-right 28} build-body-p4]
          [:spacer]
          (build-body row)]
         output-stream)))))
