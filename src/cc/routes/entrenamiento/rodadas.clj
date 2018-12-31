@@ -91,13 +91,13 @@
 ;;end rodadas form
 
 ;;Start form-assistir
-(defn email-body[rodadas_id user email comentarios asistir_desc]
+(defn email-body [rodadas_id user email comentarios asistir_desc]
   (let [row               (first (Query db ["SELECT leader,leader_email,descripcion_corta FROM rodadas WHERE id = ?" rodadas_id]))
         leader            (:leader row)
         leader_email      (:leader_email row)
         descripcion_corta (:descripcion_corta row)
         content           (str "<strong>Hola " leader ":</strong></br></br>"
-                               "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email"'>"email"</a> y estoy confirmando que <strong>"  asistir_desc "</strong> al evento.</br>"
+                               "Mi nombre es <strong>" user "</strong> y mi correo electronico es <a href='mailto:" email "'>" email "</a> y estoy confirmando que <strong>"  asistir_desc "</strong> al evento.</br>"
                                "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
                                "<strong>Comentarios:</strong> " comentarios "</br></br>"
                                "<small>Esta es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")
@@ -178,7 +178,7 @@
         leader            (:leader row)
         leader_email      (:leader_email row)
         descripcion_corta (:descripcion_corta row)
-        content           (str "<strong>Hola:</strong></br></br>La rodada organizada por: " leader " <a href='mailto:"leader_email"'>" leader_email "</a> se cancelo.  Disculpen la inconveniencia que esto pueda causar.</br>"
+        content           (str "<strong>Hola:</strong></br></br>La rodada organizada por: " leader " <a href='mailto:" leader_email "'>" leader_email "</a> se cancelo.  Disculpen la inconveniencia que esto pueda causar.</br>"
                                "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
                                "Muchas gracias por su participacion y esperamos que la proxima vez se pueda realizar la rodada.</br></br>"
                                "<small>Esta es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")

@@ -1,79 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<title>Ciclismo Urbano</title>
-		<!-- Required meta tags -->
-		{% block meta %}
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-		{% endblock %}
 
-		<!-- Navbar header -->
-		{% block navbar_head %}
-		{% style "/bootstrap/css/bootstrap.min.css" %}
-		{% style "/bootstrap/css/lumen.min.css" %}
-		{% endblock %}
+<head>
+    <title>Ciclismo Urbano</title>
+    <!-- Required meta tags -->
+    {% block meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> {% endblock %}
 
-		<!-- Block header -->
-		{% block head %}
-		{% endblock %}
+    <!-- Navbar header -->
+    {% block navbar_head %} {% style "/bootstrap/css/bootstrap.min.css" %} {% style
+    "/bootstrap/css/lumen.min.css" %} {% endblock %}
 
-		<!-- Block loader -->
-		{% block loader_head %}
-		{% style "/css/loader.css" %}
-		{% endblock %}
-	</head>
-	<body>
-		<!-- Lodader container -->
-		{% block loader_container %}
-		<div class="loader"></div>
-		{% endblock %}
+    <!-- Block header -->
+    {% block head %} {% endblock %}
 
-		<!-- Navigation bar -->
-		{% block navbar_content %}
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-			<a href="http://www.facebook.com/ciclismourbanomexicali" class="navbar-brand" style="margin-bottom: 0; ">Ciclismo Urbano</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto" id="cum">
-					<li class="nav-item"><a href="/eventos" class="nav-link">Cal Eventos</a></li>
-					<li class="nav-item"><a href="/main" class="nav-link">Cal Rodadas</a></li>
-					<li class="nav-item"><a href="/entrenamiento/rodadas" class="nav-link">Rodadas</a></li>
-					<li class="nav-item"><a href="/calendario/eventos" class="nav-link">Eventos</a></li>
-					{% user_status %}
-				</ul>
-			</div>
-		</nav>
-		{% endblock %}
+    <!-- Block loader -->
+    {% block loader_head %} {% style "/css/loader.css" %} {% endblock %}
+</head>
 
-		<!-- App container -->
-		<div class="container-fluid" style="margin-top:75px;">
-		  <!-- Content here -->
-		  {% block content %}
-		  {% endblock %}
-		</div>
+<body>
+    <!-- Lodader container -->
+    {% block loader_container %}
+    <div class="loader"></div>
+    {% endblock %}
 
-		<!-- Navbar scripts -->
-		{% block navbar_scripts %}
-		{% script "/easyui/jquery.min.js" %}
-		{% script "/popper/popper.min.js" %}
-		{% script "/bootstrap/js/bootstrap.min.js" %}
-		{% endblock %}
+    <!-- Navigation bar -->
+    {% block navbar_content %}
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+        <a href="http://www.facebook.com/ciclismourbanomexicali" class="navbar-brand" style="margin-bottom: 0; ">Ciclismo Urbano</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+	    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+	</button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto" id="cum">
+                <li class="nav-item"><a href="/eventos" class="nav-link">Cal Eventos</a></li>
+                <li class="nav-item"><a href="/main" class="nav-link">Cal Rodadas</a></li>
+                <li class="nav-item"><a href="/entrenamiento/rodadas" class="nav-link">Rodadas</a></li>
+                <li class="nav-item"><a href="/calendario/eventos" class="nav-link">Eventos</a></li>
+                {% user_status %}
+		<li class="nav-item"><a href="/cartas" class="nav-link">Registrate-Circuito Navideño</a></li>
+            </ul>
+        </div>
+    </nav>
+    {% endblock %}
 
-		<!-- Generic scripts -->
-		{% block scripts %}
-		{% endblock %}
+    <!-- App container -->
+    <div class="container-fluid" style="margin-top:75px;">
+        <!-- Content here -->
+        {% block content %} {% endblock %}
+    </div>
 
-		<!-- Block loader_scripts -->
-		{% block loader_scripts %}
-		{% script "/js/extra.js" %}
-		<script>
-		$(window).load(function() {
-			$(".loader").fadeOut("slow");
-		});
-		</script>
-		{% endblock %}
-	</body>
+    <!-- Navbar scripts -->
+    {% block navbar_scripts %} {% script "/easyui/jquery.min.js" %} {% script "/popper/popper.min.js"
+    %} {% script "/bootstrap/js/bootstrap.min.js" %} {% endblock %}
+
+    <!-- Generic scripts -->
+    {% block scripts %} {% endblock %}
+
+    <!-- Block loader_scripts -->
+    {% block loader_scripts %} {% script "/js/extra.js" %}
+    <script>
+        $(window).load(function()
+        {
+            $(".loader").fadeOut("slow");
+        });
+    </script>
+    {% endblock %}
+</body>
+
 </html>

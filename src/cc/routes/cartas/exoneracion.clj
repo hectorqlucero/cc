@@ -9,10 +9,14 @@
             [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
+(defn cartas []
+  (render-file "cartas/exoneracion/carta.html" {:title "Carta - Exoneracion"
+                                                :user (or (get-session-id) "Anonimo")}))
+
 (defn exoneracion
   []
   (render-file "cartas/exoneracion/index.html" {:title "Cartas - Exoneracion"
-                                                   :user  (or (get-session-id) "Anonimo")}))
+                                                :user  (or (get-session-id) "Anonimo")}))
 
 ;;start exoneracion grid
 (def search-columns
@@ -130,7 +134,7 @@
   (let [p1 (:nombre row)
         p2 (:apellido_paterno row nil)
         p3 (:apellido_materno row nil)
-        nombre-completo (str p1 " " (if-not (nil? p2) p2) " "(if-not (nil? p3) p3))]
+        nombre-completo (str p1 " " (if-not (nil? p2) p2) " " (if-not (nil? p3) p3))]
     nombre-completo))
 
 (def build-body-p1
@@ -141,9 +145,8 @@
   credencial o permiso por parte del comité organizador, en razón de lo anterior al firmar el presente escrito acepto todos y
   cada uno de los términos y condiciones estipulados en el presente escrito:")
 
-
 (defn build-body-p2 [row]
-  (str "Yo " (build-name row)", Con el número de participación " (:no_participacion row) " por el solo hecho de firmar
+  (str "Yo " (build-name row) ", Con el número de participación " (:no_participacion row) " por el solo hecho de firmar
 este documento, accepto cualquier y todos los riesgos y peligros que sobre mi persona recaigan en cuanto a mi participación
 en Evento ciclista denominado \"Circuito Ciclista Navideño Obregon\". Por lo tanto, yo soy el único responsable de mi salud.
 cualquier consecuencia, accidentes, perjuicios, deficiencias que puedan causar, de cualquier manera, posibles alteraciones
@@ -171,7 +174,6 @@ personales."))
   perjuicios de la facultad que se tenga para revisar su bicicleta y los demás establecidos en lo mencionado en este
   documento.")
 
-
 (defn build-body [row]
   [:table
    {:cell-border true
@@ -186,8 +188,7 @@ personales."))
    [[:cell {:style :bold} (str "Dirección: " (:direccion row))] [:cell {:style :bold} (str "Pais: " (:pais row))] [:cell {:style :bold} (str "Ciudad: " (:ciudad row))]]
    [[:cell {:style :bold} (str "Telefono: " (:telefono row))] [:cell {:style :bold} (str "Celular: " (:celular row))] [:cell {:style :bold} (str "Email: " (:email row))]]
    [[:cell {:style :bold :colspan 3} (str "Nombre del padre o tutor (En su caso): ")]]
-   [[:cell {:style :bold :colspan 3} (str "Firma del participante y/o tutor: ")]]
-   ])
+   [[:cell {:style :bold :colspan 3} (str "Firma del participante y/o tutor: ")]]])
 
 (defn execute-report [id]
   (let [h1  "CIRCUITO CICLISTA NAVIDEÑO"
@@ -234,7 +235,18 @@ personales."))
      :body    (execute-report id)}))
 ;; End pdf
 
+(defn cartas-processar [{params :params}]
+  (let [email (:email params)
+        row (Query db ["select * from cartas where email = ?" email])
+        result (if (seq row) 1 0)]
+    (render-file "cartas/exoneracion/exoneracion.html" {:title "Cartas - Exoneracion"
+                                                        :user (or (get-session-id) "Anonimo")
+                                                        :row (generate-string (first row))
+                                                        :exists result})))
+
 (defroutes exoneracion-routes
+  (GET "/cartas" [] (cartas))
+  (POST "/cartas/processar" request [] (cartas-processar request))
   (GET "/cartas/exoneracion" [] (exoneracion))
   (POST "/cartas/exoneracion/json/grid" request (grid-json request))
   (GET "/cartas/exoneracion/json/form/:id" [id] (form-json id))
