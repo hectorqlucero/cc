@@ -112,7 +112,22 @@
 ;; Start pdf
 (def pdf-sql
   "SELECT
-  CASE WHEN categoria = 'A' THEN 'Abierta' WHEN categoria = 'N' THEN 'Novatos' END as categoria,
+  CASE 
+  WHEN categoria = 'A' THEN 'Infantil Mixta(hasta 14 años'
+  WHEN categoria = 'B' THEN 'MTB Mixta Montaña'
+  WHEN categoria = 'C' THEN 'Juveniles Varonil 13-14'
+  WHEN categoria = 'D' THEN 'Juveniles Varonil 15-17'
+  WHEN categoria = 'E' THEN 'Novatos Varonil'
+  WHEN categoria = 'F' THEN 'Master Varonil 40 y mas'
+  WHEN categoria = 'G' THEN 'Segunda Fuerza'
+  WHEN categoria = 'H' THEN 'Varonil(intermedios)'
+  WHEN categoria = 'I' THEN 'Primera Fuerza Varonil (Avanzados)'
+  WHEN categoria = 'J' THEN 'Piñón Fijo Varonil y una velocidad(SS)'
+  WHEN categoria = 'K' THEN 'Femenil Juvenil 15-17'
+  WHEN categoria = 'L' THEN 'Segunda Fuerza Femenil(Abierta, Novatas)'
+  WHEN categoria = 'M' THEN 'Primera Fuerza Femenil(Avanzadas)'
+  WHEN categoria = 'N' THEN 'Piñón Fijo Femenil y una velocidad(SS)'
+  END as categoria,
   CASE WHEN sexo = 'V' THEN 'Varonil' WHEN sexo = 'F' THEN 'Femenil' END as sexo,
   CASE WHEN bicicleta = 'F' THEN 'Fija' WHEN bicicleta = 'S' THEN 'SS' WHEN bicicleta = 'O' THEN 'Otra' END as bicicleta,
   no_participacion,
@@ -245,7 +260,7 @@ personales."))
                                                         :exists result})))
 
 (defroutes exoneracion-routes
-  (GET "/cartas" [] (cartas))
+  (GET "/registro" [] (cartas))
   (POST "/cartas/processar" request [] (cartas-processar request))
   (GET "/cartas/exoneracion" [] (exoneracion))
   (POST "/cartas/exoneracion/json/grid" request (grid-json request))

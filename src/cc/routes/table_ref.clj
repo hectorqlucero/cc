@@ -52,6 +52,23 @@
 (defn get-help []
   (str "<a href='/uploads/lucero-systems.pdf'></a>"))
 
+(defn categorias []
+  (list
+    {:value "A" :text "Infantil Mixta(hasta 14 años"}
+    {:value "B" :text "MTB Mixta Montaña"}
+    {:value "C" :text "Juveniles Varonil 13-14"}
+    {:value "D" :text "Juveniles Varonil 15-17"}
+    {:value "E" :text "Novatos Varonil"}
+    {:value "F" :text "Master Varonil 40 y mas"}
+    {:value "G" :text "Segunda Fuerza"}
+    {:value "H" :text "Varonil(intermedios)"}
+    {:value "I" :text "Primera Fuerza Varonil (Avanzados"}
+    {:value "J" :text "Piñón Fijo Varonil y una velocidad(SS)"}
+    {:value "K" :text "Femenil Juvenil 15-17"}
+    {:value "L" :text "Segunda Fuerza Femenil(Abierta, Novatas)"}
+    {:value "M" :text "Primera Fuerza Femenil(Avanzadas)"}
+    {:value "N" :text "Piñón Fijo Femenil y una velocidad(SS)"}))
+
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))
@@ -59,4 +76,5 @@
   (GET "/table_ref/years/:pyears/:nyears" [pyears nyears] (generate-string (years pyears nyears)))
   (GET "/table_ref/appointment_options" [] (generate-string (appointment-options)))
   (GET "/table_ref/nivel_options" [] (generate-string (nivel-options)))
-  (GET "/table_ref/help" [] (get-help)))
+  (GET "/table_ref/help" [] (get-help))
+  (GET "/table_ref/categorias" [] (generate-string (categorias))))
