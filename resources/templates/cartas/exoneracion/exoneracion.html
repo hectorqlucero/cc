@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+{% block content %}
+{% csrf-field %}
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'"
+    style="padding:5px;width:70%;">
+    <h1>{{ title }}</h1>
+    <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="hidden" id="id" name="id">
+        <div class="form-group col-11">
+            <label for="categoria">Categoria:</label>
+            <select id="categoria" name="categoria" class="form-control easyui-combobox" data-options="required: true">
+			<option value="A">Abierta</option>
+			<option value="N">Novatos</option>
+		</select>
+        </div>
+        <div class="form-group col-11">
+            <label for="sexo">Sexo:</label>
+            <select id="sexo" name="sexo" class="form-control easyui-combobox" data-options="required: true">
+				<option value="M">Masculino</option>
+				<option value="F">Femenino</option>
+			</select>
+        </div>
+        <div class="form-group col-11">
+            <label for="bicicleta">Bicicleta:</label>
+            <select id="bicicleta" name="bicicleta" class="form-control easyui-combobox" data-options="required: true">
+				<option value="F">Fija</option>
+				<option value="S">SS</option>
+				<option value="O">Otra</option>
+			</select>
+        </div>
+        <div class="form-group col-11">
+            <label for="no_participacion">Numero de Participacion:</label>
+            <input id="no_participacion" name="no_participacion" class="form-control easyui-textbox"
+                data-options="required: false">
+        </div>
+        <div class="form-group col-11">
+            <label for="nombre">Nombre:</label>
+            <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="apellido_paterno">Apellido Paterno:</label>
+            <input id="apellido_paterno" name="apellido_paterno" class="form-control easyui-textbox"
+                data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="apellido_materno">Apellido Materno:</label>
+            <input id="apellido_materno" name="apellido_materno" class="form-control easyui-textbox"
+                data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="equipo">Equipo:</label>
+            <input id="equipo" name="equipo" class="form-control easyui-textbox" data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="direccion">Dirección:</label>
+            <input id="direccion" name="direccion" class="form-control easyui-textbox" data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="ciudad">Ciudad:</label>
+            <input id="ciudad" name="ciudad" class="form-control easyui-textbox" data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="pais">Pais:</label>
+            <input id="pais" name="pais" class="form-control easyui-textbox" data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="celular">Celular:</label>
+            <input id="celular" name="celular" class="form-control easyui-textbox type-phone"
+                data-options="required: false">
+        </div>
+        <div class="form-group col-11">
+            <label for="telefono">Telefono:</label>
+            <input id="telefono" name="telefono" class="form-control easyui-textbox type-phone"
+                data-options="required: false">
+        </div>
+        <div class="form-group col-11">
+            <label for="email">Email:</label>
+            <input id="email" name="email" class="form-control easyui-validatebox" data-options="required:true,validType:'email'">
+        </div>
+        <div class="form-group col-11">
+            <label for="tutor">Nombre del padre o tutor (En su caso):</label>
+            <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false">
+        </div>
+        <div id="dlg-buttons">
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-ok'"
+                onclick="defaultGridSaveItem()">Postear</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-print'"
+                onclick="printItem()">Generar PDF</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'"
+                onclick="closeItem()">Cerrar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script>
+var token = $('#__anti-forgery-token').val();
+function defaultGridSaveItem() {
+    var form = $('.fm');
+    // Create the request to save the inputted data on the form
+    form.form('submit', {
+        url: '/cartas/exoneracion/save',
+        queryParams: {
+            '__anti-forgery-token': token
+        },
+        onSubmit: function () {
+            return $(this).form('validate');
+        },
+        success: function (result) {
+            var json = JSON.parse(result);
+            // Display errors (if any)
+            if (json.error && json.success) {
+                // Display error on incomplete submission
+                $.messager.show({
+                    title: 'Error',
+                    msg: json.success + "<br>" + json.error
+                });
+            } else if (json.error) {
+                // Display error on failed submission
+                $.messager.show({
+                    title: 'Error',
+                    msg: json.error
+                });
+            } else if(json.success) {
+                // Display success message on complete submission
+                $.messager.show({
+                    title: 'Success',
+                    msg: json.success
+                });
+            }
+        }
+    });
+}
+$(document).ready(function() {
+    var dialog = $('.dlg');
+    var windowHeight;
+    var row = {{row|safe}};
+    dialog.dialog('open').dialog('center').dialog('setTitle', 'Editar Record');
+    windowHeight = $(window).height() - ($(window).height() * 0.2);
+    dialog.dialog('resize', {
+        height: windowHeight
+    }).dialog('center');
+    $(".fm").form('load', row);
+
+});
+    function printItem() {
+        var the_id = $("#id").val();
+        var the_url = "/cartas/exoneracion/pdf/" + the_id;
+        window.location = the_url;
+    }
+
+    function closeItem() {
+        $('.dlg').dialog('close');
+        window.location.href = "/cartas";
+    }
+</script>
+{% endblock %}
