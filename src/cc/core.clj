@@ -45,6 +45,7 @@
                     "S" (str
                           "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
                           "<li class=\"nav-item\"><a href=\"/admin/users\" class=\"nav-link\">Usuarios</a></li>"
+                          "<li class=\"nav-item\"><a href=\"/cartas/exoneracion\" class=\"nav-link\">Administrar Exoneracion</a></li>"
                           "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
                     "U" (str "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>"))
                   )

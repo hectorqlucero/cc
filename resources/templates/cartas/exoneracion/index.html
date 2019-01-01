@@ -7,7 +7,7 @@
 
 {% block content %}
 {% csrf-field %}
-<table id="dg" class="easyui-datagrid datagrid-searchable" style="width: 100%"
+<table id="dg" title="{{ title }}" class="easyui-datagrid datagrid-searchable" style="width: 100%"
     data-options="url: '/cartas/exoneracion/json/grid',
            toolbar: '#toolbar',
            queryParams: {'__anti-forgery-token':token},
@@ -54,9 +54,7 @@
         <input type="hidden" id="id" name="id">
         <div class="form-group col-11">
             <label for="categoria">Categoria:</label>
-            <select id="categoria" name="categoria" class="form-control easyui-combobox" data-options="required: true">
-				<option value="A">Abierta</option>
-				<option value="N">Novatos</option>
+            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="url:'/table_ref/categorias',method:'GET'">
 			</select>
         </div>
         <div class="form-group col-11">
