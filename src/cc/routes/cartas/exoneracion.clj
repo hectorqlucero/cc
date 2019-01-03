@@ -153,7 +153,7 @@
 
 (def build-body-p1
   "El que suscribe, por mi propio derecho, expresamente manifiesto que es mi deseo participar en el evento denominado
-  \"Circuito Ciclista Navideño Obregon\", que se realizara en la avenida Alvaro Obregón en la ciudad de Mexicali B.C. el
+  \"Serial Ciclista de Mexicali 2019\", que se realizara en la avenida Alvaro Obregón en la ciudad de Mexicali B.C. el
   domingo 2 de Diciembre del año 2018 de 9:00am a 3:00 pm. Así mismo me comprometo y obligo a no ingresar cualquier
   Área RESTRINGIDA(S) (entendida como aquella que requiera la autorización expresa mediante la expedición de
   credencial o permiso por parte del comité organizador, en razón de lo anterior al firmar el presente escrito acepto todos y
@@ -162,7 +162,7 @@
 (defn build-body-p2 [row]
   (str "Yo " (build-name row) ", Con el número de participación " (:no_participacion row) " por el solo hecho de firmar
 este documento, accepto cualquier y todos los riesgos y peligros que sobre mi persona recaigan en cuanto a mi participación
-en Evento ciclista denominado \"Circuito Ciclista Navideño Obregon\". Por lo tanto, yo soy el único responsable de mi salud.
+en Evento ciclista denominado \"Serial Ciclista de Mexicali 2019\". Por lo tanto, yo soy el único responsable de mi salud.
 cualquier consecuencia, accidentes, perjuicios, deficiencias que puedan causar, de cualquier manera, posibles alteraciones
 a mi salud, integridad fisica, o inclusive muerte. Por esa razón libero de cualquier responsabilidad al respecto al Comité
 Organizador de dicho Evento y/o a las Asociaciones que lo integran, asi como a sus directores, patrocinadores y
@@ -231,13 +231,13 @@ personales."))
           :font          {:family :helvetica :size 9}
           :align         :center
           :pages         true}
-         [:paragraph {:align :left :indent-left 28 :indent-right 28} build-body-p1]
+         [:paragraph {:align :justified :indent-left 28 :indent-right 28} build-body-p1]
          [:spacer]
-         [:paragraph {:align :left :indent-left 28 :indent-right 28} (build-body-p2 row)]
+         [:paragraph {:align :justified :indent-left 28 :indent-right 28} (build-body-p2 row)]
          [:spacer]
-         [:paragraph {:align :left :indent-left 28 :indent-right 28} build-body-p3]
+         [:paragraph {:align :justified :indent-left 28 :indent-right 28} build-body-p3]
          [:spacer]
-         [:paragraph {:align :left :indent-left 28 :indent-right 28} build-body-p4]
+         [:paragraph {:align :justified :indent-left 28 :indent-right 28} build-body-p4]
          [:spacer]
          (build-body row)]
         output-stream)))))
