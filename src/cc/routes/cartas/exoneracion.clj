@@ -231,6 +231,8 @@ personales."))
           :font          {:family :helvetica :size 9}
           :align         :center
           :pages         true}
+         [:spacer]
+         [:spacer]
          [:paragraph {:align :justified :indent-left 28 :indent-right 28} build-body-p1]
          [:spacer]
          [:paragraph {:align :justified :indent-left 28 :indent-right 28} (build-body-p2 row)]
