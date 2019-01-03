@@ -40,7 +40,6 @@
    :subject "Hi!"
    :body    [{:type    "text/html;charset=utf-8"
               :content "<b>Testing</b>"}]})
-
 (defn send-email [host body]
   (send-message host body))
 
