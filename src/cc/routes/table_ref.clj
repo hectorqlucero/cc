@@ -54,14 +54,13 @@
 
 (defn categorias []
   (list
-    {:value "A" :text "Infantil Mixta(hasta 14 años"}
+    {:value "A" :text "Infantil Mixta(hasta 12 años"}
     {:value "B" :text "MTB Mixta Montaña"}
     {:value "C" :text "Juveniles Varonil 13-14"}
     {:value "D" :text "Juveniles Varonil 15-17"}
     {:value "E" :text "Novatos Varonil"}
     {:value "F" :text "Master Varonil 40 y mas"}
-    {:value "G" :text "Segunda Fuerza"}
-    {:value "H" :text "Varonil(intermedios)"}
+    {:value "G" :text "Segunda Fuerza Varonil(intermedios)"}
     {:value "I" :text "Primera Fuerza Varonil (Avanzados"}
     {:value "J" :text "Piñón Fijo Varonil y una velocidad(SS)"}
     {:value "K" :text "Femenil Juvenil 15-17"}

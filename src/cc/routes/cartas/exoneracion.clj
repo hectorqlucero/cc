@@ -113,14 +113,13 @@
 (def pdf-sql
   "SELECT
   CASE 
-  WHEN categoria = 'A' THEN 'Infantil Mixta(hasta 14 años'
+  WHEN categoria = 'A' THEN 'Infantil Mixta(hasta 12 años'
   WHEN categoria = 'B' THEN 'MTB Mixta Montaña'
   WHEN categoria = 'C' THEN 'Juveniles Varonil 13-14'
   WHEN categoria = 'D' THEN 'Juveniles Varonil 15-17'
   WHEN categoria = 'E' THEN 'Novatos Varonil'
   WHEN categoria = 'F' THEN 'Master Varonil 40 y mas'
-  WHEN categoria = 'G' THEN 'Segunda Fuerza'
-  WHEN categoria = 'H' THEN 'Varonil(intermedios)'
+  WHEN categoria = 'G' THEN 'Segunda Fuerza Varonil(intermedios)'
   WHEN categoria = 'I' THEN 'Primera Fuerza Varonil (Avanzados)'
   WHEN categoria = 'J' THEN 'Piñón Fijo Varonil y una velocidad(SS)'
   WHEN categoria = 'K' THEN 'Femenil Juvenil 15-17'
@@ -254,7 +253,7 @@ personales."))
   (let [email (:email params)
         row (Query db ["select * from cartas where email = ?" email])
         result (if (seq row) 1 0)]
-    (render-file "cartas/exoneracion/exoneracion.html" {:title "Cartas - Exoneracion"
+    (render-file "cartas/exoneracion/exoneracion.html" {:title "Registro Serial Ciclista Mexicali"
                                                         :user (or (get-session-id) "Anonimo")
                                                         :row (generate-string (first row))
                                                         :exists result})))
