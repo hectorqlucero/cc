@@ -6,6 +6,7 @@
             [cc.routes.cartas :refer [cartas-routes]]
             [cc.routes.calendario :refer [calendario-routes]]
             [cc.routes.home :refer [home-routes]]
+            [cc.routes.calendario.imdecuf :refer [imdecuf-routes]]
             [cc.routes.table_ref :refer [table_ref-routes]]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
@@ -71,6 +72,7 @@
   entrenamiento-routes
   cartas-routes
   calendario-routes
+  imdecuf-routes
   table_ref-routes)
 
 (defroutes protected-routes

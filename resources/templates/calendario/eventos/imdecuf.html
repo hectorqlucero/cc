@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block navbar_content %}{% endblock %}
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+{% csrf-field %}
+<table id="dg"
+       title="{{ title }}"
+       class="easyui-datagrid datagrid-searchable"
+       style="width: 100%"
+       data-options="url: '/imdecuf/calendario/json/grid',
+           toolbar: '#toolbar',
+           queryParams: {'__anti-forgery-token':token},
+           pagination: true,
+           rownumbers: true,
+           nowrap: true,
+           autoRowHeight: false,
+           fitColumns: true,
+           autoSizeColumn: true,
+           singleSelect: true">
+    <thead>
+        <tr>
+            <th data-options="field: 'descripcion_corta', sortable: false">Titulo</th>
+            <th data-options="field: 'descripcion', sortable: false">Datos Adicionales</th>
+            <th data-options="field: 'punto_reunion', sortable: false">Punto de Reunión</th>
+            <th data-options="field: 'fecha', sortable: true">Fecha</th>
+            <th data-options="field: 'leader', sortable: true">Quién Organiza</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-add',plain: true"
+       onclick="defaultGridNewItem()">Crear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-edit',plain: true"
+       onclick="defaultGridEditItem({})">Editar</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-remove',plain: true"
+       onclick="defaultGridDeleteItem()">Remover</a>
+    <div style="float: right">
+        <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Busqueda'" title="Buscar">
+    </div>
+</div>
+
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
+    <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="hidden" id="id"  name="id">
+        <input type="hidden" id="anonimo" name="anonimo" value="F">
+        <input type="hidden" id="repetir" name="repetir" value="F">
+	<div class="form-group col-11">
+		<label for="descripcion_corta">Titulo para el Calendario(<small>ex: VI Gran Fondo</small>):</label>
+
+		<input id="descripcion_corta"  name="descripcion_corta" class="form-control easyui-validatebox" data-options="required: true,validType:['length[0,100]']">
+	</div>
+	<div class="form-group col-11">
+		<label for="descripcion">Describir Evento:</label>
+		<input id="descripcion" name="descripcion" type="email" class="form-control easyui-textbox" data-options="multiline:true,height:120">
+	</div>
+	<div class="form-group col-11">
+		<label for="punto_reunion">Punto de Reunión(<small>ex. Parque Hidalgo</small>):</label>
+		<input id="punto_reunion" name="punto_reunion" type="email" class="form-control easyui-textbox" data-options="multiline:true,height:120">
+	</div>
+	<div class="form-group col-11">
+		<label for="fecha">Fecha/Evento:</label>
+		<input id="fecha" name="fecha" class="form-control easyui-datebox" data-options="required:true">
+	</div>
+	<div class="form-group col-11">
+		<label for="hora">Hora:</label>
+		<input id="hora" name="hora" type="time" class="form-control easyui-textbox">
+	</div>
+	<div class="form-group col-11">
+		<label for="leader">Quién Organiza:</label>
+		<input id="leader" name="leader" class="form-control easyui-textbox" data-options="required: true">
+	</div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-ok'"
+       onclick="defaultGridSaveItem()">Postear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-cancel'"
+       onclick="defaultGridDialogClose()">Cancelar</a>
+</div>
+{% endblock %}
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script type="text/javascript" src="/js/defaultGrid.js"></script>
+{% endblock %}
