@@ -1,6 +1,5 @@
 (ns cc.routes.calendario.imdecuf
   (:require [cc.models.crud :refer :all]
-            [cc.models.email :refer [host send-email]]
             [cc.models.grid :refer :all]
             [cc.models.util :refer :all]
             [cc.routes.table_ref :refer [months]]
@@ -102,9 +101,6 @@
   [{params :params}]
   (try
     (let [table    "imdecuf"
-          user     (or (get-session-id) "Anonimo")
-          level    (user-level)
-          email    (user-email)
           scolumns (convert-search-columns search-columns)
           aliases  aliases-columns
           join     ""
@@ -144,9 +140,6 @@
   [{params :params}]
   (try
     (let [id       (fix-id (:id params))
-          user     (or (get-session-id) "Anonimo")
-          repetir  "F"
-          anonimo  (if (= user "Anonimo") "T" "F")
           postvars {:id                id
                     :descripcion       (:descripcion params)
                     :descripcion_corta (:descripcion_corta params)
@@ -156,9 +149,9 @@
                     :leader            (:leader params)
                     :leader_email      (:leader_email params)
                     :cuadrante         (:cuadrante params)
-                    :repetir           repetir
+                    :repetir           "F"
                     :rodada            "F"
-                    :anonimo           anonimo}
+                    :anonimo           "T"}
           result   (Save db :imdecuf postvars ["id = ?" id])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})
@@ -166,35 +159,12 @@
     (catch Exception e (.getMessage e))))
 
 ;;Start eventos-delete
-(defn build-recipients [eventos_id]
-  (into [] (map #(first (vals %)) (Query db ["SELECT email from rodadas_link where rodadas_id = ?" eventos_id]))))
-
-(defn email-delete-body [eventos_id]
-  (let [row               (first (Query db ["SELECT leader,leader_email,descripcion_corta FROM imdecuf where id = ?" eventos_id]))
-        leader            (:leader row)
-        leader_email      (:leader_email row)
-        descripcion_corta (:descripcion_corta row)
-        content           (str "<strong>Hola:</strong></br></br>La rodada organizada por: " leader " <a href='mailto:"leader_email"'>" leader_email "</a> se cancelo.  Disculpen la inconveniencia que esto pueda causar.</br>"
-                               "<small><strong>Nota:</strong><i> Si desea contestarle a esta persona, por favor hacer clic en el email arriba!</i></br></br>"
-                               "Muchas gracias por su participacion y esperamos que la proxima vez se pueda realizar la rodada.</br></br>"
-                               "<small>Esta es un aplicación para todos los ciclistas de Mexicali. se aceptan sugerencias.  <a href='mailto: hectorqlucero@gmail.com'>Clic aquí para mandar sugerencias</a></small>")
-        recipients        (build-recipients eventos_id)
-        body              {:from    "hectorqlucero@gmail.com"
-                           :to      recipients
-                           :cc      "hectorqlucero@gmail.com"
-                           :subject (str descripcion_corta " - Cancelacion")
-                           :body    [{:type    "text/html;charset=utf-8"
-                                      :content content}]}]
-    body))
-
 (defn eventos-delete
   [{params :params}]
   (try
     (let [id     (:id params nil)
           result (if-not (nil? id)
-                   (do
-                     (send-email host (email-delete-body id))
-                     (Delete db :imdecuf ["id = ?" id]))
+                   (Delete db :imdecuf ["id = ?" id])
                    nil)]
       (if (seq result)
         (generate-string {:success "Removido appropiadamente!"})
