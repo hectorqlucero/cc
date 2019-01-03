@@ -153,7 +153,7 @@
 
 (def build-body-p1
   "El que suscribe, por mi propio derecho, expresamente manifiesto que es mi deseo participar en el evento denominado
-  \"Serial Ciclista de Mexicali 2019\", que se realizara en la avenida Alvaro Obregón en la ciudad de Mexicali B.C. el
+  \"Serial Ciclista de Mexicali 2019\", que se realizara en la avenida Reforma y calle K en la ciudad de Mexicali B.C. el
   domingo 2 de Diciembre del año 2018 de 9:00am a 3:00 pm. Así mismo me comprometo y obligo a no ingresar cualquier
   Área RESTRINGIDA(S) (entendida como aquella que requiera la autorización expresa mediante la expedición de
   credencial o permiso por parte del comité organizador, en razón de lo anterior al firmar el presente escrito acepto todos y
