@@ -3,11 +3,23 @@
             [cc.models.email :refer [host send-email]]
             [cc.models.grid :refer :all]
             [cc.models.util :refer :all]
+            [cc.routes.table_ref :refer [categorias]]
             [cheshire.core :refer :all]
             [clj-pdf.core :refer :all]
             [compojure.core :refer :all]
             [ring.util.io :refer :all]
-            [selmer.parser :refer [render-file]]))
+            [selmer.parser :refer [render-file]])
+  (:import (java.time LocalDate
+                      format.DateTimeFormatter
+                      Year
+                      temporal.ChronoUnit)))
+
+(defn age [dob]
+  (let [date-formatter (DateTimeFormatter/ofPattern "yyyy-MM-dd")
+        dob (LocalDate/parse dob date-formatter)
+        now (LocalDate/now)
+        age (.until dob now ChronoUnit/YEARS)]
+    age))
 
 (defn cartas []
   (render-file "cartas/exoneracion/carta.html" {:title "Carta - Exoneracion"
@@ -72,14 +84,84 @@
       (generate-string (first row)))
     (catch Exception e (.getMessage e))))
 ;;end exoneracion form
+(defn get-categorias-desc [c]
+  (cond
+    (= c "A") "Infantil Mixta(hasta 12 años"
+    (= c "B") "MTB Mixta Montaña"
+    (= c "C") "Juveniles Varonil 13-14"
+    (= c "D") "Juveniles Varonil 15-17"
+    (= c "E") "Novatos Varonil"
+    (= c "F") "Master Varonil 40 y mas"
+    (= c "G") "Segunda Fuerza Varonil(intermedios"
+    (= c "I") "Primera Fuerza Varonil(Avanzados)"
+    (= c "J") "Piñon Fijo Varonil y una velocidad(SS)"
+    (= c "K") "Femenil Juvenil 15-17"
+    (= c "L") "Segunad Fuerza Femenil(Abierta, Novatas)"
+    (= c "M") "Primera Fuerza Femenil(Avanzadas)"
+    (= c "N") "Piñon Fijo Femenil y una velocidad(SS)"))
+
+(defn get-sexo-desc [s]
+  (cond
+    (= s "M") "Masculino"
+    (= s "F") "Femenil"))
+
+(defn email-body [row]
+  (let [no_participacion (:no_participacion row)
+        nombre (str (:nombre row) " " (:apellido_paterno row) " " (:apellido_materno row))
+        email (:email row)
+        categoria (get-categorias-desc (:categoria row))
+        equipo (:equipo row)
+        sexo (get-sexo-desc (:sexo row))
+        direccion (:direccion row)
+        telefono (:telefono row)
+        edad (age (:dob row))
+        celular (:celular row)]
+  (str "
+<html>
+  <body>
+    <h1>Serial Ciclista de Mexicali 2019</h1>
+    <h4># Inscripción: "no_participacion"</h4>
+    <u>Detalles de la inscripción</u>
+    <div>
+      <p><b>Nombre del Evento:</b> Serial Ciclista de Mexicali 2019</p>
+      <p><b>Fecha del Evento:</b> 20/01/2019</p>
+      <p><b>En la Ciudad:</b> Mexicali B.C.</p>
+      <p><b>Contacto:</b> Marcopescador@hotmail.com</p>
+      <p>El Numero se Entregara una hora antes del dia del evento en la parte frontal de las instalaciones del IMDECUF el Domingo 20 de Enero 2019. Para poder Solicitar el numero ya pagado, solo lo podrá hacer el atleta titular y el representante de equipo, presentando una identificación oficial.</p>
+      <p><h4>Nombre del Participante: "nombre"</h4></p>
+      <p><b>Correo del Participante:</b> "email" </p>
+      <p><b>Categoria en que competirá:</b> "categoria ".</p>
+      <p><b>Equipo:</b> "equipo"</p>
+      <p><b>Edad:</b> "edad" <b>Sexo:</b> "sexo "</p>
+      <p><b>Direccion:</b> "direccion"</p>
+      <p><b>Telefono:</b> "telefono"</p>
+      <p><b>Celular:</b> "celular"</p>
+      <p><b>Nombre del padre o tutor (En su caso):</b></p>
+      <br/>
+      <p><b><i>Cómo realizar el pago</i></b></p>
+      <p><b>Instrucciones para el cajero</b></p>
+      <p>
+      <ul>
+        <li>Realizar el Pago en cualquier banco <b>HSBC</b> o directamente en cualquier tienda <b>OXXO</b></li>
+        <li>Número de cuenta <b>HSBC: 4910 8960 8405 3810</b></li>
+        <li>Realiza el pago de $100.00 pesos (Cien pesos) por el concepto de Inscripción de Serial Ciclista de Mexicali 2019</li>
+        <li>Conserva el ticket para cualquier aclaración y enviarlo a la dirección de correo Marcopescador@hotmail.com o al inbox https://www.facebook.com/pescador.marco</li>
+      </ul>
+      </p>
+    </div>
+  </body>
+</html>
+       ")))
 
 (defn exoneracion-save
   [{params :params}]
   (try
     (let [id       (fix-id (:id params))
+          numero   (str (parse-int (:no_participacion params)))
           postvars {:id               id
                     :categoria        (:categoria params)
                     :sexo             (:sexo params)
+                    :dob              (format-date-internal (:dob params))
                     :bicicleta        (:bicicleta params)
                     :no_participacion (:no_participacion params)
                     :nombre           (capitalize-words (:nombre params))
@@ -93,9 +175,17 @@
                     :celular          (:celular params)
                     :email            (:email params)
                     :tutor            (capitalize-words (:tutor params))}
-          result   (Save db :cartas postvars ["id = ?" id])]
+          result   (Save db :cartas postvars ["id = ?" id])
+          body     {:from "marcopescador@hotmail.com"
+                    :to (:email params)
+                    :cc "marcopescador@hotmail.com"
+                    :subject "Serial Ciclista de Mexicali 2019"
+                    :body [{:type "text/html;charset=utf-8"
+                            :content (email-body postvars)}]}]
       (if (seq result)
-        (generate-string {:success "Correctamente Processado!"})
+        (do
+          (if (nil? id) (send-email host body))
+          (generate-string {:success "Correctamente Processado!"}))
         (generate-string {:error "No se pudo processar!"})))
     (catch Exception e (.getMessage e))))
 
@@ -127,8 +217,11 @@
   WHEN categoria = 'M' THEN 'Primera Fuerza Femenil(Avanzadas)'
   WHEN categoria = 'N' THEN 'Piñón Fijo Femenil y una velocidad(SS)'
   END as categoria,
-  CASE WHEN sexo = 'V' THEN 'Varonil' WHEN sexo = 'F' THEN 'Femenil' END as sexo,
-  CASE WHEN bicicleta = 'F' THEN 'Fija' WHEN bicicleta = 'S' THEN 'SS' WHEN bicicleta = 'O' THEN 'Otra' END as bicicleta,
+  CASE WHEN sexo = 'M' THEN 'Varonil' WHEN sexo = 'F' THEN 'Femenil' END as sexo,
+  CASE WHEN bicicleta = 'R' THEN 'Bicicleta de ruta'
+  WHEN bicicleta = 'M' THEN 'Bicicleta de montaña'
+  WHEN bicicleta = 'F' THEN 'Bicicleta fija/SS' 
+  WHEN bicicleta = 'O' THEN 'Otra' END as bicicleta,
   no_participacion,
   nombre,
   apellido_paterno,
@@ -254,9 +347,11 @@ personales."))
 (defn cartas-processar [{params :params}]
   (let [email (:email params)
         row (Query db ["select * from cartas where email = ?" email])
-        result (if (seq row) 1 0)]
+        result (if (seq row) 1 0)
+        no_participacion (or (:no_participacion (first row)) (zpl (get-counter) 4))]
     (render-file "cartas/exoneracion/exoneracion.html" {:title "Registro Serial Ciclista Mexicali"
                                                         :user (or (get-session-id) "Anonimo")
+                                                        :no_participacion no_participacion
                                                         :row (generate-string (first row))
                                                         :exists result})))
 

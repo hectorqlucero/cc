@@ -13,6 +13,10 @@
     <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="id" name="id">
         <div class="form-group col-11">
+            <label for="no_participacion">Numero de Participacion:</label>
+            <input id="no_participacion" name="no_participacion" class="form-control easyui-textbox" value="{{ no_participacion }}" data-options="editable: false">
+        </div>
+        <div class="form-group col-11">
             <label for="nombre">Nombre:</label>
             <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required: true">
         </div>
@@ -24,6 +28,11 @@
         <div class="form-group col-11">
             <label for="apellido_materno">Apellido Materno:</label>
             <input id="apellido_materno" name="apellido_materno" class="form-control easyui-textbox"
+                data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="dob">Fecha Nacimiento:</label>
+            <input id="dob" name="dob" class="form-control easyui-datebox"
                 data-options="required: true">
         </div>
         <div class="form-group col-11">
@@ -40,16 +49,11 @@
         <div class="form-group col-11">
             <label for="bicicleta">Bicicleta:</label>
             <select id="bicicleta" name="bicicleta" class="form-control easyui-combobox" data-options="required: true">
-				<option value="R">Bicicleta de ruta</option>
-				<option value="M">Bicicleta de montaña</option>
-				<option value="F">Bicicleta Fija/SS</option>
-				<option value="O">Otra</option>
-			</select>
-        </div>
-        <div class="form-group col-11">
-            <label for="no_participacion">Numero de Participacion:</label>
-            <input id="no_participacion" name="no_participacion" class="form-control easyui-textbox"
-                data-options="required: false">
+              <option value="R">Bicicleta de ruta</option>
+              <option value="M">Bicicleta de montaña</option>
+              <option value="F">Bicicleta Fija/SS</option>
+              <option value="O">Otra</option>
+            </select>
         </div>
         <div class="form-group col-11">
             <label for="equipo">Equipo:</label>
@@ -86,8 +90,8 @@
             <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false">
         </div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-ok'"
-                onclick="defaultGridSaveItem()">Postear</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" id="submitbtn" data-options="iconCls: 'icon-ok'"
+                onclick="defaultGridSaveItem()">Registrar - Revisa tu correo</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-print'"
                 onclick="printItem()">Generar PDF</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'"
@@ -114,6 +118,7 @@ function defaultGridSaveItem() {
             '__anti-forgery-token': token
         },
         onSubmit: function () {
+            $("#submitbtn").linkbutton('disable');
             return $(this).form('validate');
         },
         success: function (result) {
@@ -138,6 +143,7 @@ function defaultGridSaveItem() {
                     msg: json.success
                 });
                 window.location.reload(true);
+                $("#submitbtn").linkbutton('enable');
             }
         }
     });

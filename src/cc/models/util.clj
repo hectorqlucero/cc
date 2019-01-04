@@ -481,8 +481,17 @@
     (= month 5) "Mayo"
     (= month 6) "Junio"
     (= month 7) "Julio"
-    (= month 8) "Agosto"
+    (= month 8) "Agosto 4"
     (= month 9) "Septiembre"
     (= month 10) "Octubre"
     (= month 11) "Noviembre"
     (= month 12) "Diciembre"))
+
+(defn get-counter []
+  (let [row (first (Query db "select numero_registro from contador where id = 'C'"))
+        numero-registro (:numero_registro row)
+        next-numero (parse-int (inc numero-registro))
+        values {:id "C"
+                :numero_registro (str next-numero)}
+        result (Update db :contador values ["id = ?" "C"])]
+    next-numero))
