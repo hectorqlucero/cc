@@ -41,7 +41,7 @@
    "telefono"
    "celular"
    "email"
-   "CASE WHEN bicicleta = 'F' THEN 'Fija' WHEN bicicleta = 'S' THEN 'SS' ELSE 'Otra' END"])
+   "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta' WHEN bicicleta='M' THEN 'Bicicleta de montaña' WHEN bicicleta='F' THEN 'Bicicleta fija/SS' WHEN bicicleta='O' THEN 'Otra' END"])
 
 (def aliases-columns
   ["id"
@@ -53,7 +53,8 @@
    "telefono"
    "celular"
    "email"
-   "CASE WHEN bicicleta = 'F' THEN 'Fija' WHEN bicicleta = 'S' THEN 'SS' ELSE 'Otra' END as bicicleta"])
+   "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta' WHEN bicicleta='M' THEN 'Bicicleta de montaña' WHEN bicicleta='F' THEN 'Bicicleta fija/SS' WHEN bicicleta='O' THEN 'Otra' END as bicicleta"])
+
 
 (defn grid-json
   [{params :params}]
@@ -73,7 +74,24 @@
 
 ;;start exoneracion form
 (def form-sql
-  "SELECT *
+  "SELECT
+  id,
+  categoria,
+  sexo,
+  bicicleta,
+  no_participacion,
+  nombre,
+  apellido_materno,
+  apellido_paterno,
+  equipo,
+  direccion,
+  pais,
+  ciudad,
+  telefono,
+  celular,
+  email,
+  tutor,
+  DATE_FORMAT(dob,'%m/%d/%Y') as dob
   FROM cartas
   WHERE id = ?")
 
@@ -83,6 +101,7 @@
     (let [row (Query db [form-sql id])]
       (generate-string (first row)))
     (catch Exception e (.getMessage e))))
+
 ;;end exoneracion form
 (defn get-categorias-desc [c]
   (cond
@@ -344,9 +363,31 @@ personales."))
      :body    (execute-report id)}))
 ;; End pdf
 
+(def cartas-sql
+  "SELECT
+  id,
+  categoria,
+  sexo,
+  bicicleta,
+  no_participacion,
+  nombre,
+  apellido_materno,
+  apellido_paterno,
+  equipo,
+  direccion,
+  pais,
+  ciudad,
+  telefono,
+  celular,
+  email,
+  tutor,
+  DATE_FORMAT(dob,'%m/%d/%Y') as dob
+  FROM cartas
+  WHERE email = ?")
+
 (defn cartas-processar [{params :params}]
   (let [email (:email params)
-        row (Query db ["select * from cartas where email = ?" email])
+        row (Query db [cartas-sql email])
         result (if (seq row) 1 0)
         no_participacion (or (:no_participacion (first row)) (zpl (get-counter) 4))]
     (render-file "cartas/exoneracion/exoneracion.html" {:title "Registro Serial Ciclista Mexicali"
@@ -354,7 +395,7 @@ personales."))
                                                         :no_participacion no_participacion
                                                         :row (generate-string (first row))
                                                         :exists result})))
-
+(Query db ["select *,DATE_FORMAT(dob,'%m/%d/%Y') as dob from cartas where email = 'hectorqlucero@gmail.com'"])
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
   (POST "/cartas/processar" request [] (cartas-processar request))

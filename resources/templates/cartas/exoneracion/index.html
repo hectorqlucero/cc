@@ -33,8 +33,6 @@
     </thead>
 </table>
 <div id="toolbar">
-    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-add',plain: true"
-        onclick="defaultGridNewItem()">Crear</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-edit',plain: true"
         onclick="defaultGridEditItem({})">Editar</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-remove',plain: true"
@@ -53,30 +51,9 @@
     <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="id" name="id">
         <div class="form-group col-11">
-            <label for="categoria">Categoria:</label>
-            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="url:'/table_ref/categorias',method:'GET'">
-			</select>
-        </div>
-        <div class="form-group col-11">
-            <label for="sexo">Sexo:</label>
-            <select id="sexo" name="sexo" class="form-control easyui-combobox" data-options="required: true">
-				<option value="M">Masculino</option>
-				<option value="F">Femenino</option>
-			</select>
-        </div>
-        <div class="form-group col-11">
-            <label for="bicicleta">Bicicleta:</label>
-            <select id="bicicleta" name="bicicleta" class="form-control easyui-combobox" data-options="required: true">
-				<option value="R">Bicicleta de ruta</option>
-				<option value="M">Bicicleta de montaña</option>
-				<option value="F">Bicicleta Fija/SS</option>
-				<option value="O">Otra</option>
-			</select>
-        </div>
-        <div class="form-group col-11">
             <label for="no_participacion">Numero de Participacion:</label>
             <input id="no_participacion" name="no_participacion" class="form-control easyui-textbox"
-                data-options="required: false">
+                data-options="editable: false">
         </div>
         <div class="form-group col-11">
             <label for="nombre">Nombre:</label>
@@ -91,6 +68,32 @@
             <label for="apellido_materno">Apellido Materno:</label>
             <input id="apellido_materno" name="apellido_materno" class="form-control easyui-textbox"
                 data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="dob">Fecha Nacimiento:</label>
+            <input id="dob" name="dob" class="form-control easyui-datebox"
+                data-options="required: true">
+        </div>
+        <div class="form-group col-11">
+            <label for="categoria">Categoria:</label>
+            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="url:'/table_ref/categorias',method:'GET'">
+			</select>
+        </div>
+        <div class="form-group col-11">
+            <label for="sexo">Sexo:</label>
+            <select id="sexo" name="sexo" class="form-control easyui-combobox" data-options="required: true">
+				<option value="M">Masculino</option>
+				<option value="F">Femenino</option>
+			</select>
+        </div>
+        <div class="form-group col-11">
+            <label for="bicicleta">Bicicleta:</label>
+            <select id="bicicleta" name="bicicleta" class="form-control easyui-combobox" data-options="required: true">
+              <option value="R">Bicicleta de ruta</option>
+              <option value="M">Bicicleta de montaña</option>
+              <option value="F">Bicicleta Fija/SS</option>
+              <option value="O">Otra</option>
+            </select>
         </div>
         <div class="form-group col-11">
             <label for="equipo">Equipo:</label>
@@ -130,7 +133,7 @@
 </div>
 <div id="dlg-buttons">
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-ok'"
-        onclick="defaultGridSaveItem()">Postear</a>
+        onclick="defaultGridSaveItem()">Registrar</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'"
         onclick="defaultGridDialogClose()">Cancelar</a>
 </div>
