@@ -278,19 +278,19 @@ cualquier consecuencia, accidentes, perjuicios, deficiencias que puedan causar, 
 a mi salud, integridad fisica, o inclusive muerte. Por esa razón libero de cualquier responsabilidad al respecto al Comité
 Organizador de dicho Evento y/o a las Asociaciones que lo integran, asi como a sus directores, patrocinadores y
 representantes, y por medio de este conducto renuncio, sin limitación alguna a cualquier derecho, demanda o
-indemnización al respecto. Reconozco y acepto que Comité Organizador del Evento \"Circuito Ciclista Navideño Obregón\"
+indemnización al respecto. Reconozco y acepto que Comité Organizador del Evento \"Serial Ciclista de Mexicali 2019\"
 no son ni serán consideradas responsables por cualquier desperfecto, pérdida o robo relacionados con mis pertenencias
 personales."))
 
 (def build-body-p3
-  "También reconozco y acepto que como participante del EVENTO \"Circuito Ciclista Navideño Obregón\", deberé portar en
+  "También reconozco y acepto que como participante del EVENTO \"Serial Ciclista de Mexicali 2019\", deberé portar en
   todo momento el número de participante proporcionado por los organizadores del EVENTO, en el entendido que dicho
   número no podrán ser transferidas o intercambiadas con cualquier tercero bajo ningún concepto, por lo que si no cuento
   con la misma, los organizadores del EVENTO, podrán retirarme del mismo, leberándolos de toda responsabilidad, asi como
   renunciando a ejercer cualquier acción legal en su contra por las acciones tomadas a este respecto.")
 
 (def build-body-p4
-  "Así mismo, autorizo al comité organizador del evento \"Circuito Ciclista Navideño Obregón\", y/o a quien ésta designe, el uso
+  "Así mismo, autorizo al comité organizador del evento \"Serial Ciclista de Mexicali 2019\", y/o a quien ésta designe, el uso
   de mi imagen y voz, ya sea parcial o totalmente, en cuanto a todo lo relacionado en el Evento, de cualquier manera y en
   cualquier momento. Por este conducto reconozco que sé y entiendo todas las regulaciones del Evento, incluyendo y sin
   limitarse al reglamento de competencia expedido por el Comité Organizador. Igualmente, manifiesto bajo protesta de decir
