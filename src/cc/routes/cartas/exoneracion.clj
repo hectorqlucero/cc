@@ -163,13 +163,16 @@
   [{params :params}]
   (try
     (let [id       (fix-id (:id params))
+          email (:email params)
+          row (Query db [cartas-sql email])
+          no_participacion (or (:no_participacion (first row)) (zpl (get-counter) 4))
           numero   (str (parse-int (:no_participacion params)))
           postvars {:id               id
                     :categoria        (:categoria params)
                     :sexo             (:sexo params)
                     :dob              (format-date-internal (:dob params))
                     :bicicleta        (:bicicleta params)
-                    :no_participacion (:no_participacion params)
+                    :no_participacion no_participacion
                     :nombre           (capitalize-words (:nombre params))
                     :apellido_paterno (capitalize-words (:apellido_paterno params))
                     :apellido_materno (capitalize-words (:apellido_materno params))
@@ -184,7 +187,7 @@
           result   (Save db :cartas postvars ["id = ?" id])
           body     {:from "marcopescador@hotmail.com"
                     :to (:email params)
-                    :cc "marcopescador@hotmail.com"
+;;                    :cc "marcopescador@hotmail.com"
                     :subject "Serial Ciclista de Mexicali 2019"
                     :body [{:type "text/html;charset=utf-8"
                             :content (email-body postvars)}]}]
@@ -363,13 +366,13 @@ personales."))
   (let [email (:email params)
         row (Query db [cartas-sql email])
         result (if (seq row) 1 0)
-        no_participacion (or (:no_participacion (first row)) (zpl (get-counter) 4))]
+        no_participacion nil]
     (render-file "cartas/exoneracion/exoneracion.html" {:title "Registro Serial Ciclista Mexicali"
                                                         :user (or (get-session-id) "Anonimo")
                                                         :no_participacion no_participacion
                                                         :row (generate-string (first row))
                                                         :exists result})))
-(Query db ["select *,DATE_FORMAT(dob,'%m/%d/%Y') as dob from cartas where email = 'hectorqlucero@gmail.com'"])
+
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
   (POST "/cartas/processar" request [] (cartas-processar request))
