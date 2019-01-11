@@ -104,20 +104,7 @@
 
 ;;end exoneracion form
 (defn get-categorias-desc [c]
-  (cond
-    (= c "A") "Infantil Mixta(hasta 12 años"
-    (= c "B") "MTB Mixta Montaña"
-    (= c "C") "Juveniles Varonil 13-14"
-    (= c "D") "Juveniles Varonil 15-17"
-    (= c "E") "Novatos Varonil"
-    (= c "F") "Master Varonil 40 y mas"
-    (= c "G") "Segunda Fuerza Varonil(intermedios"
-    (= c "I") "Primera Fuerza Varonil(Avanzados)"
-    (= c "J") "Piñon Fijo Varonil y una velocidad(SS)"
-    (= c "K") "Femenil Juvenil 15-17"
-    (= c "L") "Segunad Fuerza Femenil(Abierta, Novatas)"
-    (= c "M") "Primera Fuerza Femenil(Avanzadas)"
-    (= c "N") "Piñon Fijo Femenil y una velocidad(SS)"))
+  (:descripcion (first (Query db ["SELECT descripcion FROM categorias WHERE id = ?" c]))))
 
 (defn get-sexo-desc [s]
   (cond
@@ -221,40 +208,27 @@
 ;; Start pdf
 (def pdf-sql
   "SELECT
-  CASE 
-  WHEN categoria = 'A' THEN 'Infantil Mixta(hasta 12 años'
-  WHEN categoria = 'B' THEN 'MTB Mixta Montaña'
-  WHEN categoria = 'C' THEN 'Juveniles Varonil 13-14'
-  WHEN categoria = 'D' THEN 'Juveniles Varonil 15-17'
-  WHEN categoria = 'E' THEN 'Novatos Varonil'
-  WHEN categoria = 'F' THEN 'Master Varonil 40 y mas'
-  WHEN categoria = 'G' THEN 'Segunda Fuerza Varonil(intermedios)'
-  WHEN categoria = 'I' THEN 'Primera Fuerza Varonil (Avanzados)'
-  WHEN categoria = 'J' THEN 'Piñón Fijo Varonil y una velocidad(SS)'
-  WHEN categoria = 'K' THEN 'Femenil Juvenil 15-17'
-  WHEN categoria = 'L' THEN 'Segunda Fuerza Femenil(Abierta, Novatas)'
-  WHEN categoria = 'M' THEN 'Primera Fuerza Femenil(Avanzadas)'
-  WHEN categoria = 'N' THEN 'Piñón Fijo Femenil y una velocidad(SS)'
-  END as categoria,
-  CASE WHEN sexo = 'M' THEN 'Varonil' WHEN sexo = 'F' THEN 'Femenil' END as sexo,
-  CASE WHEN bicicleta = 'R' THEN 'Bicicleta de ruta'
-  WHEN bicicleta = 'M' THEN 'Bicicleta de montaña'
-  WHEN bicicleta = 'F' THEN 'Bicicleta fija/SS' 
-  WHEN bicicleta = 'O' THEN 'Otra' END as bicicleta,
-  no_participacion,
-  nombre,
-  apellido_paterno,
-  apellido_materno,
-  equipo,
-  direccion,
-  pais,
-  ciudad,
-  telefono,
-  celular,
-  email,
-  tutor
-  FROM cartas
-  WHERE id = ?")
+  s.descripcion as categoria,
+  CASE WHEN p.sexo = 'M' THEN 'Varonil' WHEN p.sexo = 'F' THEN 'Femenil' END as sexo,
+  CASE WHEN p.bicicleta = 'R' THEN 'Bicicleta de ruta'
+  WHEN p.bicicleta = 'M' THEN 'Bicicleta de montaña'
+  WHEN p.bicicleta = 'F' THEN 'Bicicleta fija/SS' 
+  WHEN p.bicicleta = 'O' THEN 'Otra' END as bicicleta,
+  p.no_participacion as no_participacion,
+  p.nombre as nombre,
+  p.apellido_paterno as apellido_paterno,
+  p.apellido_materno as apellido_materno,
+  p.equipo as equipo,
+  p.direccion as direccion,
+  p.pais as pais,
+  p.ciudad as ciudad,
+  p.telefono as telefono,
+  p.celular as celular,
+  p.email as email,
+  p.tutor as tutor
+  FROM cartas p
+  JOIN categorias s on s.id = p.categoria
+  WHERE p.id = ?")
 
 (defn build-name [row]
   (let [p1 (:nombre row)

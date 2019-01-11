@@ -53,20 +53,7 @@
   (str "<a href='/uploads/lucero-systems.pdf'></a>"))
 
 (defn categorias []
-  (list
-    {:value "A" :text "Infantil Mixta(hasta 12 años"}
-    {:value "B" :text "MTB Mixta Montaña"}
-    {:value "C" :text "Juveniles Varonil 13-14"}
-    {:value "D" :text "Juveniles Varonil 15-17"}
-    {:value "E" :text "Novatos Varonil"}
-    {:value "F" :text "Master Varonil 40 y mas"}
-    {:value "G" :text "Segunda Fuerza Varonil(intermedios)"}
-    {:value "I" :text "Primera Fuerza Varonil (Avanzados"}
-    {:value "J" :text "Piñón Fijo Varonil y una velocidad(SS)"}
-    {:value "K" :text "Femenil Juvenil 15-17"}
-    {:value "L" :text "Segunda Fuerza Femenil(Abierta, Novatas)"}
-    {:value "M" :text "Primera Fuerza Femenil(Avanzadas)"}
-    {:value "N" :text "Piñón Fijo Femenil y una velocidad(SS)"}))
+  (Query db "SELECT id AS value, descripcion AS text FROM categorias ORDER BY id"))
 
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))

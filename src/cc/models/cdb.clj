@@ -66,24 +66,31 @@
 
 (def cartas-sql
   "CREATE TABLE `cartas` (
-                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-                       `categoria` char(1) DEFAULT NULL COMMENT 'A=Abierta,N=Novatos',
-                       `sexo` char(1) DEFAULT NULL COMMENT 'V=Varonil,F=Femenil',
-                       `bicicleta` char(1) DEFAULT NULL COMMENT 'F=Fija,S=SS,O=Otra',
-                       `no_participacion` varchar(50) DEFAULT NULL,
-                       `nombre` varchar(100) DEFAULT NULL,
-                       `apellido_paterno` varchar(100) DEFAULT NULL,
-                       `apellido_materno` varchar(100) DEFAULT NULL,
-                       `equipo` varchar(100) DEFAULT NULL,
-                       `direccion` varchar(100) DEFAULT NULL,
-                       `pais` varchar(100) DEFAULT NULL,
-                       `ciudad` varchar(100) DEFAULT NULL,
-                       `telefono` varchar(50) DEFAULT NULL,
-                       `celular` varchar(50) DEFAULT NULL,
-                       `email` varchar(100) DEFAULT NULL,
-                       `tutor` varchar(100) DEFAULT NULL,
-                       PRIMARY KEY (`id`)
-                       ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `categoria` char(1) DEFAULT NULL COMMENT 'A=Abierta,N=Novatos',
+  `sexo` char(1) DEFAULT NULL COMMENT 'V=Varonil,F=Femenil',
+  `bicicleta` char(1) DEFAULT NULL COMMENT 'F=Fija,S=SS,O=Otra',
+  `no_participacion` varchar(50) DEFAULT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido_paterno` varchar(100) DEFAULT NULL,
+  `apellido_materno` varchar(100) DEFAULT NULL,
+  `equipo` varchar(100) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `pais` varchar(100) DEFAULT NULL,
+  `ciudad` varchar(100) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `celular` varchar(50) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `tutor` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+
+(def categorias-sql
+  "CREATE TABLE `categorias` (
+  `id` char(1) NOT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
 (def cuadrantes-rows
   [{:name         "Rositas"
@@ -437,6 +444,34 @@ Informes: (653) 103-1460 * (653) 119-0725"
     :level     "U"
     :active    "T"}])
 
+(def categorias-rows
+  [{:id "A"
+    :descripcion "Infantil Mixta(hasta 12 años"}
+   {:id "B"
+    :descripcion "MTB Mixta Montaña"}
+   {:id "C"
+    :descripcion "Juveniles Varonil 13-14"}
+   {:id "D"
+    :descripcion "Juveniles Varonil 15-17"}
+   {:id "E"
+    :descripcion "Novatos Varonil"}
+   {:id "F"
+    :descripcion "Master Varonil 40 y mas"}
+   {:id "G"
+    :descripcion "Segunda Fuerza Varonil(Intermedios)"}
+   {:id "I"
+    :descripcion "Primera Fuerza Varonil(Avanzados)"}
+   {:id "J"
+    :descripcion "Piñon Fijo Varonil y una velicidad(SS)"}
+   {:id "K"
+    :descripcion "Femenil Juvenil 15-17"}
+   {:id "L"
+    :descripcion "Segunda Fuerza Femenil(Abierta, Novatas)"}
+   {:id "M"
+    :descripcion "Primera Fuerza Femenil(Avanzadas)"}
+   {:id "N"
+    :descripcion "Piñon Fijo Femenil y una velocidad(SS)"}])
+
 (defn create-database []
   "Creates database and a default admin user"
   (Query! db users-sql)
@@ -444,10 +479,12 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db rodadas-sql)
   (Query! db rodadas_link-sql)
   (Query! db cartas-sql)
+  (Query! db categorias-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :rodadas rodadas-rows)
   (Insert-multi db :rodadas_link rodadas_link-rows)
-  (Insert-multi db :cuadrantes cuadrantes-rows))
+  (Insert-multi db :cuadrantes cuadrantes-rows)
+  (Insert-multi db :categorias categorias-rows))
 
 (defn reset-database []
   "removes existing tables and recreates them"
@@ -455,22 +492,23 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db "DROP table IF EXISTS cuadrantes")
   (Query! db "DROP table IF EXISTS rodadas_link")
   (Query! db "DROP table IF EXISTS rodadas")
+  (Query! db "DROP table IF EXISTS cartas")
+  (Query! db "DROP table IF EXISTS categorias")
   (Query! db users-sql)
   (Query! db cuadrantes-sql)
   (Query! db rodadas-sql)
   (Query! db rodadas_link-sql)
   (Query! db cartas-sql)
+  (Query! db categorias-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :cuadrantes cuadrantes-rows)
   (Insert-multi db :rodadas rodadas-rows)
-  (Insert-multi db :rodadas_link rodadas_link-rows))
+  (Insert-multi db :rodadas_link rodadas_link-rows)
+  (Insert-multi db :categorias categorias-rows))
 
 (defn migrate []
   "migrate by the seat of my pants"
-  (Query! db "DROP table IF EXISTS rodadas_link")
-  (Query! db "DROP table IF EXISTS rodadas")
-  (Query! db rodadas-sql)
-  (Query! db rodadas_link-sql)
-  (Insert-multi db :rodadas rodadas-rows)
-  (Insert-multi db :rodadas_link rodadas_link-rows))
+  (Query! db "DROP table IF EXISTS categorias")
+  (Query! db categorias-sql)
+  (Insert-multi db :categorias categorias-rows))
 ;;(migrate)
