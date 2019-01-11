@@ -73,6 +73,28 @@
 ;;end exoneracion grid
 
 ;;start exoneracion form
+(def cartas-sql
+  "SELECT
+  id,
+  categoria,
+  sexo,
+  bicicleta,
+  no_participacion,
+  nombre,
+  apellido_materno,
+  apellido_paterno,
+  equipo,
+  direccion,
+  pais,
+  ciudad,
+  telefono,
+  celular,
+  email,
+  tutor,
+  DATE_FORMAT(dob,'%m/%d/%Y') as dob
+  FROM cartas
+  WHERE email = ?")
+
 (def form-sql
   "SELECT
   id,
@@ -187,7 +209,7 @@
           result   (Save db :cartas postvars ["id = ?" id])
           body     {:from "marcopescador@hotmail.com"
                     :to (:email params)
-;;                    :cc "marcopescador@hotmail.com"
+                    :cc "marcopescador@hotmail.com"
                     :subject "Serial Ciclista de Mexicali 2019"
                     :body [{:type "text/html;charset=utf-8"
                             :content (email-body postvars)}]}]
@@ -340,27 +362,6 @@ personales."))
      :body    (execute-report id)}))
 ;; End pdf
 
-(def cartas-sql
-  "SELECT
-  id,
-  categoria,
-  sexo,
-  bicicleta,
-  no_participacion,
-  nombre,
-  apellido_materno,
-  apellido_paterno,
-  equipo,
-  direccion,
-  pais,
-  ciudad,
-  telefono,
-  celular,
-  email,
-  tutor,
-  DATE_FORMAT(dob,'%m/%d/%Y') as dob
-  FROM cartas
-  WHERE email = ?")
 
 (defn cartas-processar [{params :params}]
   (let [email (:email params)
