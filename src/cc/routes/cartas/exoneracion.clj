@@ -55,7 +55,6 @@
    "email"
    "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta' WHEN bicicleta='M' THEN 'Bicicleta de montaña' WHEN bicicleta='F' THEN 'Bicicleta fija/SS' WHEN bicicleta='O' THEN 'Otra' END as bicicleta"])
 
-
 (defn grid-json
   [{params :params}]
   (try
@@ -144,11 +143,11 @@
         telefono (:telefono row)
         edad (age (:dob row))
         celular (:celular row)]
-  (str "
+    (str "
 <html>
   <body>
     <h1>Serial Ciclista de Mexicali 2019</h1>
-    <h4># Inscripción: "no_participacion"</h4>
+    <h4># Inscripción: " no_participacion "</h4>
     <u>Detalles de la inscripción</u>
     <div>
       <p><b>Nombre del Evento:</b> Serial Ciclista de Mexicali 2019</p>
@@ -156,14 +155,14 @@
       <p><b>En la Ciudad:</b> Mexicali B.C.</p>
       <p><b>Contacto:</b> Marcopescador@hotmail.com</p>
       <p>El Numero se Entregara una hora antes del dia del evento en la parte frontal de las instalaciones del IMDECUF el Domingo 20 de Enero 2019. Para poder Solicitar el numero ya pagado, solo lo podrá hacer el atleta titular y el representante de equipo, presentando una identificación oficial.</p>
-      <p><h4>Nombre del Participante: "nombre"</h4></p>
-      <p><b>Correo del Participante:</b> "email" </p>
-      <p><b>Categoria en que competirá:</b> "categoria ".</p>
-      <p><b>Equipo:</b> "equipo"</p>
-      <p><b>Edad:</b> "edad" <b>Sexo:</b> "sexo "</p>
-      <p><b>Direccion:</b> "direccion"</p>
-      <p><b>Telefono:</b> "telefono"</p>
-      <p><b>Celular:</b> "celular"</p>
+      <p><h4>Nombre del Participante: " nombre "</h4></p>
+      <p><b>Correo del Participante:</b> " email " </p>
+      <p><b>Categoria en que competirá:</b> " categoria ".</p>
+      <p><b>Equipo:</b> " equipo "</p>
+      <p><b>Edad:</b> " edad " <b>Sexo:</b> " sexo "</p>
+      <p><b>Direccion:</b> " direccion "</p>
+      <p><b>Telefono:</b> " telefono "</p>
+      <p><b>Celular:</b> " celular "</p>
       <p><b>Nombre del padre o tutor (En su caso):</b></p>
       <br/>
       <p><b><i>Cómo realizar el pago</i></b></p>
