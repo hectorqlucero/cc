@@ -37,11 +37,15 @@
    "nombre"
    "apellido_paterno"
    "apellido_materno"
-   "CASE WHEN sexo = 'M' THEN 'Masculino' WHEN sexo = 'F' THEN 'Femenino' END"
+   "CASE WHEN sexo = 'M' THEN 'Masculino'
+    WHEN sexo = 'F' THEN 'Femenino' END as sexo"
    "telefono"
    "celular"
    "email"
-   "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta' WHEN bicicleta='M' THEN 'Bicicleta de montaña' WHEN bicicleta='F' THEN 'Bicicleta fija/SS' WHEN bicicleta='O' THEN 'Otra' END"])
+   "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta'
+    WHEN bicicleta='M' THEN 'Bicicleta de montaña'
+    WHEN bicicleta='F' THEN 'Bicicleta fija/SS'
+    WHEN bicicleta='O' THEN 'Otra' END as bicicleta"])
 
 (def aliases-columns
   ["id"
@@ -49,11 +53,15 @@
    "nombre"
    "apellido_paterno"
    "apellido_materno"
-   "CASE WHEN sexo = 'M' THEN 'Masculino' WHEN sexo = 'F' THEN 'Femenino' END as sexo"
+   "CASE WHEN sexo = 'M' THEN 'Masculino'
+    WHEN sexo = 'F' THEN 'Femenino' END as sexo"
    "telefono"
    "celular"
    "email"
-   "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta' WHEN bicicleta='M' THEN 'Bicicleta de montaña' WHEN bicicleta='F' THEN 'Bicicleta fija/SS' WHEN bicicleta='O' THEN 'Otra' END as bicicleta"])
+   "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta'
+    WHEN bicicleta='M' THEN 'Bicicleta de montaña'
+    WHEN bicicleta='F' THEN 'Bicicleta fija/SS'
+    WHEN bicicleta='O' THEN 'Otra' END as bicicleta"])
 
 (defn grid-json
   [{params :params}]
