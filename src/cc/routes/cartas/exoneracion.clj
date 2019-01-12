@@ -33,7 +33,7 @@
 ;;start exoneracion grid
 (def search-columns
   ["id"
-   "creado"
+   "CONCAT(DATE_FORMAT(DATE(creado),'%m/%d/%Y'),' ',TIME_FORMAT(TIME(creado),'%h:%i %p')) as creado"
    "no_participacion"
    "nombre"
    "apellido_paterno"
@@ -50,7 +50,7 @@
 
 (def aliases-columns
   ["id"
-   "creado"
+   "CONCAT(DATE_FORMAT(DATE(creado),'%m/%d/%Y'),' ',TIME_FORMAT(TIME(creado),'%h:%i %p')) as creado"
    "no_participacion"
    "nombre"
    "apellido_paterno"
