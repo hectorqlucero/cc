@@ -33,6 +33,7 @@
 ;;start exoneracion grid
 (def search-columns
   ["id"
+   "creado"
    "no_participacion"
    "nombre"
    "apellido_paterno"
@@ -49,6 +50,7 @@
 
 (def aliases-columns
   ["id"
+   "creado"
    "no_participacion"
    "nombre"
    "apellido_paterno"
