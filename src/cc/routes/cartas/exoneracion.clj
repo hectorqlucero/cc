@@ -233,23 +233,24 @@
 (def pdf-sql
   "SELECT
   s.descripcion as categoria,
-  CASE WHEN p.sexo = 'M' THEN 'Varonil' WHEN p.sexo = 'F' THEN 'Femenil' END as sexo,
+  CASE WHEN p.sexo = 'M' THEN 'Varonil'
+  WHEN p.sexo = 'F' THEN 'Femenil' END as sexo,
   CASE WHEN p.bicicleta = 'R' THEN 'Bicicleta de ruta'
   WHEN p.bicicleta = 'M' THEN 'Bicicleta de montaña'
   WHEN p.bicicleta = 'F' THEN 'Bicicleta fija/SS' 
   WHEN p.bicicleta = 'O' THEN 'Otra' END as bicicleta,
-  p.no_participacion as no_participacion,
-  p.nombre as nombre,
-  p.apellido_paterno as apellido_paterno,
-  p.apellido_materno as apellido_materno,
-  p.equipo as equipo,
-  p.direccion as direccion,
-  p.pais as pais,
-  p.ciudad as ciudad,
-  p.telefono as telefono,
-  p.celular as celular,
-  p.email as email,
-  p.tutor as tutor
+  p.no_participacion,
+  p.nombre,
+  p.apellido_paterno,
+  p.apellido_materno,
+  p.equipo,
+  p.direccion,
+  p.pais,
+  p.ciudad,
+  p.telefono,
+  p.celular,
+  p.email,
+  p.tutor
   FROM cartas p
   JOIN categorias s on s.id = p.categoria
   WHERE p.id = ?")
