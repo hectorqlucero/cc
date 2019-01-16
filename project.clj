@@ -18,7 +18,7 @@
                  [org.clojure/data.codec "0.1.1"]
                  [mysql/mysql-connector-java "8.0.13"]
                  [selmer "1.12.5" :exclusions [commons-codec]]
-                 [inflections "0.13.0" :exclusions [commons-codec]]
+                 [inflections "0.13.1" :exclusions [commons-codec]]
                  [ring/ring-devel "1.7.1" :exclusions [commons-codec ring/ring-codec]]
                  [ring/ring-core "1.7.1" :exclusions [commons-codec ring/ring-codec]]
                  [ring/ring-anti-forgery "1.3.0"]

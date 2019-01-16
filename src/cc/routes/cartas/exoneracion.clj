@@ -33,20 +33,20 @@
 ;;start exoneracion grid
 (def search-columns
   ["id"
-   "CONCAT(DATE_FORMAT(DATE(creado),'%m/%d/%Y'),' ',TIME_FORMAT(TIME(creado),'%h:%i %p')) as creado"
+   "CONCAT(DATE_FORMAT(DATE(creado),'%m/%d/%Y'),' ',TIME_FORMAT(TIME(creado),'%h:%i %p'))"
    "no_participacion"
    "nombre"
    "apellido_paterno"
    "apellido_materno"
    "CASE WHEN sexo = 'M' THEN 'Masculino'
-    WHEN sexo = 'F' THEN 'Femenino' END as sexo"
+    WHEN sexo = 'F' THEN 'Femenino' END"
    "telefono"
    "celular"
    "email"
    "CASE WHEN bicicleta='R' THEN 'Bicicleta de ruta'
     WHEN bicicleta='M' THEN 'Bicicleta de montaña'
     WHEN bicicleta='F' THEN 'Bicicleta fija/SS'
-    WHEN bicicleta='O' THEN 'Otra' END as bicicleta"])
+    WHEN bicicleta='O' THEN 'Otra' END"])
 
 (def aliases-columns
   ["id"
@@ -69,10 +69,12 @@
   [{params :params}]
   (try
     (let [table    "cartas"
+          carreras_id (:id (first (Query db "SELECT id FROM carreras WHERE status='T'")))
           scolumns (convert-search-columns search-columns)
           aliases  aliases-columns
           join     ""
           search   (grid-search (:search params nil) scolumns)
+          search   (grid-search-extra search (str "carreras_id = " carreras_id))
           order    (grid-sort (:sort params nil) (:order params nil))
           offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
           sql      (grid-sql table aliases join search order offset)
@@ -190,6 +192,9 @@
 </html>
        ")))
 
+(def active-carrera
+  (str (:id (first (Query db "SELECT id FROM carreras WHERE status = 'T'")))))
+
 (defn exoneracion-save
   [{params :params}]
   (try
@@ -198,6 +203,7 @@
           row (Query db [cartas-sql email])
           no_participacion (or (:no_participacion (first row)) (zpl (get-counter) 4))
           numero   (str (parse-int (:no_participacion params)))
+          carreras_id active-carrera
           postvars {:id               id
                     :categoria        (:categoria params)
                     :sexo             (:sexo params)
@@ -214,7 +220,8 @@
                     :telefono         (:telefono params)
                     :celular          (:celular params)
                     :email            (:email params)
-                    :tutor            (capitalize-words (:tutor params))}
+                    :tutor            (capitalize-words (:tutor params))
+                    :carreras_id      carreras_id}
           result   (Save db :cartas postvars ["id = ?" id])
           body     {:from "marcopescador@hotmail.com"
                     :to (:email params)
@@ -275,7 +282,7 @@
 (def build-body-p1
   "El que suscribe, por mi propio derecho, expresamente manifiesto que es mi deseo participar en el evento denominado
   \"Serial Ciclista de Mexicali 2019\", que se realizara en la avenida Reforma y calle K en la ciudad de Mexicali B.C. el
-  domingo 2 de Diciembre del año 2018 de 9:00am a 3:00 pm. Así mismo me comprometo y obligo a no ingresar cualquier
+  domingo 20 de Enero del año 2019 de 9:00am a 3:00 pm. Así mismo me comprometo y obligo a no ingresar cualquier
   Área RESTRINGIDA(S) (entendida como aquella que requiera la autorización expresa mediante la expedición de
   credencial o permiso por parte del comité organizador, en razón de lo anterior al firmar el presente escrito acepto todos y
   cada uno de los términos y condiciones estipulados en el presente escrito:")
@@ -372,16 +379,39 @@ personales."))
      :body    (execute-report id)}))
 ;; End pdf
 
+(def cartas-sql
+  "SELECT
+   id,
+   categoria,
+   sexo,
+   bicicleta,
+   no_participacion,
+   nombre,
+   apellido_paterno,
+   apellido_materno,
+   equipo,
+   direccion,
+   pais,
+   ciudad,
+   telefono,
+   celular,
+   email,
+   tutor,
+   DATE_FORMAT(dob,'%m/%d/%Y') as dob,
+   carreras_id
+   FROM cartas
+   WHERE email = ?")
 
 (defn cartas-processar [{params :params}]
   (let [email (:email params)
-        row (Query db [cartas-sql email])
+        row (first (Query db [cartas-sql email]))
         result (if (seq row) 1 0)
-        no_participacion nil]
+        no_participacion nil
+        row (if (seq row) row {:email email})]
     (render-file "cartas/exoneracion/exoneracion.html" {:title "Registro Serial Ciclista Mexicali"
                                                         :user (or (get-session-id) "Anonimo")
                                                         :no_participacion no_participacion
-                                                        :row (generate-string (first row))
+                                                        :row (generate-string row)
                                                         :exists result})))
 
 (defroutes exoneracion-routes

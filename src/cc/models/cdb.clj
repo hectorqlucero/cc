@@ -66,31 +66,74 @@
 
 (def cartas-sql
   "CREATE TABLE `cartas` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `categoria` char(1) DEFAULT NULL COMMENT 'A=Abierta,N=Novatos',
-  `sexo` char(1) DEFAULT NULL COMMENT 'V=Varonil,F=Femenil',
-  `bicicleta` char(1) DEFAULT NULL COMMENT 'F=Fija,S=SS,O=Otra',
-  `no_participacion` varchar(50) DEFAULT NULL,
-  `nombre` varchar(100) DEFAULT NULL,
-  `apellido_paterno` varchar(100) DEFAULT NULL,
-  `apellido_materno` varchar(100) DEFAULT NULL,
-  `equipo` varchar(100) DEFAULT NULL,
-  `direccion` varchar(100) DEFAULT NULL,
-  `pais` varchar(100) DEFAULT NULL,
-  `ciudad` varchar(100) DEFAULT NULL,
-  `telefono` varchar(50) DEFAULT NULL,
-  `celular` varchar(50) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `tutor` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `categoria` char(1) DEFAULT NULL COMMENT 'A=Abierta,N=Novatos',
+   `sexo` char(1) DEFAULT NULL COMMENT 'V=Varonil,F=Femenil',
+   `bicicleta` char(1) DEFAULT NULL COMMENT 'F=Fija,S=SS,O=Otra',
+   `no_participacion` varchar(50) DEFAULT NULL,
+   `nombre` varchar(100) DEFAULT NULL,
+   `apellido_paterno` varchar(100) DEFAULT NULL,
+   `apellido_materno` varchar(100) DEFAULT NULL,
+   `equipo` varchar(100) DEFAULT NULL,
+   `direccion` varchar(100) DEFAULT NULL,
+   `pais` varchar(100) DEFAULT NULL,
+   `ciudad` varchar(100) DEFAULT NULL,
+   `telefono` varchar(50) DEFAULT NULL,
+   `celular` varchar(50) DEFAULT NULL,
+   `email` varchar(100) DEFAULT NULL,
+   `tutor` varchar(100) DEFAULT NULL,
+   `dob` varchar(45) DEFAULT NULL,
+   `creado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   `carreras_id` int(11) unsigned DEFAULT NULL,
+   PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8")
 
 (def categorias-sql
   "CREATE TABLE `categorias` (
-  `id` char(1) NOT NULL,
-  `descripcion` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+   `id` char(1) NOT NULL,
+   `descripcion` varchar(100) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+
+(def ciclistas-sql
+  "CREATE TABLE `ciclistas` (
+   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+   `cartas_id` int(11) unsigned DEFAULT NULL,
+   `nombre` varchar(100) DEFAULT NULL,
+   `apellido_paterno` varchar(100) DEFAULT NULL,
+   `apellido_materno` varchar(100) DEFAULT NULL,
+   `direccion` varchar(200) DEFAULT NULL,
+   `pais` varchar(100) DEFAULT NULL,
+   `ciudad` varchar(100) DEFAULT NULL,
+   `telefono` varchar(50) DEFAULT NULL,
+   `celular` varchar(50) DEFAULT NULL,
+   `dob` date DEFAULT NULL,
+   `email` varchar(100) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+
+(def carreras-sql
+  "CREATE TABLE `carreras` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `descripcion` varchar(500) DEFAULT NULL,
+   `fecha` date DEFAULT NULL,
+   `hora` time DEFAULT NULL,
+   `puntos_p` int(11) DEFAULT NULL,
+   `puntos_1` int(11) DEFAULT NULL,
+   `puntos_2` int(11) DEFAULT NULL,
+   `puntos_3` int(11) DEFAULT NULL,
+   `status` char(1) DEFAULT NULL COMMENT 'T=Activo,F=Inactivo',
+   PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+
+(def ciclistas_puntos-sql
+  "CREATE TABLE `ciclistas_puntos` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `carreras_id` int(11) NOT NULL,
+   `ciclistas_id` varchar(100) DEFAULT NULL,
+   `puntos` int(11) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
 (def cuadrantes-rows
   [{:name         "Rositas"
@@ -172,8 +215,7 @@
     :leader       "nonstop"
     :leader_email "nonstop@server.com"
     :notes        ""
-    :status       "T"}
-   ])
+    :status       "T"}])
 
 (def rodadas-rows
   [{:descripcion_corta "San Lunes"
@@ -365,8 +407,7 @@ Informes: (653) 103-1460 * (653) 119-0725"
     :leader            ""
     :leader_email      "hectorqlucero@gmail.com"
     :repetir           "F"
-    :anonimo           "F"}
-   ])
+    :anonimo           "F"}])
 
 (def rodadas_link-rows
   [{:rodadas_id  "1"
@@ -480,6 +521,9 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db rodadas_link-sql)
   (Query! db cartas-sql)
   (Query! db categorias-sql)
+  (Query! db ciclistas-sql)
+  (Query! db carreras-sql)
+  (Query! db ciclistas_puntos-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :rodadas rodadas-rows)
   (Insert-multi db :rodadas_link rodadas_link-rows)
@@ -494,12 +538,18 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db "DROP table IF EXISTS rodadas")
   (Query! db "DROP table IF EXISTS cartas")
   (Query! db "DROP table IF EXISTS categorias")
+  (Query! db "DROP table IF EXISTS ciclistas")
+  (Query! db "DROP table IF EXISTS carreras")
+  (Query! db "DROP table IF EXISTS ciclistas_puntos")
   (Query! db users-sql)
   (Query! db cuadrantes-sql)
   (Query! db rodadas-sql)
   (Query! db rodadas_link-sql)
   (Query! db cartas-sql)
   (Query! db categorias-sql)
+  (Query! db ciclistas-sql)
+  (Query! db carreras-sql)
+  (Query! db ciclistas_puntos-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :cuadrantes cuadrantes-rows)
   (Insert-multi db :rodadas rodadas-rows)
@@ -508,7 +558,10 @@ Informes: (653) 103-1460 * (653) 119-0725"
 
 (defn migrate []
   "migrate by the seat of my pants"
-  (Query! db "DROP table IF EXISTS categorias")
-  (Query! db categorias-sql)
-  (Insert-multi db :categorias categorias-rows))
+  (Query! db "DROP table IF EXISTS ciclistas")
+  (Query! db "DROP table IF EXISTS carreras")
+  (Query! db "DROP table IF EXISTS ciclistas_puntos")
+  (Query! db ciclistas-sql)
+  (Query! db carreras-sql)
+  (Query! db ciclistas_puntos-sql))
 ;;(migrate)

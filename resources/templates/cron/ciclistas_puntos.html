@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block loader_head %}{% endblock %}
+{% block loader_content %}{% endblock %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+{% csrf-field %}
+<h6><b>Processo:</b> Crear ciclistas y puntos de participante.</h6>
+<h6><b>Recuerda:</b> Los primero, segundo y tercero ... lugares se necesitan actualizar manualmente.</b></h6>
+<h4>Procesados:</h4>
+<div class="table-responsive">
+  <table class="table table-striped" cellpadding=0 cellspacing=0 style="border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;border-bottom:1px solid black;">
+    <thead class="thead-dark">
+      <tr>
+        <th>Nombre</th>
+        <th>Categoria</th>
+        <th>Puntuación</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in prows %}
+      <tr>
+        <td>{{ row.nombre }}</td>
+        <td>{{ row.categoria }}</td>
+        <td>
+          <input type="text" id="p_{{ row.id }}" value="{{ row.puntos }}" style="width:10%;" readonly>&nbsp;
+          <input type="radio" id="puntos_{{ row.id }}" name="puntos_{{ row.id }}" value="{{ row.puntos_1 }}" onclick="processPuntos({{ row.id }})">1r Lugar&nbsp;
+          <input type="radio" id="puntos_{{ row.id }}" name="puntos_{{ row.id }}" value="{{ row.puntos_2 }}" onclick="processPuntos({{ row.id }})">2do Lugar&nbsp;
+          <input type="radio" id="puntos_{{ row.id }}" name="puntos_{{ row.id }}" value="{{ row.puntos_3 }}" onclick="processPuntos({{ row.id }})">3r Lugar&nbsp;
+          <input type="radio" id="puntos_{{ row.id }}" name="puntos_{{ row.id }}" value="{{ row.puntos_p }}" onclick="processPuntos({{ row.id }})">Participar
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script>
+  var token = $('#__anti-forgery-token').val();
+  function processPuntos(id) {
+    var tid = "#p_" + id;
+    var oid = "input[name=puntos_" + id + "]:checked";
+    var puntos = $(oid).val();
+    $.post("/cron/procesar/puntos", {id: id, puntos: puntos, '__anti-forgery-token': token}, function() {
+      var title = "Puntos actualizados correctamente!";
+      $.messager.show({
+        title:'Actualizar cliclistas puntos',
+        msg:title,
+        timeout:3000,
+        showType:'slide'
+      });
+      $(tid).val(puntos);
+    })
+      .fail(function() {
+        var title = "Error: No se pudieron actualizar los puntos!";
+        $.messager.show({
+          title:'Actualizar cliclistas puntos',
+          msg:title,
+          timeout:3000,
+          showType:'slide'
+        });
+      })
+  }
+
+  $(document).ready(function() {
+    var title = "{{ title }}";
+    $.messager.show({
+      title:'Crear ciclistas y puntos',
+      msg:title,
+      timeout:5000,
+      showType:'slide'
+    });
+  });
+</script>
+{% endblock %}

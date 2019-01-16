@@ -8,6 +8,7 @@
             [cc.routes.home :refer [home-routes]]
             [cc.routes.calendario.imdecuf :refer [imdecuf-routes]]
             [cc.routes.table_ref :refer [table_ref-routes]]
+            [cc.routes.cron :refer [cron-routes]]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
@@ -41,16 +42,24 @@
                 (do
                   (case nivel
                     "A" (str
-                          "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
-                          "<li class=\"nav-item\"><a href=\"/cartas/exoneracion\" class=\"nav-link\">Administrar Exoneracion</a></li>"
-                          "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
+                         "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
+                         "<li class=\"nav-item\"><a href=\"/cartas/exoneracion\" class=\"nav-link\">Administrar Exoneracion</a></li>"
+                         "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
                     "S" (str
-                          "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
-                          "<li class=\"nav-item\"><a href=\"/admin/users\" class=\"nav-link\">Usuarios</a></li>"
-                          "<li class=\"nav-item\"><a href=\"/cartas/exoneracion\" class=\"nav-link\">Administrar Exoneracion</a></li>"
-                          "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
-                    "U" (str "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>"))
-                  )
+                         "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
+                         "<li class=\"nav-item\"><a href=\"/admin/users\" class=\"nav-link\">Usuarios</a></li>"
+                         "<li class='nav-item dropdown'>
+                          <a class='nav-link dropdown-toggle' data-toggle='dropdown' id='Preview' href='#' role='button' aria-haspopup='true' aria-expanded='false'>
+                          Administrar
+                          </a>
+                          <div class='dropdown-menu' aria-labelledby='Preview'>
+                          <a class='dropdown-item' href='/admin/carreras'>Carreras</a>
+                          <a class='dropdown-item' href='/cartas/exoneracion'>Exoneracion</a>
+                          <a class='dropdown-item' href='/cron/crear/ciclistas'>Crear Ciclistas/Puntos</a>
+                          </div>
+                          </li>
+                          <li class='nav-item'><a href='/logoff' class='nav-link'>Salir</a></li>")
+                    "U" (str "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")))
                 (str "<li class=\"nav-item\"><a href=\"/login\" class=\"nav-link\">Entrar</a></li>")))))
 
 (defn wrap-login [hdlr]
@@ -73,6 +82,7 @@
   cartas-routes
   calendario-routes
   imdecuf-routes
+  cron-routes
   table_ref-routes)
 
 (defroutes protected-routes
