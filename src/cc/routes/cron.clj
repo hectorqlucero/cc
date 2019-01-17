@@ -1,8 +1,7 @@
 (ns cc.routes.cron
   (:require [cc.models.crud :refer :all]
             [cheshire.core :refer :all]
-            [compojure.core :refer :all]
-            [selmer.parser :refer [render-file]]))
+            [compojure.core :refer :all]))
 
 ;; Start process-crear-ciclistas cron process
 (def crear-ciclistas-sql
