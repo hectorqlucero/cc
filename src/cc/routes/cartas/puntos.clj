@@ -4,6 +4,8 @@
             [cc.models.util :refer [fix-id user-level parse-int]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
+            [clj-pdf.core :refer :all]
+            [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
 (defn puntos []
@@ -11,7 +13,7 @@
 
 ;;Start ciclistas_puntos grid
 (def search-columns
-  ["ciclistas.id"
+  ["ciclistas_puntos.id"
    "ciclistas.nombre"
    "categorias.descripcion"
    "ciclistas.apellido_paterno"
@@ -22,7 +24,7 @@
    "ciclistas_puntos.puntos_3"])
 
 (def aliases-columns
-  ["ciclistas.id as id"
+  ["ciclistas_puntos.id as id"
    "ciclistas.nombre"
    "categorias.descripcion as categoria"
    "ciclistas.apellido_paterno"
@@ -85,8 +87,85 @@
     (catch Exception e (.getMessage e))))
 ;;End form
 
+;;Start puntos grid
+(def pdf-sql
+  "SELECT
+   s.nombre,
+   s.apellido_paterno,
+   s.apellido_materno,
+   s2.descripcion as categoria,
+   (IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0)) as puntos
+   FROM ciclistas_puntos p
+   JOIN ciclistas s ON s.id = p.ciclistas_id
+   JOIN cartas s1 on s1.id = s.cartas_id
+   JOIN categorias s2 on s2.id = s1.categoria
+   WHERE p.carreras_id = ?
+   ORDER BY s2.descripcion,s.nombre,s.apellido_paterno")
+
+(def report-detail-template
+  (template
+   (list
+    [:cell {:align :left :leading 10} (str $nombre)]
+    [:cell {:align :left :leading 10} (str $apellido_paterno)]
+    [:cell {:align :left :leading 10} (str $apellido_materno)]
+    [:cell {:align :left :leading 10} (str $categoria)]
+    [:cell {:align :right :leading 10} (str $puntos)])))
+
+(defn build-body [rows]
+  (into
+   [:table
+    {:cell-border true
+     :style :normal
+     :size 9
+     :border true
+     :widths [19 19 19 35 8]
+     :header [{:background-color [233 233 233]}
+              [:paragraph {:style :bold :align :left :leading 10} "NOMBRE"]
+              [:paragraph {:style :bold :align :left :leading 10} "APELLIDO PATERNO"]
+              [:paragraph {:style :bold :align :left :leading 10} "APELLIDO MATERNO"]
+              [:paragraph {:style :bold :align :left :leading 10} "CATEGORIA"]
+              [:paragraph {:style :bold :align :right :leading 10} "PUNTOS"]]}]
+   (report-detail-template rows)))
+
+(defn execute-report []
+  (let [h1  "SERIAl CICLISTA MEXICALI 2019"
+        carreras_id (:id (first (Query db "SELECT id FROM carreras WHERE status = 'T'")))
+        rows (Query db [pdf-sql carreras_id])]
+    (piped-input-stream
+     (fn [output-stream]
+       (pdf
+        [{:title         h1
+          :header        {:x 20
+                          :y 820
+                          :table
+                          [:pdf-table
+                           {:border           false
+                            :width-percent    100
+                            :horizontal-align :center}
+                           [100]
+                           [[:pdf-cell {:style :bold :size 16 :align :center} h1]]]}
+          :footer        "page" :left-margin 10
+          :right-margin  10
+          :top-margin    40
+          :bottom-margin 25
+          :size          :a4
+          :font          {:family :helvetica :size 9}
+          :align         :center
+          :pages         true}
+         (build-body rows)]
+        output-stream)))))
+
+(defn puntos-pdf [request]
+  (let [carrera-desc (:descripcion (first (Query db "SELECT descripcion from carreras WHERE status = 'T'")))
+        file-name (str carrera-desc ".pdf")]
+    {:headers {"Content-type" "application/pdf"
+               "Content-disposition" (str "attachment;filename=" file-name)}
+     :body (execute-report)}))
+;;END puntos grid
+
 (defroutes puntos-routes
   (GET "/cartas/puntos" [] (if-not (= (user-level) "U") (puntos)))
   (POST "/cartas/puntos/json/grid" request [] (if-not (= (user-level) "U") (grid-json request)))
   (GET "/cartas/puntos/json/form/:id" [id] (if-not (= (user-level) "U") (form-json id)))
-  (POST "/cartas/puntos/save" request [] (if-not (= (user-level) "U") (puntos-save request))))
+  (POST "/cartas/puntos/save" request [] (if-not (= (user-level) "U") (puntos-save request)))
+  (GET "/cartas/puntos/pdf" request [] (puntos-pdf request)))

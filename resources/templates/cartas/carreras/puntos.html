@@ -40,6 +40,10 @@
        class="easyui-linkbutton"
        data-options="iconCls: 'icon-edit',plain: true"
        onclick="defaultGridEditItem({})">Editar</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-print',plain: true"
+       onclick="printItem()">Generar PDF/Imprimir</a>
     <div style="float: right">
         <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Busqueda'" title="Buscar">
     </div>
@@ -101,4 +105,10 @@
 {% script "/js/jquery.maskedinput.min.js" %}
 {% script "/easyui/locale/easyui-lang-es.js" %}
 <script type="text/javascript"  src="/js/defaultGrid.js"></script>
+<script>
+ function printItem() {
+     var the_url = "/cartas/puntos/pdf";
+     window.location = the_url;
+ }
+</script>
 {% endblock %}
