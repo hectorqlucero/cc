@@ -118,7 +118,7 @@
      :style :normal
      :size 9
      :border true
-     :widths [19 19 19 35 8]
+     :widths [19 19 19 34 9]
      :header [{:background-color [233 233 233]}
               [:paragraph {:style :bold :align :left :leading 10} "NOMBRE"]
               [:paragraph {:style :bold :align :left :leading 10} "APELLIDO PATERNO"]
@@ -128,7 +128,7 @@
    (report-detail-template rows)))
 
 (defn execute-report []
-  (let [h1  "SERIAl CICLISTA MEXICALI 2019"
+  (let [h1  "SERIAL CICLISTA MEXICALI 2019"
         carreras_id (:id (first (Query db "SELECT id FROM carreras WHERE status = 'T'")))
         rows (Query db [pdf-sql carreras_id])]
     (piped-input-stream
@@ -136,7 +136,7 @@
        (pdf
         [{:title         h1
           :header        {:x 20
-                          :y 820
+                          :y 790
                           :table
                           [:pdf-table
                            {:border           false
@@ -144,11 +144,10 @@
                             :horizontal-align :center}
                            [100]
                            [[:pdf-cell {:style :bold :size 16 :align :center} h1]]]}
-          :footer        "page" :left-margin 10
-          :right-margin  10
+          :footer        "page"
           :top-margin    40
           :bottom-margin 25
-          :size          :a4
+          :size          :letter
           :font          {:family :helvetica :size 9}
           :align         :center
           :pages         true}
