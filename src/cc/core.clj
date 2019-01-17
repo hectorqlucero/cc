@@ -55,7 +55,7 @@
                           <div class='dropdown-menu' aria-labelledby='Preview'>
                           <a class='dropdown-item' href='/admin/carreras'>Carreras</a>
                           <a class='dropdown-item' href='/cartas/exoneracion'>Exoneracion</a>
-                          <a class='dropdown-item' href='/cron/crear/ciclistas'>Crear Ciclistas/Puntos</a>
+                          <a class='dropdown-item' href='/cartas/puntos'>Actualizar Puntos</a>
                           </div>
                           </li>
                           <li class='nav-item'><a href='/logoff' class='nav-link'>Salir</a></li>")

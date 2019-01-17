@@ -3,7 +3,7 @@
             [cc.models.util :refer [parse-int]]))
 
 (defn convert-search-columns [fields]
-  (let [fields (map #(str "COALESCE("%",'')") fields)]
+  (let [fields (map #(str "COALESCE(" % ",'')") fields)]
     (into [] fields)))
 
 (defn grid-sort [order-column order-dir]
@@ -11,7 +11,7 @@
   (if (not (nil? order-column)) (str " ORDER BY " order-column " " order-dir) nil))
 
 (defn grid-sort-extra [order extra]
-  (if (nil? order) (str " ORDER BY " extra)))
+  (if (nil? order) (str " ORDER BY " extra) order))
 
 (defn grid-search-extra [search extra]
   (if-not (clojure.string/blank? extra)

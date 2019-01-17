@@ -55,6 +55,21 @@
 (defn categorias []
   (Query db "SELECT id AS value, descripcion AS text FROM categorias ORDER BY id"))
 
+(defn carreras-primero []
+  (let [puntos (:puntos_1 (first (Query db "SELECT puntos_1 FROM carreras WHERE status='T'")))
+        result (list {:value puntos :text (str puntos " puntos")})]
+    result))
+
+(defn carreras-segundo []
+  (let [puntos (:puntos_2 (first (Query db "SELECT puntos_2 FROM carreras WHERE status='T'")))
+        result (list {:value puntos :text (str puntos " puntos")})]
+    result))
+
+(defn carreras-tercero []
+  (let [puntos (:puntos_3 (first (Query db "SELECT puntos_3 FROM carreras WHERE status='T'")))
+        result (list {:value puntos :text (str puntos " puntos")})]
+    result))
+
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))
@@ -63,4 +78,7 @@
   (GET "/table_ref/appointment_options" [] (generate-string (appointment-options)))
   (GET "/table_ref/nivel_options" [] (generate-string (nivel-options)))
   (GET "/table_ref/help" [] (get-help))
-  (GET "/table_ref/categorias" [] (generate-string (categorias))))
+  (GET "/table_ref/categorias" [] (generate-string (categorias)))
+  (GET "/table_ref/primero" [] (generate-string (carreras-primero)))
+  (GET "/table_ref/segundo" [] (generate-string (carreras-segundo)))
+  (GET "/table_ref/tercero" [] (generate-string (carreras-tercero))))

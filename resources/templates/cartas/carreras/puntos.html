@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+{% csrf-field %}
+<table id="dg"
+       title="{{ title }}"
+       class="easyui-datagrid datagrid-searchable"
+       style="width: 100%"
+       data-options="url: '/cartas/puntos/json/grid',
+           toolbar: '#toolbar',
+           queryParams: {'__anti-forgery-token':token},
+           pagination: true,
+           rownumbers: true,
+           nowrap: true,
+           autoRowHeight: false,
+           fitColumns: true,
+           autoSizeColumn: true,
+           singleSelect: true">
+    <thead>
+        <tr>
+            <th data-options="field: 'nombre', sortable: true">Nombre</th>
+            <th data-options="field: 'apellido_paterno', sortable: true">Apellido Paterno</th>
+            <th data-options="field: 'apellido_materno', sortable: true">Apellido Materno</th>
+            <th data-options="field: 'categoria', sortable: true">Categoria</th>
+            <th data-options="field: 'puntos_p', sortable: false">Puntos(Participante)</th>
+            <th data-options="field: 'puntos_1', sortable: false">Puntos(1r Lugar)</th>
+            <th data-options="field: 'puntos_2', sortable: false">Puntos(2do Lugar)</th>
+            <th data-options="field: 'puntos_3', sortable: false">Puntos(3r Lugar)</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-edit',plain: true"
+       onclick="defaultGridEditItem({})">Editar</a>
+    <div style="float: right">
+        <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Busqueda'" title="Buscar">
+    </div>
+</div>
+
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
+  <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+    <input type="hidden" id="id"  name="id">
+    <div class="form-group col-11">
+      <label for="nombre">Nombre:</label>
+      <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required: false,readonly:true">
+    </div>
+    <div class="form-group col-11">
+      <label for="apellido_paterno">Apellido Paterno:</label>
+      <input id="apellido_paterno" name="apellido_paterno" class="form-control easyui-textbox" data-options="required:false,readonly:true">
+    </div>
+    <div class="form-group col-11">
+      <label for="apellido_materno">Apellido Materno:</label>
+      <input id="apellido_materno" name="apellido_materno" class="form-control easyui-textbox" data-options="required:false,readonly:true">
+    </div>
+    <div class="form-group col-11">
+      <label for="categoria">Categoria:</label>
+      <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="url:'/table_ref/categorias',method:'GET',readonly:true">
+    </div>
+    <div class="form-group col-11">
+      <label for="puntos_p">Puntos(Participante):</label>
+      <input type="text" name="puntos_p" id="puntos_p" class="form-control easyui-numberbox" data-options="min:0,precision:0,readonly:true">
+    </div>
+    <div class="form-group col-11">
+      <label for="puntos_1">Puntos(1r Lugar):</label>
+      <input id="puntos_1" name="puntos_1" class="form-control easyui-combobox" data-options="url:'/table_ref/primero',method:'GET'">
+    </div>
+    <div class="form-group col-11">
+      <label for="puntos_2">Puntos(2do Lugar):</label>
+      <input id="puntos_2" name="puntos_2" class="form-control easyui-combobox" data-options="url:'/table_ref/segundo',method:'GET'">
+    </div>
+    <div class="form-group col-11">
+      <label for="puntos_3">Puntos(3r Lugar):</label>
+      <input id="puntos_3" name="puntos_3" class="form-control easyui-combobox" data-options="url:'/table_ref/tercero',method:'GET'">
+    </div>
+  </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-ok'"
+       onclick="defaultGridSaveItem()">Postear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-cancel'"
+       onclick="defaultGridDialogClose()">Cancelar</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script type="text/javascript"  src="/js/defaultGrid.js"></script>
+{% endblock %}
