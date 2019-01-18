@@ -65,7 +65,7 @@
                       :ciclistas_id (str ciclistas_id)
                       :puntos_p (str puntos_p)}
             result (Save db :ciclistas_puntos postvars ["id = ?" id])]
-        (prn id)))))
+        result))))
 
 (defn process-cron [request]
   (process-crear-ciclistas)
