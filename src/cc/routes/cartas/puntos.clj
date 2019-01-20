@@ -14,6 +14,7 @@
 ;;Start ciclistas_puntos grid
 (def search-columns
   ["ciclistas_puntos.id"
+   "cartas.no_participacion"
    "ciclistas.nombre"
    "categorias.descripcion"
    "ciclistas.apellido_paterno"
@@ -25,6 +26,7 @@
 
 (def aliases-columns
   ["ciclistas_puntos.id as id"
+   "cartas.no_participacion"
    "ciclistas.nombre"
    "categorias.descripcion as categoria"
    "ciclistas.apellido_paterno"
@@ -90,6 +92,7 @@
 ;;Start puntos grid
 (def pdf-sql
   "SELECT
+   s1.no_participacion,
    s.nombre,
    s.apellido_paterno,
    s.apellido_materno,
@@ -105,6 +108,7 @@
 (def report-detail-template
   (template
    (list
+    [:cell {:align :left :leading 10} (str $no_participacion)]
     [:cell {:align :left :leading 10} (str $nombre)]
     [:cell {:align :left :leading 10} (str $apellido_paterno)]
     [:cell {:align :left :leading 10} (str $apellido_materno)]
@@ -118,8 +122,9 @@
      :style :normal
      :size 9
      :border true
-     :widths [19 19 19 34 9]
+     :widths [5 19 19 19 29 9]
      :header [{:background-color [233 233 233]}
+              [:paragraph {:style :bold :align :left :leading 10} "NUM"]
               [:paragraph {:style :bold :align :left :leading 10} "NOMBRE"]
               [:paragraph {:style :bold :align :left :leading 10} "APELLIDO PATERNO"]
               [:paragraph {:style :bold :align :left :leading 10} "APELLIDO MATERNO"]
