@@ -14,6 +14,7 @@
 (def search-columns
   ["id"
    "descripcion"
+   "donde"
    "DATE_FORMAT(fecha,'%m/%d/%Y')"
    "TIME_FORMAT(hora,'%h:%i %p')"
    "puntos_p"
@@ -25,6 +26,7 @@
 (def aliases-columns
   ["id"
    "descripcion"
+   "donde"
    "DATE_FORMAT(fecha,'%m/%d/%Y') as fecha"
    "TIME_FORMAT(hora,'%h:%i %p') as hora"
    "puntos_p"
@@ -52,6 +54,7 @@
 (def form-sql
   "SELECT id as id,
    descripcion,
+   donde,
    DATE_FORMAT(fecha,'%m/%d/%Y') as fecha,
    TIME_FORMAT(hora,'%H:%i') as hora,
    puntos_p,
@@ -77,6 +80,7 @@
         puntos_3 (:puntos_3 params)
         postvars {:id           id
                   :descripcion (capitalize-words (:descripcion params))
+                  :donde (:donde params)
                   :fecha (format-date-internal (:fecha params))
                   :hora (fix-hour (:hora params))
                   :puntos_p puntos_p

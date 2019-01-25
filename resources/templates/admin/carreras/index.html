@@ -24,14 +24,15 @@
            singleSelect: true">
     <thead>
         <tr>
+            <th data-options="field: 'status', sortable: false">Status</th>
             <th data-options="field: 'descripcion', sortable: false">Carrera</th>
+            <th data-options="field: 'donde', sortable: false">Donde Descripcion</th>
             <th data-options="field: 'fecha', sortable: true">Fecha</th>
             <th data-options="field: 'hora', sortable: true">Salida</th>
             <th data-options="field: 'puntos_p', sortable: true">Puntos(Participante)</th>
             <th data-options="field: 'puntos_1', sortable: false">Puntos(1r Lugar)</th>
             <th data-options="field: 'puntos_2', sortable: false">Puntos(2do Lugar)</th>
             <th data-options="field: 'puntos_3', sortable: false">Puntos(3r Lugar)</th>
-            <th data-options="field: 'status', sortable: false">Status</th>
         </tr>
     </thead>
 </table>
@@ -55,6 +56,10 @@
     <div class="form-group col-11">
       <label for="descripcion">Descripción(<small>descripción ex: Serial Ciclista de Mexicali 2019</small>):</label>
       <input id="descripcion" name="descripcion" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
+      <label for="donde">Descripción(Donde:<br/><small>ex:que se realizara en la avenida Reforma y calle K en la ciudad de Mexicali B.C. el domingo 20 de Enero del año 2019 de 9:00am a 3:00pm</small>):</label>
+      <input id="donde" name="donde" class="form-control easyui-textbox" data-options="required: true">
     </div>
     <div class="form-group col-11">
       <label for="fecha">Fecha/Carrera:</label>

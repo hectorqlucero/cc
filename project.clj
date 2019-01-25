@@ -16,7 +16,7 @@
                  [clojurewerkz/money "1.10.0"]
                  [org.clojure/java.jdbc "0.7.8"]
                  [org.clojure/data.codec "0.1.1"]
-                 [mysql/mysql-connector-java "8.0.13"]
+                 [mysql/mysql-connector-java "8.0.14"]
                  [selmer "1.12.5" :exclusions [commons-codec]]
                  [inflections "0.13.1" :exclusions [commons-codec]]
                  [ring/ring-devel "1.7.1" :exclusions [commons-codec ring/ring-codec]]
