@@ -1,6 +1,7 @@
 (ns cc.routes.cron
   (:require [cc.models.crud :refer :all]
             [cheshire.core :refer :all]
+            [noir.response :refer [redirect]]
             [compojure.core :refer :all]))
 
 ;; Start process-crear-ciclistas cron process
@@ -25,7 +26,7 @@
 (defn get-active-carrera []
   (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
 
-(defn process-crear-ciclistas []
+(defn process-crear-ciclistas [_]
   (doseq [row (Query db [crear-ciclistas-sql (:id (get-active-carrera))])]
     (let [id (:id (first (Query db ["SELECT id from ciclistas WHERE email = ? AND carreras_id = ?"
                                     (:email row) (:id (get-active-carrera))])))
@@ -43,11 +44,10 @@
                     :id (str id)
                     :email (str (:email row))
                     :carreras_id (str (:carreras_id row))}
-          result (Save db :ciclistas postvars ["id = ?" id])]
-      result)))
+          result (Save db :ciclistas postvars ["id = ?" id])])))
 ;; End process-crear-ciclistas cron process
 
-(defn process-crear-puntos []
+(defn process-crear-puntos [_]
   (let [crow (get-active-carrera)
         carreras_id (:id crow)
         puntos_p (:puntos_p crow)
@@ -64,12 +64,12 @@
                       :carreras_id (str carreras_id)
                       :ciclistas_id (str ciclistas_id)
                       :puntos_p (str puntos_p)}
-            result (Save db :ciclistas_puntos postvars ["id = ?" id])]
-        result))))
+            result (Save db :ciclistas_puntos postvars ["id = ?" id])]))))
 
 (defn process-cron [request]
-  (process-crear-ciclistas)
-  (process-crear-puntos))
+  (process-crear-ciclistas request)
+  (process-crear-puntos request)
+  (redirect "/cartas/puntos"))
 
 (defroutes cron-routes
   (GET "/cron/crear/ciclistas" request [] (process-cron request)))
