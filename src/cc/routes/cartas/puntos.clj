@@ -110,8 +110,6 @@
    (list
     [:cell {:align :left :leading 10} (str $no_participacion)]
     [:cell {:align :left :leading 10} (str $nombre)]
-    [:cell {:align :left :leading 10} (str $apellido_paterno)]
-    [:cell {:align :left :leading 10} (str $apellido_materno)]
     [:cell {:align :left :leading 10} (str $categoria)]
     [:cell {:align :right :leading 10} (str $puntos)])))
 
@@ -122,12 +120,10 @@
      :style :normal
      :size 9
      :border true
-     :widths [5 19 19 19 29 9]
+     :widths [5 40 40 10]
      :header [{:background-color [233 233 233]}
               [:paragraph {:style :bold :align :left :leading 10} "NUM"]
               [:paragraph {:style :bold :align :left :leading 10} "NOMBRE"]
-              [:paragraph {:style :bold :align :left :leading 10} "APELLIDO PATERNO"]
-              [:paragraph {:style :bold :align :left :leading 10} "APELLIDO MATERNO"]
               [:paragraph {:style :bold :align :left :leading 10} "CATEGORIA"]
               [:paragraph {:style :bold :align :right :leading 10} "PUNTOS"]]}]
    (report-detail-template rows)))
