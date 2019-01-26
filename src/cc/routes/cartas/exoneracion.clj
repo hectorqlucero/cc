@@ -10,7 +10,7 @@
             [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
-(def carreras-row (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
+(defn carreras-row [] (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
 
 (defn cartas []
   (render-file "cartas/exoneracion/carta.html" {:title "Carta - Exoneracion"
@@ -44,7 +44,7 @@
   [{params :params}]
   (try
     (let [table    "cartas"
-          carreras_id (:id carreras-row)
+          carreras_id (:id (carreras-row))
           scolumns (convert-search-columns search-columns)
           aliases  aliases-columns
           join     "JOIN categorias on categorias.id = cartas.categoria"
@@ -87,7 +87,7 @@
   [{params :params}]
   (try
     (let [id (or (:id params) "")
-          carreras_id (str (:id carreras-row))
+          carreras_id (str (:id (carreras-row)))
           postvars {:id id
                     :no_participacion (:no_participacion params)
                     :categoria (:categoria params)
@@ -192,7 +192,7 @@ personales."))
 
 (defn execute-report [id]
   (let [h1  "CARTA DE EXONERACION"
-        crow carreras-row
+        crow (carreras-row)
         row (first (Query db [pdf-sql id]))]
     (piped-input-stream
      (fn [output-stream]
@@ -244,7 +244,7 @@ personales."))
              :no_participacion nil
              :telefono nil
              :email nil}
-        crow carreras-row]
+        crow (carreras-row)]
     (piped-input-stream
      (fn [output-stream]
        (pdf
