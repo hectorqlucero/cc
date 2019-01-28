@@ -10,11 +10,27 @@
             [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
+(def puntos-sql
+  "SELECT
+   s1.no_participacion,
+   s.nombre,
+   s.apellido_paterno,
+   s.apellido_materno,
+   s2.descripcion as categoria,
+   (IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0)) as puntos
+   FROM ciclistas_puntos p
+   JOIN ciclistas s ON s.id = p.ciclistas_id
+   JOIN cartas s1 on s1.id = s.cartas_id
+   JOIN categorias s2 on s2.id = s1.categoria
+   WHERE p.carreras_id = ?
+   ORDER BY s2.descripcion,s.nombre,s.apellido_paterno")
+
 (defn carreras-row [] (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
 
 (defn cartas []
   (render-file "cartas/exoneracion/carta.html" {:title "Carta - Exoneracion"
-                                                :user (or (get-session-id) "Anonimo")}))
+                                                :user (or (get-session-id) "Anonimo")
+                                                :rows (Query db [puntos-sql (:id (carreras-row))])}))
 
 (defn exoneracion
   []
