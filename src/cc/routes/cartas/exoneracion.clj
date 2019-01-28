@@ -23,7 +23,7 @@
    JOIN cartas s1 on s1.id = s.cartas_id
    JOIN categorias s2 on s2.id = s1.categoria
    WHERE p.carreras_id = ?
-   ORDER BY s2.descripcion,s.nombre,s.apellido_paterno")
+   ORDER BY s2.descripcion,s.nombre")
 
 (defn carreras-row [] (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
 
