@@ -53,6 +53,7 @@
                           Administrar
                           </a>
                           <div class='dropdown-menu' aria-labelledby='Preview'>
+                          <a class='dropdown-item' href='/cartas/categorias'>Categorias</a>
                           <a class='dropdown-item' href='/admin/carreras'>Carreras</a>
                           <a class='dropdown-item' href='/cartas/exoneracion'>Registro Corredores</a>
                           <a class='dropdown-item' href='/cartas/puntos'>Actualizar Puntos</a>
