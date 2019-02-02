@@ -39,17 +39,19 @@
 (defn grid-json
   [{params :params}]
   (try
-    (let [table    "ciclistas_puntos"
+    (let [table "ciclistas_puntos"
+          carreras_id (:id (first (Query db "SELECT id from carreras where status = 'T'")))
           scolumns (convert-search-columns search-columns)
-          aliases  aliases-columns
-          join     "join ciclistas on ciclistas.id = ciclistas_puntos.ciclistas_id
-                    join cartas on cartas.id = ciclistas.cartas_id
-                    join categorias on categorias.id = cartas.categoria"
-          search   (grid-search (:search params nil) scolumns)
-          order    (grid-sort (:sort params nil) (:order params nil))
-          order    (grid-sort-extra order "categoria ASC,nombre ASC,apellido_paterno ASC")
-          offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
-          rows     (grid-rows table aliases join search order offset)]
+          aliases aliases-columns
+          join "join ciclistas on ciclistas.id = ciclistas_puntos.ciclistas_id
+                join cartas on cartas.id = ciclistas.cartas_id
+                join categorias on categorias.id = cartas.categoria"
+          search (grid-search (:search params nil) scolumns)
+          search (grid-search-extra search (str "ciclistas.carreras_id = " carreras_id))
+          order (grid-sort (:sort params nil) (:order params nil))
+          order (grid-sort-extra order "categoria ASC,nombre ASC,apellido_paterno ASC")
+          offset (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
+          rows (grid-rows table aliases join search order offset)]
       (generate-string rows))
     (catch Exception e (.getMessage e))))
 ;;End ciclistas_puntos grid

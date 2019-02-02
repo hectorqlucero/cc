@@ -54,8 +54,9 @@
                           </a>
                           <div class='dropdown-menu' aria-labelledby='Preview'>
                           <a class='dropdown-item' href='/admin/carreras'>Carreras</a>
-                          <a class='dropdown-item' href='/cartas/exoneracion'>Exoneracion</a>
+                          <a class='dropdown-item' href='/cartas/exoneracion'>Registro Corredores</a>
                           <a class='dropdown-item' href='/cartas/puntos'>Actualizar Puntos</a>
+                          <a class='dropdown-item' href='/cartas/ptotal'>Puntuación Total</a>
                           <a class='dropdown-item' href='/cron/crear/ciclistas'>Crear Ciclistas/Puntos</a>
                           </div>
                           </li>

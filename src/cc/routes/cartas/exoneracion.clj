@@ -12,6 +12,7 @@
 
 (def puntos-sql
   "SELECT
+   s1.telefono,
    s1.no_participacion,
    s.nombre,
    s.apellido_paterno,
@@ -25,12 +26,39 @@
    WHERE p.carreras_id = ?
    ORDER BY s2.descripcion,s.nombre")
 
+(def totales-sql
+  "SELECT
+   DISTINCT(s1.email) as email,
+   s.nombre as nombre,
+   s2.descripcion as categoria,
+   (IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0)) as puntos
+   FROM ciclistas_puntos p
+   JOIN ciclistas s ON s.id = p.ciclistas_id
+   JOIN cartas s1 on s1.id = s.cartas_id
+   JOIN categorias s2 on s2.id = s1.categoria
+   GROUP BY s1.email,s1.categoria
+   ORDER BY s2.descripcion,s.nombre")
+
 (defn carreras-row [] (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
 
 (defn cartas []
-  (render-file "cartas/exoneracion/carta.html" {:title "Carta - Exoneracion"
-                                                :user (or (get-session-id) "Anonimo")
-                                                :rows (Query db [puntos-sql (:id (carreras-row))])}))
+  (let [crow (carreras-row)]
+    (render-file "cartas/exoneracion/carta.html" {:title (str (:descripcion crow))
+                                                  :fecha (format-date-external (str (:fecha crow)))
+                                                  :user (or (get-session-id) "Anonimo")
+                                                  :rows (Query db totales-sql)})))
+
+(defn totales []
+  (let [crow (carreras-row)]
+    (render-file "cartas/exoneracion/totales.html" {:title "Puntuación Total Serial"
+                                                    :rows (Query db totales-sql)})))
+
+(defn resultados []
+  (let [crow (carreras-row)]
+    (render-file "cartas/exoneracion/resultados.html" {:title (str (:descripcion crow))
+                                                       :fecha (format-date-external (str (:fecha crow)))
+                                                       :user (or (get-session-id) "Anonimo")
+                                                       :rows (Query db [puntos-sql (:id crow)])})))
 
 (defn exoneracion
   []
@@ -65,7 +93,7 @@
           aliases  aliases-columns
           join     "JOIN categorias on categorias.id = cartas.categoria"
           search   (grid-search (:search params nil) scolumns)
-          search   (grid-search-extra search (str "carreras_id = " carreras_id))
+          search   (grid-search-extra search (str "cartas.carreras_id = " carreras_id))
           order    (grid-sort (:sort params nil) (:order params nil))
           offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
           sql      (grid-sql table aliases join search order offset)
@@ -104,16 +132,18 @@
   (try
     (let [id (or (:id params) "")
           carreras_id (str (:id (carreras-row)))
+          categoria (:categoria params)
+          email (:email params)
           postvars {:id id
                     :no_participacion (:no_participacion params)
-                    :categoria (:categoria params)
-                    :email (:email params)
+                    :categoria categoria
+                    :email email
                     :nombre (capitalize-words (:nombre params))
                     :equipo (:equipo params)
                     :telefono (:telefono params)
                     :tutor (capitalize-words (:tutor params))
                     :carreras_id carreras_id}
-          result   (Save db :cartas postvars ["id = ?" id])]
+          result   (Save db :cartas postvars ["id = ? AND categoria = ? AND email = ?" id categoria email])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})
         (generate-string {:error "No se pudo processar!"})))
@@ -316,12 +346,14 @@ personales."))
    carreras_id
    FROM cartas
    WHERE email = ?
-   AND categoria = ?")
+   AND categoria = ?
+   AND carreras_id = ?")
 
 (defn cartas-processar [{params :params}]
   (let [email (:email params)
         categoria (:categoria params)
-        row (first (Query db [cartas-sql email categoria]))
+        carreras_id (str (:id (carreras-row)))
+        row (first (Query db [cartas-sql email categoria carreras_id]))
         result (if (seq row) 1 0)
         row (if (seq row) row {:email email
                                :categoria categoria})]
@@ -332,6 +364,8 @@ personales."))
 
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
+  (GET "/resultados" [] (resultados))
+  (GET "/cartas/ptotal" [] (totales))
   (POST "/cartas/processar" request [] (cartas-processar request))
   (GET "/cartas/exoneracion" [] (exoneracion))
   (POST "/cartas/exoneracion/json/grid" request (grid-json request))
