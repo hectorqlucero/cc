@@ -31,7 +31,7 @@
    DISTINCT(s1.email) as email,
    s.nombre as nombre,
    s2.descripcion as categoria,
-   (IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0)) as puntos
+   SUM((IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0))) as puntos
    FROM ciclistas_puntos p
    JOIN ciclistas s ON s.id = p.ciclistas_id
    JOIN cartas s1 on s1.id = s.cartas_id
