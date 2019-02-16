@@ -78,6 +78,7 @@
         puntos_1 (:puntos_1 params)
         puntos_2 (:puntos_2 params)
         puntos_3 (:puntos_3 params)
+        status   (:status params)
         postvars {:id           id
                   :descripcion (capitalize-words (:descripcion params))
                   :donde (:donde params)
@@ -87,10 +88,13 @@
                   :puntos_1 puntos_1
                   :puntos_2 puntos_2
                   :puntos_3 puntos_3
-                  :status (:status params)}
-        result   (Save db :carreras postvars ["id = ?" id])]
+                  :status status}
+        result   (Save db :carreras postvars ["id = ?" id])
+        the-id   (if (nil? id) (get (first result) :generated_key nil) id)]
     (if (seq result)
-      (generate-string {:success "Correctamente Processado!"})
+      (do
+        (if (= status "T") (Update db :carreras {:status "F"} ["id != ? " the-id]))
+        (generate-string {:success "Correctamente Processado!"}))
       (generate-string {:error "No se pudo processar!"}))))
 
 (defn carreras-delete
