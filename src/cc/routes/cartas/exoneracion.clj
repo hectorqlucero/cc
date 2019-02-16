@@ -36,7 +36,7 @@
    JOIN ciclistas s ON s.id = p.ciclistas_id
    JOIN cartas s1 on s1.id = s.cartas_id
    JOIN categorias s2 on s2.id = s1.categoria
-   GROUP BY s1.email,s1.categoria
+   GROUP BY s1.email,s.nombre,s1.categoria
    ORDER BY s2.descripcion,s.nombre")
 
 (defn carreras-row [] (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
