@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block loader_head %}{% endblock %}
+{% block loader_container %}{% endblock %}
+{% block loader_scripts %}{% endblock %}
+{% block content %}
+<!-- <div class="col-12 text-center"> -->
+<!-- 	<button class="btn btn-primary" onclick="printPDF()">Imprimir</button> -->
+<!-- </div> -->
+<!-- <h3 style="color:#127ba3;text-transform:uppercase;font-weight:bold;">{{ title }}</h3> -->
+{% for item in rows %}
+<div class="row">
+	<div class="col-auto">
+		<div class="row">
+			<div class="col-auto">
+        <h3 class="h3-primary" style="color:#127ba3;font-weight:bold;">{{ item.nombre }}</h3><button type="button" class="btn btn-info btn-lg btn-block" data-toggle="popover" data-placement="right" data-content="{{ item.historia }}">Historia</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>SITIO</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;</span>
+        <a  href="{{ item.sitio }}" target="_blank">{{ item.sitio }}</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>DIRECCIÓN</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;&nbsp;|&nbsp;</span>
+        {{ item.direccion }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>HORARIOS</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;&nbsp;&nbsp;|&nbsp;</span>
+				{{ item.horarios }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>TELEFONO</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;&nbsp;&nbsp;|&nbsp;</span>
+				{{ item.telefono }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
+				<strong>MAPA</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;</span>
+        <a href="{{ item.direcciones }}" target="_blank">Direcciones</a>
+			</div>
+		</div>
+		<div class="row warning">
+			<div class="col-auto" style="color:#127ba3;">
+				{{ item.llegar }}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row"><div class="col-auto">&nbsp;</div></div>
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+<script>
+$(function() {
+	$('[data-toggle="popover"]').popover()
+})
+
+function printPDF() {
+	var year = "{{ year }}";
+	var month = "{{ month }}";
+	url = "/eventos/print/" + year + "/" + month;
+	window.location.href = url;
+}
+</script>
+{% endblock %}

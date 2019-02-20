@@ -9,6 +9,7 @@
             [cc.routes.calendario.imdecuf :refer [imdecuf-routes]]
             [cc.routes.table_ref :refer [table_ref-routes]]
             [cc.routes.cron :refer [cron-routes]]
+            [cc.routes.talleres :refer [talleres-routes]]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
@@ -86,7 +87,8 @@
   calendario-routes
   imdecuf-routes
   cron-routes
-  table_ref-routes)
+  table_ref-routes
+  talleres-routes)
 
 (defroutes protected-routes
   admin-routes)
