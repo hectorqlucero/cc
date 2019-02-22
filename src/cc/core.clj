@@ -47,13 +47,13 @@
                          "<li class=\"nav-item\"><a href=\"/cartas/exoneracion\" class=\"nav-link\">Administrar Exoneracion</a></li>"
                          "<li class=\"nav-item\"><a href=\"/logoff\" class=\"nav-link\">Salir</a></li>")
                     "S" (str
-                         "<li class=\"nav-item\"><a href=\"/admin/cuadrantes\" class=\"nav-link\">Cuadrantes</a></li>"
-                         "<li class=\"nav-item\"><a href=\"/admin/users\" class=\"nav-link\">Usuarios</a></li>"
                          "<li class='nav-item dropdown'>
                           <a class='nav-link dropdown-toggle' data-toggle='dropdown' id='Preview' href='#' role='button' aria-haspopup='true' aria-expanded='false'>
                           Administrar
                           </a>
                           <div class='dropdown-menu' aria-labelledby='Preview'>
+                          <a class='dropdown-item' href='/admin/cuadrantes'>Cuadrantes</a>
+                          <a class='dropdown-item' href='/admin/users'>Usuarios</a>
                           <a class='dropdown-item' href='/cartas/categorias'>Categorias</a>
                           <a class='dropdown-item' href='/admin/carreras'>Carreras</a>
                           <a class='dropdown-item' href='/cartas/exoneracion'>Registro Corredores</a>
