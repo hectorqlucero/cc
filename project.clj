@@ -14,7 +14,7 @@
                  [clj-time "0.15.1"]
                  [date-clj "1.0.1"]
                  [clojurewerkz/money "1.10.0"]
-                 [org.clojure/java.jdbc "0.7.8"]
+                 [org.clojure/java.jdbc "0.7.9"]
                  [org.clojure/data.codec "0.1.1"]
                  [mysql/mysql-connector-java "8.0.15"]
                  [selmer "1.12.6" :exclusions [commons-codec]]
