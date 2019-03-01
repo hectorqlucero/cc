@@ -12,7 +12,7 @@
 	<div class="col-auto">
 		<div class="row">
 			<div class="col-auto">
-        <h3 class="h3-primary" style="color:#127ba3;font-weight:bold;">{{ item.nombre }}</h3><button type="button" class="btn btn-info btn-lg btn-block" data-toggle="popover" data-placement="right" data-content="{{ item.historia }}">Historia</button>
+        <h3 class="h3-primary" style="color:#127ba3;font-weight:bold;">{{ item.nombre|upper }}</h3><button type="button" class="btn btn-info btn-lg btn-block" data-toggle="popover" data-placement="right" data-content="{{ item.historia }}">Historia</button>
 			</div>
 		</div>
 		<div class="row">
@@ -42,7 +42,7 @@
 		<div class="row">
 			<div class="col-auto">
 				<strong>MAPA</strong><span class="vertical-divider-secondary" style="color:#fa981b;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;</span>
-        <a href="{{ item.direcciones }}" target="_blank">Direcciones</a>
+        <a href="{{ item.direcciones }}" target="_blank">Cómo Llegar</a>
 			</div>
 		</div>
 		<div class="row warning">

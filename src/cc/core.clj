@@ -53,6 +53,7 @@
                           </a>
                           <div class='dropdown-menu' aria-labelledby='Preview'>
                           <a class='dropdown-item' href='/calendario/eventos'>Eventos</a>
+                          <a class='dropdown-item' href='/admin/taller'>Talleres</a>
                           <a class='dropdown-item' href='/admin/cuadrantes'>Cuadrantes</a>
                           <a class='dropdown-item' href='/admin/users'>Usuarios</a>
                           <a class='dropdown-item' href='/cartas/categorias'>Categorias</a>

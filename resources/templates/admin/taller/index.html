@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+{% csrf-field %}
+<table id="dg"
+       title="{{ title }}"
+       class="easyui-datagrid datagrid-searchable"
+       style="width: 100%"
+       data-options="url: '/admin/taller/json/grid',
+           toolbar: '#toolbar',
+           queryParams: {'__anti-forgery-token':token},
+           pagination: true,
+           rownumbers: true,
+           nowrap: true,
+           autoRowHeight: false,
+           fitColumns: true,
+           autoSizeColumn: true,
+           singleSelect: true">
+    <thead>
+        <tr>
+            <th data-options="field: 'nombre', sortable: true">Nombre</th>
+            <th data-options="field: 'direccion', sortable: false">Direccion</th>
+            <th data-options="field: 'telefono', sortable: false">Telefono</th>
+            <th data-options="field: 'horarios', sortable: true">Horarios</th>
+            <th data-options="field: 'sitio', sortable: true">Sitio</th>
+            <th data-options="field: 'direcciones', sortable: true">Direcciones</th>
+            <th data-options="field: 'historia', sortable: false">Historia</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-add',plain: true"
+       onclick="defaultGridNewItem()">Crear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-edit',plain: true"
+       onclick="defaultGridEditItem({})">Editar</a>
+    <div style="float: right">
+        <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Busqueda'" title="Buscar">
+    </div>
+</div>
+
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
+  <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+    <input type="hidden" id="id"  name="id">
+    <div class="form-group col-11">
+      <label for="nombre">Nombre del Taller:</label>
+      <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
+      <label for="direccion">Direccion:</label>
+      <input id="direccion" name="direccion" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="telefono">Telefono:</label>
+      <input id="telefono" name="telefono" class="form-control easyui-textbox type-phone" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="horarios">Horarios:</label>
+      <input id="horarios" name="horarios" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="sitio">Sitio:</label>
+      <input id="sitio" name="sitio" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="direcciones">Direcciones:</label>
+      <input id="direcciones" name="direcciones" class="form-control easyui-textbox" data-options="required: false,multiline:true,height:80">
+    </div>
+    <div class="form-group col-11">
+      <label for="historia">Historia:</label>
+      <input id="historia" name="historia" class="form-control easyui-textbox" data-options="required: false,multiline:true,height:80">
+    </div>
+  </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-ok'"
+       onclick="defaultGridSaveItem()">Postear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-cancel'"
+       onclick="defaultGridDialogClose()">Cancelar</a>
+</div>
+
+{% endblock %}
+<script type="text/javascript"></script>
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script type="text/javascript"  src="/js/defaultGrid.js"></script>
+{% endblock %}
