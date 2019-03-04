@@ -15,8 +15,8 @@
 (def column-to-field
   (apply hash-map
          (mapcat
-           #(vector (% :value) (% :text))
-           (months))))
+          #(vector (% :value) (% :text))
+          (months))))
 
 ;;START calendar events
 (def rodadas-sql
@@ -48,7 +48,7 @@
         result (if-not (clojure.string/blank? purge-keys)
                  (Query! db sql)
                  nil)]
-  (Query! db "UPDATE rodadas SET fecha = DATE_ADD(fecha,INTERVAL 7 DAY) WHERE fecha < CURRENT_DATE()")))
+    (Query! db "UPDATE rodadas SET fecha = DATE_ADD(fecha,INTERVAL 7 DAY) WHERE fecha < CURRENT_DATE()")))
 
 (defn process-confirmados [rodadas_id]
   (let [rows (Query db ["select email from rodadas_link where rodadas_id = ? and asistir = ?" rodadas_id "T"])
@@ -160,28 +160,27 @@
 ;;Start events print month
 (def t1
   (template
-    (list
-      [:cell {:align :center :style :bold} (str $day)]
-      [:cell {:border false :align :left :style :bold} (str $descripcion_corta)
-       [:table  {:background-color [222 222 222]
-                 :widths [11 89]}
-        [[:cell {:border false :align :left :style :bold} "LUGAR | "] [:cell {:border false :align :left} (str $punto_reunion)]]
-        [[:cell {:border false :align :left :style :bold} "FECHA | "] [:cell {:border false :align :left} (str $fecha " (" $fecha_dow ")")]]
-        [[:cell {:border false :align :left :style :bold} "HORA  | "] [:cell {:border false :align :left} (str $hora)]]
-        [[:cell {:border false :colspan 2 :align :left :style :bold} (str $leader)]]]])))
+   (list
+    [:cell {:align :center :style :bold} (str $day)]
+    [:cell {:border false :align :left :style :bold} (str $descripcion_corta)
+     [:table  {:background-color [222 222 222]
+               :widths [11 89]}
+      [[:cell {:border false :align :left :style :bold} "LUGAR | "] [:cell {:border false :align :left} (str $punto_reunion)]]
+      [[:cell {:border false :align :left :style :bold} "FECHA | "] [:cell {:border false :align :left} (str $fecha " (" $fecha_dow ")")]]
+      [[:cell {:border false :align :left :style :bold} "HORA  | "] [:cell {:border false :align :left} (str $hora)]]
+      [[:cell {:border false :colspan 2 :align :left :style :bold} (str $leader)]]]])))
 
 (defn execute-report [year month]
   (let [h1 (clojure.string/upper-case (get-month-name (parse-int month)))
         rows (Query db [eventos-sql year month])]
-  (piped-input-stream
-    (fn [output-stream]
-      (pdf [{:title h1
-             :header h1}
-            (into
+    (piped-input-stream
+     (fn [output-stream]
+       (pdf [{:title h1
+              :header h1}
+             (into
               [:table {:border false :background-color [233 233 233]
                        :widths [10 50]}]
-              (t1 rows)
-              )] output-stream)))))
+              (t1 rows))] output-stream)))))
 
 (defn eventos-print [year month]
   (let [file-name (str "evento_" year "_" month ".pdf")]
@@ -190,9 +189,11 @@
      :body (execute-report year month)}))
 ;;End events print month
 
+(defn slide [request]
+  (render-file "slide.html" {:title "Reto San Felipe - Marzo 2 2019"}))
 
 (defroutes home-routes
-  (GET "/" request [] (eventos request))
+  (GET "/" request [] (slide request))
   (GET "/eventos" request [] (eventos request))
   (GET "/eventos/:year/:month" [year month] (display-eventos year month))
   (GET "/eventos/print/:year/:month" [year month] (eventos-print year month))
