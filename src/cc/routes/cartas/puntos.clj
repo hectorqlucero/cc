@@ -166,7 +166,7 @@
 ;;END puntos grid
 
 (defn process-puntos [{params :params}]
-  (render-file "/cartas/carreras/puntos.html" {:title "Actualizar Puntos"
+  (render-file "cartas/carreras/puntos.html" {:title "Actualizar Puntos"
                                                :carreras_id (:carrera_id params)}))
 
 (defroutes puntos-routes
