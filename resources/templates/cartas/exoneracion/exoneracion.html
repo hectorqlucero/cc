@@ -39,10 +39,9 @@
       <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false">
     </div>
     <div class="form-group col-11">
-      <p><small>Realizar el Pago en cualquier banco <b>HSBC</b> o directamente en cualquier tienda <b>OXXO</b></small><br/>
-      <small>Número de cuenta <b>HSBC: 4910 8960 8405 3810</b></small><br/>
-      <small>Realiza el pago de $100.00 pesos (Cien pesos) por el concepto de Inscripción de Serial Ciclista de Mexicali 2019</small><br/>
-      <smaall>Conserva el ticket para cualquier aclaración y enviarlo a la direccion de correo: Marcopescador@hotmail.com o al inbox https://www.facebook.com/pescador.marco</small>
+      <p><small>Realizar el Pago en cualquier banco <b>{{item.banco}}</b> o directamente en cualquier tienda <b>OXXO</b></small><br/>
+      <small>Número de cuenta <b>{{item.banco}}: {{item.banco_cuenta}}</b></small><br/>
+      <small>{{item.banco_instrucciones}}</small>
       </p>
     </div>
   </form>

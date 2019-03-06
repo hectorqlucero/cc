@@ -55,6 +55,10 @@
   "SELECT id as id,
    descripcion,
    donde,
+   banco,
+   banco_cuenta,
+   banco_instrucciones,
+   organizador,
    DATE_FORMAT(fecha,'%m/%d/%Y') as fecha,
    TIME_FORMAT(hora,'%H:%i') as hora,
    puntos_p,
@@ -82,6 +86,10 @@
         postvars {:id           id
                   :descripcion (capitalize-words (:descripcion params))
                   :donde (:donde params)
+                  :banco (:banco params)
+                  :banco_cuenta (:banco_cuenta params)
+                  :banco_instrucciones (:banco_instrucciones params)
+                  :organizador (:organizador params)
                   :fecha (format-date-internal (:fecha params))
                   :hora (fix-hour (:hora params))
                   :puntos_p puntos_p
@@ -92,9 +100,7 @@
         result   (Save db :carreras postvars ["id = ?" id])
         the-id   (if (nil? id) (get (first result) :generated_key nil) id)]
     (if (seq result)
-      (do
-        (if (= status "T") (Update db :carreras {:status "F"} ["id != ? " the-id]))
-        (generate-string {:success "Correctamente Processado!"}))
+      (generate-string {:success "Correctamente Processado!"})
       (generate-string {:error "No se pudo processar!"}))))
 
 (defn carreras-delete

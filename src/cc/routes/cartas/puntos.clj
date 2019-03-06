@@ -8,8 +8,10 @@
             [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
+(def carreras_id (atom nil))
+
 (defn puntos []
-  (render-file "cartas/carreras/puntos.html" {:title "Actualizar Puntos"}))
+  (render-file "cartas/carreras/pre_puntos.html" {:title "Actualizar Puntos"}))
 
 ;;Start ciclistas_puntos grid
 (def search-columns
@@ -36,18 +38,17 @@
    "ciclistas_puntos.puntos_2"
    "ciclistas_puntos.puntos_3"])
 
-(defn grid-json
-  [{params :params}]
+(defn grid-json [{params :params}]
+  (if-not (nil? (:carreras_id params)) (reset! carreras_id (:carreras_id params)))
   (try
     (let [table "ciclistas_puntos"
-          carreras_id (:id (first (Query db "SELECT id from carreras where status = 'T'")))
           scolumns (convert-search-columns search-columns)
           aliases aliases-columns
           join "join ciclistas on ciclistas.id = ciclistas_puntos.ciclistas_id
                 join cartas on cartas.id = ciclistas.cartas_id
                 join categorias on categorias.id = cartas.categoria"
           search (grid-search (:search params nil) scolumns)
-          search (grid-search-extra search (str "ciclistas.carreras_id = " carreras_id))
+          search (grid-search-extra search (str "ciclistas.carreras_id = " @carreras_id))
           order (grid-sort (:sort params nil) (:order params nil))
           order (grid-sort-extra order "categoria ASC,nombre ASC,apellido_paterno ASC")
           offset (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
@@ -132,8 +133,7 @@
 
 (defn execute-report []
   (let [h1  "SERIAL CICLISTA MEXICALI 2019"
-        carreras_id (:id (first (Query db "SELECT id FROM carreras WHERE status = 'T'")))
-        rows (Query db [pdf-sql carreras_id])]
+        rows (Query db [pdf-sql @carreras_id])]
     (piped-input-stream
      (fn [output-stream]
        (pdf
@@ -158,15 +158,20 @@
         output-stream)))))
 
 (defn puntos-pdf [request]
-  (let [carrera-desc (:descripcion (first (Query db "SELECT descripcion from carreras WHERE status = 'T'")))
+  (let [carrera-desc (:descripcion (first (Query db "SELECT descripcion from carreras WHERE id = ?" @carreras_id)))
         file-name (str carrera-desc ".pdf")]
     {:headers {"Content-type" "application/pdf"
                "Content-disposition" (str "attachment;filename=" file-name)}
      :body (execute-report)}))
 ;;END puntos grid
 
+(defn process-puntos [{params :params}]
+  (render-file "/cartas/carreras/puntos.html" {:title "Actualizar Puntos"
+                                               :carreras_id (:carrera_id params)}))
+
 (defroutes puntos-routes
   (GET "/cartas/puntos" [] (if-not (= (user-level) "U") (puntos)))
+  (POST "/cartas/puntos" request [] (if-not (= (user-level) "U") (process-puntos request)))
   (POST "/cartas/puntos/json/grid" request [] (if-not (= (user-level) "U") (grid-json request)))
   (GET "/cartas/puntos/json/form/:id" [id] (if-not (= (user-level) "U") (form-json id)))
   (POST "/cartas/puntos/save" request [] (if-not (= (user-level) "U") (puntos-save request)))

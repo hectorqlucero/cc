@@ -10,6 +10,8 @@
             [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
+(def carreras_id (atom nil))
+
 (def puntos-sql
   "SELECT
    s1.telefono,
@@ -39,7 +41,7 @@
    GROUP BY s1.email,s.nombre,s1.categoria
    ORDER BY s2.descripcion,s.nombre")
 
-(defn carreras-row [] (first (Query db "SELECT * FROM carreras WHERE status = 'T'")))
+(defn carreras-row [] (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id])))
 
 (defn cartas []
   (let [crow (carreras-row)]
@@ -62,13 +64,16 @@
 
 (defn exoneracion
   []
-  (render-file "cartas/exoneracion/index.html" {:title "Cartas - Exoneracion"
-                                                :user  (or (get-session-id) "Anonimo")}))
+  (render-file "cartas/exoneracion/pre_index.html" {:title "Cartas - Exoneracion"
+                                                    :user  (or (get-session-id) "Anonimo")}))
+
+(defn exoneracion-processar [{params :params}]
+  (render-file "cartas/exoneracion/index.html" {:title (str "Registro de Corredores: " (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" (:carrera_id params)]))))
+                                                :carrera_id (:carrera_id params)}))
 
 ;;start exoneracion grid
 (def search-columns
   ["cartas.id"
-   "CONCAT(DATE_FORMAT(DATE(cartas.creado),'%m/%d/%Y'),' ',TIME_FORMAT(TIME(cartas.creado),'%h:%i %p'))"
    "cartas.no_participacion"
    "categorias.descripcion"
    "cartas.nombre"
@@ -86,14 +91,14 @@
 
 (defn grid-json
   [{params :params}]
+  (if-not (nil? (:carrera_id params)) (reset! carreras_id (:carrera_id params)))
   (try
     (let [table    "cartas"
-          carreras_id (:id (carreras-row))
           scolumns (convert-search-columns search-columns)
           aliases  aliases-columns
           join     "JOIN categorias on categorias.id = cartas.categoria"
           search   (grid-search (:search params nil) scolumns)
-          search   (grid-search-extra search (str "cartas.carreras_id = " carreras_id))
+          search   (grid-search-extra search (str "cartas.carreras_id = " @carreras_id))
           order    (grid-sort (:sort params nil) (:order params nil))
           offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
           sql      (grid-sql table aliases join search order offset)
@@ -131,7 +136,6 @@
   [{params :params}]
   (try
     (let [id (or (:id params) "")
-          carreras_id (str (:id (carreras-row)))
           categoria (:categoria params)
           email (:email params)
           postvars {:id id
@@ -139,10 +143,10 @@
                     :categoria categoria
                     :email email
                     :nombre (capitalize-words (:nombre params))
-                    :equipo (:equipo params)
+                    :equipo (clojure.string/upper-case (:equipo params))
                     :telefono (:telefono params)
                     :tutor (capitalize-words (:tutor params))
-                    :carreras_id carreras_id}
+                    :carreras_id @carreras_id}
           result   (Save db :cartas postvars ["id = ? AND categoria = ? AND email = ?" id categoria email])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})
@@ -352,13 +356,19 @@ personales."))
 (defn cartas-processar [{params :params}]
   (let [email (:email params)
         categoria (:categoria params)
-        carreras_id (str (:id (carreras-row)))
+        carreras_id (str (:carrera_id params))
+        carreras-row (first (Query db ["SELECT * FROM carreras WHERE id = ?" carreras_id]))
         row (first (Query db [cartas-sql email categoria carreras_id]))
         result (if (seq row) 1 0)
         row (if (seq row) row {:email email
-                               :categoria categoria})]
-    (render-file "cartas/exoneracion/exoneracion.html" {:title "Registro Serial Ciclista Mexicali"
+                               :categoria categoria
+                               :banco (str (:banco carreras-row))
+                               :banco_cuenta (str (:banco_cuenta carreras-row))
+                               :banco_instrucciones (str (:banco_instrucciones carreras-row))
+                               :organizador (str (:organizador carreras-row))})]
+    (render-file "cartas/exoneracion/exoneracion.html" {:title (str (:descripcion carreras-row))
                                                         :user (or (get-session-id) "Anonimo")
+                                                        :item row
                                                         :row (generate-string row)
                                                         :exists result})))
 
@@ -368,6 +378,7 @@ personales."))
   (GET "/cartas/ptotal" [] (totales))
   (POST "/cartas/processar" request [] (cartas-processar request))
   (GET "/cartas/exoneracion" [] (exoneracion))
+  (POST "/cartas/exoneracion" request (exoneracion-processar request))
   (POST "/cartas/exoneracion/json/grid" request (grid-json request))
   (GET "/cartas/exoneracion/json/form/:id" [id] (form-json id))
   (POST "/cartas/exoneracion/save" request [] (exoneracion-save request))

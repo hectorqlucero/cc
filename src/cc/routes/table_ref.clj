@@ -10,6 +10,9 @@
 (def get_cuadrantes-sql
   "SELECT id AS value, name AS text FROM cuadrantes order by name")
 
+(def get_carreras-sql
+  "SELECT id AS value, CONCAT(descripcion,' - ',DATE_FORMAT(fecha,'%m/%d/%Y')) as text FROM carreras WHERE status = 'T' ORDER BY id")
+
 (defn months []
   (list
    {:value 1 :text "Enero"}
@@ -81,4 +84,5 @@
   (GET "/table_ref/categorias" [] (generate-string (categorias)))
   (GET "/table_ref/primero" [] (generate-string (carreras-primero)))
   (GET "/table_ref/segundo" [] (generate-string (carreras-segundo)))
-  (GET "/table_ref/tercero" [] (generate-string (carreras-tercero))))
+  (GET "/table_ref/tercero" [] (generate-string (carreras-tercero)))
+  (GET "/table_ref/carreras" [] (generate-string (Query db get_carreras-sql))))
