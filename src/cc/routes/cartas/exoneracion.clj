@@ -146,7 +146,7 @@
                     :equipo (clojure.string/upper-case (:equipo params))
                     :telefono (:telefono params)
                     :tutor (capitalize-words (:tutor params))
-                    :carreras_id @carreras_id}
+                    :carreras_id (:carreras_id params)}
           result   (Save db :cartas postvars ["id = ? AND categoria = ? AND email = ?" id categoria email])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})
@@ -354,13 +354,14 @@ personales."))
    AND carreras_id = ?")
 
 (defn cartas-processar [{params :params}]
+  (if-not (nil? (:carreras_id params)) (reset! carreras_id (:carreras_id params)))
   (let [email (:email params)
         categoria (:categoria params)
-        carreras_id (str (:carrera_id params))
-        carreras-row (first (Query db ["SELECT * FROM carreras WHERE id = ?" carreras_id]))
-        row (first (Query db [cartas-sql email categoria carreras_id]))
+        carreras-row (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id]))
+        row (first (Query db [cartas-sql email categoria @carreras_id]))
         result (if (seq row) 1 0)
         row (if (seq row) row {:email email
+                               :carreras_id @carreras_id
                                :categoria categoria
                                :banco (str (:banco carreras-row))
                                :banco_cuenta (str (:banco_cuenta carreras-row))
