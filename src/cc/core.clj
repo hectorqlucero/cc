@@ -59,6 +59,7 @@
                           <a class='dropdown-item' href='/cartas/categorias'>Categorias</a>
                           <a class='dropdown-item' href='/admin/carreras'>Carreras</a>
                           <a class='dropdown-item' href='/cartas/exoneracion'>Registro Corredores</a>
+                          <a class='dropdown-item' href='/cartas/creporte'>Reporte Carrera</a>
                           <a class='dropdown-item' href='/cartas/puntos'>Actualizar Puntos</a>
                           <a class='dropdown-item' href='/cartas/ptotal'>Puntuación Total</a>
                           <a class='dropdown-item' href='/cron/crear/ciclistas'>Crear Ciclistas/Puntos</a>

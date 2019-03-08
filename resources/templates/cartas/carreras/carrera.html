@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+<div class="container col-8">
+    <div class="card-header">
+        <h4 class="mb-0"><span style="color:rgb(18,123,163);">Selecciona Reporte de Carrera</span></h4>
+    </div>
+    <form class="fm" method="post" action="/cartas/creporte/processar" novalidate style="width:100%;background-color:#EFEFEF;">
+        {% csrf-field %}
+        <div class="form-group col-10">
+          <label for="carrera_id">Seleccionar Carrera:</label>
+            <input id="carrera_id" name="carrera_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras_all',method:'GET'">
+        </div>
+        <div class="form-group col-10">
+          <label for="categoria_id">Seleccionar Categoria(s):</label>
+            <input id="categoria_id" name="categoria_id" class="form-control easyui-combobox" data-options="url:'/table_ref/categorias',method:'GET',multiple:true">
+        </div>
+        <div class="form-group col-10">
+          <input id="exoneracion_select" type="submit" class="btn btn-primary" value="Crear Reporte">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% endblock %}
