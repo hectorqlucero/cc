@@ -15,15 +15,20 @@
         {% csrf-field %}
         <div class="form-group col-10">
           <label for="carreras_id">Seleccionar Carrera:</label>
-            <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras',method:'GET'">
+            <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras',
+            method:'GET',
+            onSelect:function(record){
+            var url = '/table_ref/carreras_categorias/'+record.value;
+            $('#categoria').combobox('reload',url);
+            }">
+        </div>
+        <div class="form-group col-10">
+            <label for="categoria">Categoria:</label>
+            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="method:'GET'">
         </div>
         <div class="form-group col-10">
             <label for="email">Email:</label>
             <input name="email" class="form-control easyui-validatebox" id="email" data-options="required: true,validType:'email'">
-        </div>
-        <div class="form-group col-10">
-            <label for="categoria">Categoria:</label>
-            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="url:'/table_ref/categorias',method:'GET'">
         </div>
         <div class="form-group col-10">
           <input id="registrarse" type="submit" class="btn btn-primary" value="Registrate">

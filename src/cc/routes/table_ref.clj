@@ -76,6 +76,20 @@
         result (list {:value puntos :text (str puntos " puntos")})]
     result))
 
+;; Start carreras_categorias
+(def carreras_categorias-sql
+  "SELECT
+   carreras_categorias.categorias_id as value,
+   categorias.descripcion as text
+   FROM carreras_categorias
+   LEFT JOIN categorias on categorias.id = carreras_categorias.categorias_id
+   WHERE carreras_categorias.carreras_id = ?
+   AND carreras_categorias.status = 'T'")
+
+(defn carreras_categorias [carreras_id]
+  (Query db [carreras_categorias-sql carreras_id]))
+;; End carreras_categorias
+
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))
@@ -85,6 +99,7 @@
   (GET "/table_ref/nivel_options" [] (generate-string (nivel-options)))
   (GET "/table_ref/help" [] (get-help))
   (GET "/table_ref/categorias" [] (generate-string (categorias)))
+  (GET "/table_ref/carreras_categorias/:carreras_id" [carreras_id] (generate-string (carreras_categorias carreras_id)))
   (GET "/table_ref/primero" [] (generate-string (carreras-primero)))
   (GET "/table_ref/segundo" [] (generate-string (carreras-segundo)))
   (GET "/table_ref/tercero" [] (generate-string (carreras-tercero)))

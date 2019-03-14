@@ -1,5 +1,5 @@
 if ($.fn.pagination){
-	$.fn.pagination.defaults.beforePageText = 'Pagina';
+	$.fn.pagination.defaults.beforePageText = 'P&aacute;gina';
 	$.fn.pagination.defaults.afterPageText = 'de {pages}';
 	$.fn.pagination.defaults.displayMsg = 'Mostrando {from} a {to} de {total} elementos';
 }
@@ -22,8 +22,8 @@ $.map(['validatebox','textbox','passwordbox','filebox','searchbox',
 	}
 });
 if ($.fn.validatebox){
-	$.fn.validatebox.defaults.rules.email.message = 'Por favor ingrese una direcci&oacute;n de correo valida.';
-	$.fn.validatebox.defaults.rules.url.message = 'Por favor ingrese una URL valida.';
+	$.fn.validatebox.defaults.rules.email.message = 'Por favor ingrese una direcci&oacute;n de correo v&aacute;lida.';
+	$.fn.validatebox.defaults.rules.url.message = 'Por favor ingrese una URL v&aacute;lida.';
 	$.fn.validatebox.defaults.rules.length.message = 'Por favor ingrese un valor entre {0} y {1}.';
 	$.fn.validatebox.defaults.rules.remote.message = 'Por favor corrija este campo.';
 }

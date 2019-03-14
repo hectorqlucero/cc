@@ -113,9 +113,46 @@
       (generate-string {:success "Removido appropiadamente!"})
       (generate-string {:error "No se pudo remover!"}))))
 
+;;Start carreras_categorias
+(def carreras_categorias-sql
+  "SELECT
+   carreras_categorias.id,
+   carreras_categorias.status,
+   carreras_categorias.carreras_id,
+   carreras_categorias.categorias_id,
+   categorias.descripcion
+   FROM categorias
+   JOIN carreras_categorias on carreras_categorias.categorias_id = categorias.id
+   WHERE carreras_categorias.carreras_id = ?
+   ORDER BY categorias.id")
+
+(defn carreras_categorias
+  [carreras_id]
+  (render-file "admin/carreras/categorias.html" {:title "Carreras"
+                                                 :items (Query db [carreras_categorias-sql carreras_id])
+                                                 :carreras_id carreras_id}))
+
+(defn carreras_categorias-process [{params :params}]
+  (let [id (:id params)
+        carreras_id (:carreras_id params)
+        categorias_id (:categorias_id params)
+        status (:status_id params)
+        postvars {:id id
+                  :carreras_id carreras_id
+                  :categorias_id categorias_id
+                  :status status}
+        result (Update db :carreras_categorias postvars ["id = ?" id])]
+    (if (seq result)
+      (str "Se processor correctamente!")
+      (str "No se pudo processar correctamente!"))))
+
+;;End carreras_categorias
+
 (defroutes carreras-routes
   (GET "/admin/carreras" [] (if-not (= (user-level) "U") (carreras)))
   (POST "/admin/carreras/json/grid" request [] (if-not (= (user-level) "U") (grid-json request)))
   (GET "/admin/carreras/json/form/:id" [id] (if-not (= (user-level) "U") (form-json id)))
   (POST "/admin/carreras/save" request [] (if-not (= (user-level) "U") (carreras-save request)))
-  (POST "/admin/carreras/delete" request [] (if-not (= (user-level) "U") (carreras-delete request))))
+  (POST "/admin/carreras/delete" request [] (if-not (= (user-level) "U") (carreras-delete request)))
+  (GET "/admin/carreras_categorias/:carreras_id" [carreras_id] (carreras_categorias carreras_id))
+  (GET "/admin/carreras_categorias_process" request [] (carreras_categorias-process request)))

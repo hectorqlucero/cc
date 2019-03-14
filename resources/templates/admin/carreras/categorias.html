@@ -1,0 +1,32 @@
+<table>
+  <thead>
+    <tr>
+      <th>SELECCIONAR</th>
+      <th>CATEGORIA</th>
+      <th>DESCRIPCION</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td><input type="checkbox" value="{{item.status}}" onclick="clicked(this,'{{item.id}}','{{item.carreras_id}}','{{item.categorias_id}}')" {% ifequal item.status "T" %} CHECKED {% endifequal %}></td>
+      <td>{{item.categorias_id}}</td>
+      <td>{{item.descripcion}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+  function clicked(checkbox,id,carreras_id,categorias_id) {
+    var x = checkbox.checked;
+    if(x) {
+      var status_id = "T";
+    } else {
+      var status_id = "F";
+    }
+    $.get("/admin/carreras_categorias_process", {id: id, carreras_id: carreras_id, categorias_id: categorias_id, status_id: status_id})
+      .done(function(data) {
+        alert(data);
+      });
+  }
+</script>

@@ -564,4 +564,19 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db ciclistas-sql)
   (Query! db carreras-sql)
   (Query! db ciclistas_puntos-sql))
+
+(defn create-carreras-categorias []
+  (doseq [item (Query db "SELECT * FROM categorias")]
+    (doseq [sitem (Query db "SELECT * FROM carreras")]
+      (let [carreras_id (str (:id sitem))
+            categorias_id (str (:id item))
+            status "T"
+            id (:id (first (Query db ["SELECT id from carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id])))
+            postvars {:id (str id)
+                      :carreras_id carreras_id
+                      :categorias_id categorias_id
+                      :status status}]
+        (Save db :carreras_categorias postvars ["id = ?" id])))))
+
+;;(create-carreras-categorias)
 ;;(migrate)

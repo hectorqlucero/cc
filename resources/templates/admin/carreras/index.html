@@ -127,9 +127,31 @@
 <script type="text/javascript"></script>
 {% block scripts %}
 {% script "/easyui/jquery.easyui.min.js" %}
-{% script "/easyui/datagrid-detailview.js" %}
 {% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
 {% script "/js/jquery.maskedinput.min.js" %}
 {% script "/easyui/locale/easyui-lang-es.js" %}
 <script type="text/javascript"  src="/js/defaultGrid.js"></script>
+<script>
+  $(document).ready(function () {
+    var dataGridOptions = dataGrid.datagrid('options');
+    dataGridOptions.view = detailview;
+    dataGridOptions.detailFormatter = function () {
+      return '<div class="ddv" style="padding:5px 0;"></div>';
+    };
+    dataGridOptions.onExpandRow = function (index, row) {
+      var ddv = $(this).datagrid('getRowDetail', index).find('div.ddv');
+      ddv.panel({
+        height:'auto',
+        border:false,
+        cache:false,
+        href:'/admin/carreras_categorias/'+ row.id,
+        onLoad:function() {
+          dataGrid.datagrid('fixDetailRowHeight', index);
+        }
+      });
+      dataGrid.datagrid('fixDetailRowHeight', index);
+    }
+  });
+</script>
 {% endblock %}
