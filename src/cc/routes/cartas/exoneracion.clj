@@ -31,14 +31,14 @@
 (def totales-sql
   "SELECT
    DISTINCT(s1.email) as email,
-   s.nombre as nombre,
+   s1.nombre as nombre,
    s2.descripcion as categoria,
    SUM((IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0))) as puntos
    FROM ciclistas_puntos p
    JOIN ciclistas s ON s.id = p.ciclistas_id
    JOIN cartas s1 on s1.id = s.cartas_id
    JOIN categorias s2 on s2.id = s1.categoria
-   GROUP BY s1.email,s.nombre,s1.categoria
+   GROUP BY s1.email,s1.categoria
    ORDER BY s2.descripcion,s.nombre")
 
 (defn carreras-row [] (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id])))
@@ -68,8 +68,9 @@
                                                     :user  (or (get-session-id) "Anonimo")}))
 
 (defn exoneracion-processar [{params :params}]
+  (if-not (nil? (:carrera_id params)) (reset! carreras_id (:carrera_id params)))
   (render-file "cartas/exoneracion/index.html" {:title (str "Registro de Corredores: " (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" (:carrera_id params)]))))
-                                                :carrera_id (:carrera_id params)}))
+                                                :carrera_id @carreras_id}))
 
 ;;start exoneracion grid
 (def search-columns
@@ -135,7 +136,7 @@
 (defn exoneracion-save
   [{params :params}]
   (try
-    (let [id (or (:id params) "")
+    (let [id (:id params)
           categoria (:categoria params)
           email (:email params)
           postvars {:id id
@@ -146,8 +147,8 @@
                     :equipo (clojure.string/upper-case (:equipo params))
                     :telefono (:telefono params)
                     :tutor (capitalize-words (:tutor params))
-                    :carreras_id (:carreras_id params)}
-          result   (Save db :cartas postvars ["id = ? AND categoria = ? AND email = ?" id categoria email])]
+                    :carreras_id @carreras_id}
+          result   (Save db :cartas postvars ["id = ?" id])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})
         (generate-string {:error "No se pudo processar!"})))

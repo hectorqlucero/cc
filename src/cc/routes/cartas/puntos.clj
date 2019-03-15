@@ -17,7 +17,7 @@
 (def search-columns
   ["ciclistas_puntos.id"
    "cartas.no_participacion"
-   "ciclistas.nombre"
+   "cartas.nombre"
    "categorias.descripcion"
    "ciclistas.apellido_paterno"
    "ciclistas.apellido_materno"
@@ -29,7 +29,7 @@
 (def aliases-columns
   ["ciclistas_puntos.id as id"
    "cartas.no_participacion"
-   "ciclistas.nombre"
+   "cartas.nombre"
    "categorias.descripcion as categoria"
    "ciclistas.apellido_paterno"
    "ciclistas.apellido_materno"
@@ -166,9 +166,9 @@
 ;;END puntos grid
 
 (defn process-puntos [{params :params}]
-  (render-file "cartas/carreras/puntos.html" {:title "Actualizar Puntos"
-                                               :carreras_id (:carrera_id params)}))
-
+  (if-not (nil? (:carrera_id params)) (reset! carreras_id (:carrera_id params)))
+  (render-file "cartas/carreras/puntos.html" {:title (str "Actualizar Puntos: " (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" @carreras_id]))))
+                                              :carreras_id (:carrera_id params)}))
 (defroutes puntos-routes
   (GET "/cartas/puntos" [] (if-not (= (user-level) "U") (puntos)))
   (POST "/cartas/puntos" request [] (if-not (= (user-level) "U") (process-puntos request)))
