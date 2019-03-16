@@ -40,7 +40,7 @@
    JOIN categorias s2 on s2.id = s1.categoria
    GROUP BY s1.email,s1.categoria
    ORDER BY s2.descripcion,s.nombre")
-
+(Query db totales-sql)
 (defn carreras-row [] (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id])))
 
 (defn cartas []
