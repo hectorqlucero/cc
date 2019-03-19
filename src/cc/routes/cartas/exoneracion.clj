@@ -40,7 +40,20 @@
    JOIN categorias s2 on s2.id = s1.categoria
    GROUP BY s1.email,s1.categoria
    ORDER BY s2.descripcion,s.nombre")
-(Query db totales-sql)
+
+(def ptotales-sql
+  "SELECT
+   DISTINCT(s1.email) as email,
+   s1.nombre as nombre,
+   s2.descripcion as categoria,
+   SUM((IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0))) as puntos
+   FROM ciclistas_puntos p
+   JOIN ciclistas s ON s.id = p.ciclistas_id
+   JOIN cartas s1 on s1.id = s.cartas_id
+   JOIN categorias s2 on s2.id = s1.categoria
+   GROUP BY s1.email,s1.categoria
+   ORDER BY s.nombre,s2.descripcion,puntos")
+
 (defn carreras-row [] (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id])))
 
 (defn cartas []
@@ -54,6 +67,11 @@
   (let [crow (carreras-row)]
     (render-file "cartas/exoneracion/totales.html" {:title "Puntuación Total Serial"
                                                     :rows (Query db totales-sql)})))
+
+(defn ptotal []
+  (let [crow (carreras-row)]
+    (render-file "cartas/exoneracion/ptotal.html" {:title "Puntuación Total Serial"
+                                                   :rows (Query db ptotales-sql)})))
 
 (defn resultados []
   (let [crow (carreras-row)]
@@ -115,6 +133,8 @@
    no_participacion,
    categoria,
    nombre,
+   sexo,
+   edad,
    equipo,
    telefono,
    email,
@@ -143,6 +163,8 @@
                     :no_participacion (:no_participacion params)
                     :categoria categoria
                     :email email
+                    :sexo (:sexo params)
+                    :edad (:edad params)
                     :nombre (capitalize-words (:nombre params))
                     :equipo (clojure.string/upper-case (:equipo params))
                     :telefono (:telefono params)
@@ -425,6 +447,8 @@ personales."))
    categoria,
    no_participacion,
    nombre,
+   sexo,
+   edad,
    equipo,
    telefono,
    email,
@@ -441,6 +465,13 @@ personales."))
         categoria (:categoria params)
         carreras-row (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id]))
         row (first (Query db [cartas-sql email categoria @carreras_id]))
+        item {:email email
+              :carreras_id @carreras_id
+              :categoria categoria
+              :banco (str (:banco carreras-row))
+              :banco_cuenta (str (:banco_cuenta carreras-row))
+              :banco_instrucciones (str (:banco_instrucciones carreras-row))
+              :organizador (str (:organizador carreras-row))}
         result (if (seq row) 1 0)
         row (if (seq row) row {:email email
                                :carreras_id @carreras_id
@@ -451,7 +482,7 @@ personales."))
                                :organizador (str (:organizador carreras-row))})]
     (render-file "cartas/exoneracion/exoneracion.html" {:title (str (:descripcion carreras-row))
                                                         :user (or (get-session-id) "Anonimo")
-                                                        :item row
+                                                        :item item
                                                         :row (generate-string row)
                                                         :exists result})))
 
@@ -459,6 +490,7 @@ personales."))
   (GET "/registro" [] (cartas))
   (GET "/resultados" [] (resultados))
   (GET "/cartas/ptotal" [] (totales))
+  (GET "/cartas/puntos" [] (ptotal))
   (GET "/cartas/creporte" request [] (creporte request))
   (POST "/cartas/creporte/processar" request [] (creporte-processar request))
   (POST "/cartas/processar" request [] (cartas-processar request))

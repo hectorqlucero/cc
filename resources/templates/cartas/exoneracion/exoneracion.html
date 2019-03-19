@@ -4,7 +4,35 @@
 {% style "/easyui/themes/default/easyui.css" %}
 {% style "/easyui/themes/icon.css" %}
 {% style "/easyui/themes/color.css" %}
+<style>
+<!--
+body {
+  background-image: url(/images/registro.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: bottom;
+}
+//-->
+</style>
 {% endblock %}
+
+{% block navbar_content %}
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+        <a href="http://www.facebook.com/ciclismourbanomexicali" class="navbar-brand" style="margin-bottom: 0; ">Ciclismo Urbano</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+	    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+	</button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto" id="cum">
+                <li class="nav-item"><a href="/cartas/puntos" class="nav-link">Puntuacion</a></li>
+                <li class="nav-item"><a href="/registro" class="nav-link">Registrate</a></li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
 {% block content %}
 {% csrf-field %}
 <div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'"
@@ -13,6 +41,12 @@
   <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
     <input type="hidden" id="id" name="id">
     <input type="hidden" id="carreras_id" name="carreras_id">
+    <div class="form-group col-11">
+      <p><small>Realizar el Pago en cualquier banco <b>{{item.banco}}</b> o directamente en cualquier tienda <b>OXXO</b></small><br/>
+      <small>Número de cuenta <b>{{item.banco}}: {{item.banco_cuenta}}</b></small><br/>
+      <small>{{item.banco_instrucciones}}</small>
+      </p>
+    </div>
     <div class="form-group col-11">
       <label for="email">Email:</label>
       <input id="email" name="email" class="form-control easyui-validatebox" data-options="required:true,validType:'email',readonly:true">
@@ -26,6 +60,19 @@
       <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required: true">
     </div>
     <div class="form-group col-11">
+      <label>Sexo:</label>
+      <div style="margin-bottom:3px;">
+        <input class="form-control easyui-radiobutton" id="sexo" name="sexo" value="M" data-options="label:'Masculino',labelPosition:'after'">
+      </div>
+      <div style="margin-bottom:3px;">
+        <input class="form-control easyui-radiobutton" id="sexo" name="sexo" value="F" data-options="label:'FFemenino',labelPosition:'after'">
+      </div>
+    </div>
+    <div class="form-group col-11">
+      <label for="edad">Edad:</label>
+      <input id="edad" name="edad" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
       <label for="equipo">Equipo:</label>
       <input id="equipo" name="equipo" class="form-control easyui-textbox" data-options="required: true">
     </div>
@@ -37,12 +84,6 @@
     <div class="form-group col-11">
       <label for="tutor">Nombre del padre o tutor (En su caso):</label>
       <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false">
-    </div>
-    <div class="form-group col-11">
-      <p><small>Realizar el Pago en cualquier banco <b>{{item.banco}}</b> o directamente en cualquier tienda <b>OXXO</b></small><br/>
-      <small>Número de cuenta <b>{{item.banco}}: {{item.banco_cuenta}}</b></small><br/>
-      <small>{{item.banco_instrucciones}}</small>
-      </p>
     </div>
   </form>
 </div>
