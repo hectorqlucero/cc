@@ -2,7 +2,7 @@
   (:require [cc.models.crud :refer :all]
             [cc.models.util :refer [current_time_internal]]
             [cheshire.core :refer :all]
-            [noir.response :rerfer [redirect]]
+            [noir.response :refer [redirect]]
             [selmer.parser :refer [render-file]]
             [compojure.core :refer :all]))
 
@@ -39,8 +39,8 @@
                       :cartas_id cartas_id
                       :carreras_id carreras_id
                       :categorias_id categorias_id}
-            result (Save db :contrareloj postvars ["id = ?" id])])
-      (generate-string {:success "Carrera Procesada!"}))))
+            result (Save db :contrareloj postvars ["id = ?" id])])))
+  (redirect "/contrareloj"))
 
 ;;End crear carrera
 
