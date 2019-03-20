@@ -6,6 +6,9 @@
             [selmer.parser :refer [render-file]]
             [compojure.core :refer :all]))
 
+(defn contra-reloj [_]
+  (render-file "contrareloj/index.html" {:title "Carreras Contra Reloj"}))
+
 ;;Start crear carrera
 (defn get-carrera [request]
   (render-file "contrareloj/pre_carrera.html" {:title "Crear Carrera Contra Reloj"}))
@@ -118,7 +121,7 @@
         carreras_desc (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id])))
         rows (Query db [results-sql carreras_id])
         rows (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) "km/h")) rows)]
-    (render-file "contrareloj/resultados.html" {:title (str "Resultados: " carreras_desc)
+    (render-file "contrareloj/resultados.html" {:title (str "Resultados: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Kilometros)")
                                                 :rows rows})))
 
 (defn resultados [request]
@@ -126,6 +129,7 @@
 ;;End show results
 
 (defroutes crear_carreras-routes
+  (GET "/contrareloj" request [] (contra-reloj request))
   (GET "/contrareloj/crear/carrera" request [] (get-carrera request))
   (POST "/contrareloj/crear/carrera" request [] (process-carrera request))
   (GET "/contrareloj/tomar/tiempo" request [] (get-timer request))

@@ -6,10 +6,14 @@
 {% style "/easyui/themes/color.css" %}
 {% endblock %}
 
+{% block navbar_content %}
+{% include "contrareloj/contrareloj_menu.html" %}
+{% endblock %}
+
 {% block content %}
 <div class="container col-8">
     <div class="card-header">
-        <h4 class="mb-0"><span style="color:rgb(18,123,163);">Selecciona Carrera</span></h4>
+      <h4 class="mb-0"><span style="color:rgb(18,123,163);">{{title}}: Selecciona Carrera</span></h4>
     </div>
     <form class="fm" method="post" action="/contrareloj/tomar/tiempo" novalidate style="width:100%;background-color:#EFEFEF;">
         {% csrf-field %}
