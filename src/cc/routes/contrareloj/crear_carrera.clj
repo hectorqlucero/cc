@@ -117,7 +117,7 @@
   (let [carreras_id (:carreras_id params)
         carreras_desc (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id])))
         rows (Query db [results-sql carreras_id])
-        rows (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) " km/h")) rows)]
+        rows (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) "km/h")) rows)]
     (render-file "contrareloj/resultados.html" {:title (str "Resultados: " carreras_desc)
                                                 :rows rows})))
 
