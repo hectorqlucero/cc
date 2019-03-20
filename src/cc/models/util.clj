@@ -48,9 +48,9 @@
 
 (def external-dt-parser (f/formatter tz "E M d Y  h:m a" "YYYY-MM-dd"))
 
-(def internal-time-parser (f/formatter tz "H:k:s" "h:m a"))
+(def internal-time-parser (f/formatter tz "HH:mm:ss" "H:k:s"))
 
-(def external-time-parser (f/formatter tz "h:m a" "H:k:s"))
+(def external-time-parser (f/formatter tz "hh:mm:ss a" "H:k:s"))
 
 (defn get-session-id []
   (try

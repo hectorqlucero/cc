@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+<table class="table-dark table-striped table-bordered btn-table">
+  <thead class=".thead-dark">
+    <tr>
+      <th colspan=5>{{title}}</th>
+    </tr>
+    <tr>
+      <th>Numero</th>
+      <th>Nombre</th>
+      <th>Empezar</th>
+      <th>Terminar</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td><strong>{{row.numero}}</td>
+      <td><i>{{row.nombre}}</i><br><small>{{row.categoria}}</small></td>
+      <td><button id= "{{row.id}}_empezar" type="button" class="btn btn-primary" onclick="empezar({{row.id}})"><strong>{{row.numero}}</strong>&nbsp;&nbsp;Empezar</button>
+        <td><button id="{{row.id}}_terminar" type="button" class="btn btn-primary" onclick="terminar({{row.id}})"><strong>{{row.numero}}</strong>&nbsp;&nbsp;Terminar</button>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+  <script>
+    function empezar(id) {
+      var empezar = "#" + id + "_empezar";
+      $.get("/contrareloj/empezar/tiempo/" + id,function(data) {
+        $(empezar).html(data.time);
+      }, "json");
+    }
+
+    function terminar(id) {
+      var terminar = "#" + id + "_terminar";
+      $.get("/contrareloj/terminar/tiempo/" + id, function(data) {
+        $(terminar).html(data.time);
+      }, "json");
+    }
+  </script>
+{% endblock %}

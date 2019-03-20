@@ -3,6 +3,7 @@
   (:require [cc.models.crud :refer :all]
             [cc.routes.admin :refer [admin-routes]]
             [cc.routes.entrenamiento :refer [entrenamiento-routes]]
+            [cc.routes.contrareloj :refer [contrareloj-routes]]
             [cc.routes.cartas :refer [cartas-routes]]
             [cc.routes.calendario :refer [calendario-routes]]
             [cc.routes.home :refer [home-routes]]
@@ -86,6 +87,7 @@
 (defroutes public-routes
   home-routes
   entrenamiento-routes
+  contrareloj-routes
   cartas-routes
   calendario-routes
   imdecuf-routes
