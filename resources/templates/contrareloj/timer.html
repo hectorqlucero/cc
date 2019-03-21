@@ -29,9 +29,9 @@
       <td><strong>{{row.numero}}</td>
       <td><i>{{row.nombre}}</i><br><small>{{row.categoria}}</small></td>
       <td><button id= "{{row.id}}_empezar" type="button" class="btn btn-primary" onclick="empezar({{row.id}})" {% if row.empezar %} disabled {% endif %}>{% if row.empezar %}{{row.empezar}}{% else %}<strong>{{row.numero}}</strong>&nbsp;&nbsp;Empezar{% endif %}</button>
-        &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="24" width="24" onclick="enable_button('#{{row.id}}_empezar')"/>
+        &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="14" width="14" onclick="enable_button('#{{row.id}}_empezar')"/>
         <td><button id="{{row.id}}_terminar" type="button" class="btn btn-primary" onclick="terminar({{row.id}})" {% if row.terminar %} disabled {% endif %}>{% if row.terminar %}{{row.terminar}}{% else %}<strong>{{row.numero}}</strong>&nbsp;&nbsp;Terminar{% endif %}</button>
-          &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="24" width="24" onclick="enable_button('#{{row.id}}_terminar')"/>
+          &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="14" width="14" onclick="enable_button('#{{row.id}}_terminar')"/>
     </tr>
     {% endfor %}
   </tbody>

@@ -54,8 +54,8 @@
    cartas.no_participacion as numero,
    cartas.nombre as nombre,
    categorias.descripcion as categoria,
-   contrareloj.empezar,
-   contrareloj.terminar
+   TIME_FORMAT(contrareloj.empezar,'%H:%i:%s') as empezar,
+   TIME_FORMAT(contrareloj.terminar,'%H:%i:%s') as terminar
    FROM contrareloj
    JOIN cartas on cartas.id = contrareloj.cartas_id
    LEFT join categorias on categorias.id = contrareloj.categorias_id
