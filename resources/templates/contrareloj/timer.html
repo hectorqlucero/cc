@@ -28,8 +28,10 @@
     <tr>
       <td><strong>{{row.numero}}</td>
       <td><i>{{row.nombre}}</i><br><small>{{row.categoria}}</small></td>
-      <td><button id= "{{row.id}}_empezar" type="button" class="btn btn-primary" onclick="empezar({{row.id}})"><strong>{{row.numero}}</strong>&nbsp;&nbsp;Empezar</button>
-        <td><button id="{{row.id}}_terminar" type="button" class="btn btn-primary" onclick="terminar({{row.id}})"><strong>{{row.numero}}</strong>&nbsp;&nbsp;Terminar</button>
+      <td><button id= "{{row.id}}_empezar" type="button" class="btn btn-primary" onclick="empezar({{row.id}})" {% if row.empezar %} disabled {% endif %}>{% if row.empezar %}{{row.empezar}}{% else %}<strong>{{row.numero}}</strong>&nbsp;&nbsp;Empezar{% endif %}</button>
+        &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="24" width="24" onclick="enable_button('#{{row.id}}_empezar')"/>
+        <td><button id="{{row.id}}_terminar" type="button" class="btn btn-primary" onclick="terminar({{row.id}})" {% if row.terminar %} disabled {% endif %}>{% if row.terminar %}{{row.terminar}}{% else %}<strong>{{row.numero}}</strong>&nbsp;&nbsp;Terminar{% endif %}</button>
+          &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="24" width="24" onclick="enable_button('#{{row.id}}_terminar')"/>
     </tr>
     {% endfor %}
   </tbody>
@@ -42,19 +44,25 @@
 {% script "/easyui/plugins/jquery.datagrid.js" %}
 {% script "/js/jquery.maskedinput.min.js" %}
 {% script "/easyui/locale/easyui-lang-es.js" %}
-  <script>
-    function empezar(id) {
-      var empezar = "#" + id + "_empezar";
-      $.get("/contrareloj/empezar/tiempo/" + id,function(data) {
-        $(empezar).html(data.time);
-      }, "json");
-    }
+<script>
+  function enable_button(id) {
+    $(id).removeAttr('disabled', true);
+  }
 
-    function terminar(id) {
-      var terminar = "#" + id + "_terminar";
-      $.get("/contrareloj/terminar/tiempo/" + id, function(data) {
-        $(terminar).html(data.time);
-      }, "json");
-    }
-  </script>
+function empezar(id) {
+  var empezar = "#" + id + "_empezar";
+  $(empezar).attr('disabled', true);
+  $.get("/contrareloj/empezar/tiempo/" + id,function(data) {
+    $(empezar).html(data.time);
+  }, "json");
+}
+
+function terminar(id) {
+  var terminar = "#" + id + "_terminar";
+  $(terminar).attr('disabled', true);
+  $.get("/contrareloj/terminar/tiempo/" + id, function(data) {
+    $(terminar).html(data.time);
+  }, "json");
+}
+</script>
 {% endblock %}

@@ -53,7 +53,9 @@
    contrareloj.id as id,
    cartas.no_participacion as numero,
    cartas.nombre as nombre,
-   categorias.descripcion as categoria
+   categorias.descripcion as categoria,
+   contrareloj.empezar,
+   contrareloj.terminar
    FROM contrareloj
    JOIN cartas on cartas.id = contrareloj.cartas_id
    LEFT join categorias on categorias.id = contrareloj.categorias_id
