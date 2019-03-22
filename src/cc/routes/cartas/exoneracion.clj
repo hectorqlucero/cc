@@ -159,7 +159,8 @@
 
 (defn get-email-body [carreras_id nombre email edad telefono equipo categoria]
   {:from "hectorqlucero@gmail.com"
-   :to "hectorqlucero@gmail.com"
+   :to "marcopescador@hotmail.com"
+   :cc "hectorqlucero@gmail.com"
    :subject (str "Nuevo Registro para la carrera: " (get-carreras-desc carreras_id))
    :body [{:type "text/html;charset=utf-8"
            :content (str "Nuevo registro: <br>"
