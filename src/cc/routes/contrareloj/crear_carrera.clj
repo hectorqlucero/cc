@@ -1,6 +1,6 @@
 (ns cc.routes.contrareloj.crear_carrera
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [current_time_internal]]
+            [cc.models.util :refer [current_time_internal parse-int]]
             [cheshire.core :refer :all]
             [noir.response :refer [redirect]]
             [selmer.parser :refer [render-file]]
@@ -114,8 +114,8 @@
    ORDER BY s0.descripcion,result")
 
 (defn calculate-speed [distance seconds]
-  (let [hours (/ seconds (* 60.0 60.0))
-        speed (/ distance hours)]
+  (let [hours (/ (parse-int seconds) 3600.0)
+        speed (/ (parse-int distance) hours)]
     (format "%.3f" speed)))
 
 (defn process [{params :params}]
