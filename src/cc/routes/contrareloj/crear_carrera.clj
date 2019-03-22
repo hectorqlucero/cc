@@ -115,20 +115,88 @@
 
 (defn calculate-speed [distance seconds]
   (let [hours (/ (parse-int seconds) 3600.0)
-        speed (/ (parse-int distance) hours)]
+        speed (/ (/ (parse-int distance) 1000) hours)]
     (format "%.3f" speed)))
+
+(defn resultados [request]
+  (render-file "contrareloj/pre_resultados.html" {:title "Ver Resultados Todas las Categorias"}))
 
 (defn process [{params :params}]
   (let [carreras_id (:carreras_id params)
         carreras_desc (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id])))
         rows (Query db [results-sql carreras_id])
         rows (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) " km/h")) rows)]
-    (render-file "contrareloj/resultados.html" {:title (str "Resultados: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Kilometros)")
+    (render-file "contrareloj/resultados.html" {:title (str "Resultados: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Metros)")
                                                 :rows rows})))
-
-(defn resultados [request]
-  (render-file "contrareloj/pre_resultados.html" {:title "Ver Resultados"}))
 ;;End show results
+
+;;Start cresultados
+(def cresults-sql
+  "SELECT
+   s0.descripcion as categoria,
+   p.carreras_id as carreras_id,
+   s1.distancia as distancia,
+   s.no_participacion as numero,
+   s.nombre as nombre,
+   TIME_FORMAT(p.empezar, '%H:%i:%s') as empezar,
+   TIME_FORMAT(p.terminar, '%H:%i:%s') as terminar,
+   TIME_FORMAT(SUBTIME(p.terminar,p.empezar),'%H:%i:%s') as result,
+   TIME_TO_SEC(SUBTIME(p.terminar,p.empezar)) as seconds
+   FROM contrareloj p
+   JOIN cartas s on s.id = p.cartas_id
+   JOIN categorias s0 on s0.id = p.categorias_id
+   JOIN carreras s1 on s1.id = p.carreras_id
+   WHERE p.empezar IS NOT NULL
+   AND p.terminar IS NOT NULL
+   AND p.carreras_id = ?
+   AND p.categorias_id = ?
+   ORDER BY result")
+
+(defn cresultados [request]
+  (render-file "contrareloj/cpre_resultados.html" {:title "Ver Resultados Por Categoria"}))
+
+(defn cprocess [{params :params}]
+  (let [carreras_id (:carreras_id params)
+        carreras_desc (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id])))
+        categorias_id (:categoria params)
+        rows (Query db [cresults-sql carreras_id categorias_id])
+        rows (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) " km/h")) rows)]
+    (render-file "contrareloj/c_resultados.html" {:title (str "Resultados/Categoria: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Metros)")
+                                                  :rows rows})))
+;;End cresultados
+
+;;Start oresultados
+(def oresults-sql
+  "SELECT
+   s0.descripcion as categoria,
+   p.carreras_id as carreras_id,
+   s1.distancia as distancia,
+   s.no_participacion as numero,
+   s.nombre as nombre,
+   TIME_FORMAT(p.empezar, '%H:%i:%s') as empezar,
+   TIME_FORMAT(p.terminar, '%H:%i:%s') as terminar,
+   TIME_FORMAT(SUBTIME(p.terminar,p.empezar),'%H:%i:%s') as result,
+   TIME_TO_SEC(SUBTIME(p.terminar,p.empezar)) as seconds
+   FROM contrareloj p
+   JOIN cartas s on s.id = p.cartas_id
+   JOIN categorias s0 on s0.id = p.categorias_id
+   JOIN carreras s1 on s1.id = p.carreras_id
+   WHERE p.empezar IS NOT NULL
+   AND p.terminar IS NOT NULL
+   AND p.carreras_id = ?
+   ORDER BY result")
+
+(defn oresultados [request]
+  (render-file "contrareloj/opre_resultados.html" {:title "Ver Resultados Overall"}))
+
+(defn oprocess [{params :params}]
+  (let [carreras_id (:carreras_id params)
+        carreras_desc (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id])))
+        rows (Query db [oresults-sql carreras_id])
+        rows (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) " km/h")) rows)]
+    (render-file "contrareloj/c_resultados.html" {:title (str "Resultados/Overall: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Metros)")
+                                                  :rows rows})))
+;;End oresultados
 
 (defroutes crear_carreras-routes
   (GET "/contrareloj" request [] (contra-reloj request))
@@ -139,4 +207,8 @@
   (GET "/contrareloj/empezar/tiempo/:id" [id] (empezar-time id))
   (GET "/contrareloj/terminar/tiempo/:id" [id] (terminar-time id))
   (GET "/contrareloj/resultados" request [] (resultados request))
-  (POST "/contrareloj/resultados" request [] (process request)))
+  (POST "/contrareloj/resultados" request [] (process request))
+  (GET "/contrareloj/cresultados" request [] (cresultados request))
+  (POST "/contrareloj/cresultados" request [] (cprocess request))
+  (GET "/contrareloj/oresultados" request [] (oresultados request))
+  (POST "/contrareloj/oresultados" request [] (oprocess request)))

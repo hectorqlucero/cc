@@ -3,6 +3,7 @@
             [cc.models.email :refer [host send-email]]
             [cc.models.grid :refer :all]
             [cc.models.util :refer :all]
+            [cc.models.email :refer [host send-email]]
             [cc.routes.table_ref :refer [categorias]]
             [cheshire.core :refer :all]
             [clj-pdf.core :refer :all]
@@ -150,8 +151,24 @@
     (catch Exception e (.getMessage e))))
 
 ;;end exoneracion form
+(defn get-carreras-desc [carreras_id]
+  (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id]))))
+
 (defn get-categorias-desc [c]
   (:descripcion (first (Query db ["SELECT descripcion FROM categorias WHERE id = ?" c]))))
+
+(defn get-email-body [carreras_id nombre email edad telefono equipo categoria]
+  {:from "hectorqlucero@gmail.com"
+   :to "hectorqlucero@gmail.com"
+   :subject (str "Nuevo Registro para la carrera: " (get-carreras-desc carreras_id))
+   :body [{:type "text/html;charset=utf-8"
+           :content (str "Nuevo registro: <br>"
+                         "<strong>Nombre:</strong> " nombre "<br>"
+                         "<strong>Edad:</strong> " edad "<br>"
+                         "<strong>Email:</strong> " email "<br>"
+                         "<strong>Tel:</strong> " telefono "<br>"
+                         "<strong>Equipo:</strong> " equipo "<br>"
+                         "<strong>Categoria:</strong> " (get-categorias-desc categoria))}]})
 
 (defn exoneracion-save
   [{params :params}]
@@ -159,20 +176,28 @@
     (let [id (:id params)
           categoria (:categoria params)
           email (:email params)
+          carreras_id @carreras_id
+          nombre (capitalize-words (:nombre params))
+          telefono (:telefono params)
+          equipo (clojure.string/upper-case (:equipo params))
+          edad (:edad params)
+          email-body (get-email-body carreras_id nombre email edad telefono equipo categoria)
           postvars {:id id
                     :no_participacion (:no_participacion params)
                     :categoria categoria
                     :email email
                     :sexo (:sexo params)
-                    :edad (:edad params)
-                    :nombre (capitalize-words (:nombre params))
-                    :equipo (clojure.string/upper-case (:equipo params))
-                    :telefono (:telefono params)
+                    :edad edad
+                    :nombre nombre
+                    :equipo equipo
+                    :telefono telefono
                     :tutor (capitalize-words (:tutor params))
-                    :carreras_id @carreras_id}
+                    :carreras_id carreras_id}
           result   (Save db :cartas postvars ["id = ?" id])]
       (if (seq result)
-        (generate-string {:success "Correctamente Processado!"})
+        (do
+          (send-email host email-body)
+          (generate-string {:success "Correctamente Processado!<br>Revise los datos con cuidado antes de cerrar esta pagina. En el encabezado aparece la informacion para realizar su pago. Muchas Gracias!"}))
         (generate-string {:error "No se pudo processar!"})))
     (catch Exception e (.getMessage e))))
 

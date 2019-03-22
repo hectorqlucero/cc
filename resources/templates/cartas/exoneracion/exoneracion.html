@@ -41,7 +41,7 @@ body {
   <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
     <input type="hidden" id="id" name="id">
     <input type="hidden" id="carreras_id" name="carreras_id">
-    <div class="form-group col-11">
+    <div class="form-group col-11" style="background-color:#f0f0f0;">
       <p><small>Realizar el Pago en cualquier banco <b>{{item.banco}}</b> o directamente en cualquier tienda <b>OXXO</b></small><br/>
       <small>Número de cuenta <b>{{item.banco}}: {{item.banco_cuenta}}</b></small><br/>
       <small>{{item.banco_instrucciones}}</small>
@@ -65,7 +65,7 @@ body {
         <input class="form-control easyui-radiobutton" id="sexo" name="sexo" value="M" data-options="label:'Masculino',labelPosition:'after'">
       </div>
       <div style="margin-bottom:3px;">
-        <input class="form-control easyui-radiobutton" id="sexo" name="sexo" value="F" data-options="label:'FFemenino',labelPosition:'after'">
+        <input class="form-control easyui-radiobutton" id="sexo" name="sexo" value="F" data-options="label:'Femenino',labelPosition:'after'">
       </div>
     </div>
     <div class="form-group col-11">
@@ -136,8 +136,8 @@ function defaultGridSaveItem() {
                     title: 'Success',
                     msg: json.success
                 });
-                <!-- window.location.reload(true); -->
-                $("#submitbtn").linkbutton('enable');
+                <!-- <1!-- window.location.reload(true); --1> -->
+                <!-- $("#submitbtn").linkbutton('enable'); -->
             }
         }
     });

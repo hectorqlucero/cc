@@ -15,11 +15,20 @@
     <div class="card-header">
       <h4 class="mb-0"><span style="color:rgb(18,123,163);">{{title}}: Selecciona Carrera</span></h4>
     </div>
-    <form class="fm" method="post" action="/contrareloj/resultados" novalidate style="width:100%;background-color:#EFEFEF;">
+    <form class="fm" method="post" action="/contrareloj/cresultados" novalidate style="width:100%;background-color:#EFEFEF;">
         {% csrf-field %}
         <div class="form-group col-10">
-          <label for="carrera_id">Seleccionar Carrera:</label>
-          <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras_all',method:'GET'">
+          <label for="carreras_id">Seleccionar Carrera:</label>
+            <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras_all',
+            method:'GET',
+            onSelect:function(record){
+            var url = '/table_ref/carreras_categorias/'+record.value;
+            $('#categoria').combobox('reload',url);
+            }">
+        </div>
+        <div class="form-group col-10">
+            <label for="categoria">Categoria:</label>
+            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="method:'GET'">
         </div>
         <div class="form-group col-10">
           <input id="exoneracion_select" type="submit" class="btn btn-primary" value="Ver Resultados">

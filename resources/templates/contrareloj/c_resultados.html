@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block navbar_content %}
+{% include "contrareloj/contrareloj_menu.html" %}
+{% endblock %}
+
+{% block content %}
+<table class="table-dark table-striped table-bordered btn-table">
+  <thead class=".thead-dark">
+    <tr>
+      <th colspan=7>{{title}}</th>
+    </tr>
+    <tr>
+      <th>#</th>
+      <th>Categoria</th>
+      <th>Numero</th>
+      <th>Nombre</th>
+      <th>Empezar</th>
+      <th>Terminar</th>
+      <th>Resultado</th>
+      <th>Velocidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <th>{{forloop.counter}}</th>
+      <td>{{row.categoria}}</td>
+      <td>{{row.numero}}</td>
+      <td>{{row.nombre}}</td>
+      <td>{{row.empezar}}</td>
+      <td>{{row.terminar}}</td>
+      <td>{{row.result}}</td>
+      <td>{{row.speed}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% endblock %}
