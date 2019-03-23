@@ -40,12 +40,11 @@ body {
       <table class="table table-light table-striped">
         <thead class="thead-dark">
           <tr style="text-align: center;">
-            <th colspan=4 align='center'>
+            <th colspan=3 align='center'>
               {{ title|upper }}
             </th>
           </tr>
           <tr>
-            <th>EMAIL</th>
             <th>NOMBRE</th>
             <th>CATEGORIA</th>
             <th>PUNTOS</th>
@@ -54,7 +53,6 @@ body {
         <tbody>
           {% for row in rows %}
           <tr>
-            <td>{{ row.email }}</td>
             <td>{{ row.nombre }}</td>
             <td>{{ row.categoria }}</td>
             <td>{{ row.puntos }}</td>
