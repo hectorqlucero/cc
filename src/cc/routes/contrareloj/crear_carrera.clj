@@ -85,16 +85,9 @@
       (generate-string {:time "Not able to generate time!"}))))
 
 ;;Start show results
-(def carreras_categorias-sql
-  "SELECT
-   p.categorias_id as categorias_id,
-   s.descripcion as categoria
-   FROM carreras_categorias p
-   JOIN categorias s on s.id = p.categorias_id
-   WHERE p.carreras_id = ?")
-
 (def results-sql
   "SELECT
+   p.categorias_id as categorias_id,
    s0.descripcion as categoria,
    p.carreras_id as carreras_id,
    s1.distancia as distancia,
@@ -113,6 +106,14 @@
    AND p.carreras_id = ?
    ORDER BY s0.descripcion,result")
 
+(defn get-categoria-descripcion [id]
+  (:descripcion (first (Query db ["SELECT descripcion FROM categorias WHERE id = ?" id]))))
+
+(defn create-categorias [rows]
+  (map (fn [cid]
+         {:categorias_id cid
+          :categoria (get-categoria-descripcion cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))
+
 (defn calculate-speed [distance seconds]
   (let [hours (/ (parse-int seconds) 3600.0)
         speed (/ (/ (parse-int distance) 1000) hours)]
@@ -125,8 +126,10 @@
   (let [carreras_id (:carreras_id params)
         carreras_desc (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id])))
         rows (Query db [results-sql carreras_id])
+        crows (create-categorias rows)
         rows (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) " km/h")) rows)]
     (render-file "contrareloj/resultados.html" {:title (str "Resultados: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Metros)")
+                                                :crows crows
                                                 :rows rows})))
 ;;End show results
 
