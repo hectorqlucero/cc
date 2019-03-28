@@ -201,7 +201,6 @@
                                                   :rows rows})))
 ;;End oresultados
 
-
 (defroutes crear_carreras-routes
   (GET "/contrareloj" request [] (contra-reloj request))
   (GET "/contrareloj/crear/carrera" request [] (get-carrera request))
