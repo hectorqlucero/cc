@@ -253,7 +253,7 @@ cualquier consecuencia, accidentes, perjuicios, deficiencias que puedan causar, 
 a mi salud, integridad fisica, o inclusive muerte. Por esa razón libero de cualquier responsabilidad al respecto al Comité
 Organizador de dicho Evento y/o a las Asociaciones que lo integran, asi como a sus directores, patrocinadores y
 representantes, y por medio de este conducto renuncio, sin limitación alguna a cualquier derecho, demanda o
-indemnización al respecto. Reconozco y acepto que Comité Organizador del Evento \"Serial Ciclista de Mexicali 2019\"
+indemnización al respecto. Reconozco y acepto que Comité Organizador del Evento \"" (:descripcion carreras-row) \" "
 no son ni serán consideradas responsables por cualquier desperfecto, pérdida o robo relacionados con mis pertenencias
 personales."))
 
