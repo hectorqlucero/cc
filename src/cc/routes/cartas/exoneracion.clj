@@ -512,9 +512,13 @@ personales."))
                                                         :row (generate-string row)
                                                         :exists result})))
 
+(defn slide [request]
+  (render-file "cartas/exoneracion/fotos.html" {:title "Carrera Mexicali-Algodones-Mexicali - Marzo 31 2019"}))
+
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
   (GET "/resultados" [] (resultados))
+  (GET "/cartas/fotos" request [] (slide request))
   (GET "/cartas/ptotal" [] (totales))
   (GET "/cartas/rtotal" [] (ptotal))
   (GET "/cartas/creporte" request [] (creporte request))
