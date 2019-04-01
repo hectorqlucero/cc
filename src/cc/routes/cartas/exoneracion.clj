@@ -53,7 +53,7 @@
    JOIN cartas s1 on s1.id = s.cartas_id
    JOIN categorias s2 on s2.id = s1.categoria
    GROUP BY s1.email,s1.categoria
-   ORDER BY s.nombre,s2.descripcion,puntos")
+   ORDER BY s2.descripcion,puntos DESC,s.nombre")
 
 (defn carreras-row [] (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id])))
 

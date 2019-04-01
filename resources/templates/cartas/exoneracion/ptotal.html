@@ -46,16 +46,16 @@ body {
             </th>
           </tr>
           <tr>
-            <th>NOMBRE</th>
             <th>CATEGORIA</th>
+            <th>NOMBRE</th>
             <th>PUNTOS</th>
           </tr>
         </thead>
         <tbody>
           {% for row in rows %}
           <tr>
-            <td>{{ row.nombre }}</td>
             <td>{{ row.categoria }}</td>
+            <td>{{ row.nombre }}</td>
             <td>{{ row.puntos }}</td>
           </tr>
           {% endfor %}
