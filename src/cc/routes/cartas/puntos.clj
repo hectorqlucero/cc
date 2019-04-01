@@ -14,43 +14,50 @@
   (render-file "cartas/carreras/pre_puntos.html" {:title "Actualizar Puntos"}))
 
 ;;Start ciclistas_puntos grid
+(defn crear-puntos [carreras_id]
+  (let [rows (Query db ["SELECT * FROM cartas WHERE carreras_id = ?" carreras_id])]
+    (doseq [row rows]
+      (let [cartas_id (str (:id row))
+            puntos (str 1)
+            postvars {:cartas_id cartas_id
+                      :puntos_p puntos}
+            result (Save db :puntos postvars ["cartas_id = ?" cartas_id])]))))
+
 (def search-columns
-  ["ciclistas_puntos.id"
+  ["cartas.id"
    "cartas.no_participacion"
    "cartas.nombre"
    "categorias.descripcion"
-   "ciclistas.apellido_paterno"
-   "ciclistas.apellido_materno"
-   "ciclistas_puntos.puntos_p"
-   "ciclistas_puntos.puntos_1"
-   "ciclistas_puntos.puntos_2"
-   "ciclistas_puntos.puntos_3"])
+   "puntos.puntos_p"
+   "puntos.puntos_1"
+   "puntos.puntos_2"
+   "puntos.puntos_3"])
 
 (def aliases-columns
-  ["ciclistas_puntos.id as id"
+  ["cartas.id as id"
    "cartas.no_participacion"
    "cartas.nombre"
    "categorias.descripcion as categoria"
-   "ciclistas.apellido_paterno"
-   "ciclistas.apellido_materno"
-   "ciclistas_puntos.puntos_p"
-   "ciclistas_puntos.puntos_1"
-   "ciclistas_puntos.puntos_2"
-   "ciclistas_puntos.puntos_3"])
+   "puntos.puntos_p"
+   "puntos.puntos_1"
+   "puntos.puntos_2"
+   "puntos.puntos_3"])
 
 (defn grid-json [{params :params}]
-  (if-not (nil? (:carreras_id params)) (reset! carreras_id (:carreras_id params)))
+  (if-not (nil? (:carreras_id params))
+    (do
+      (reset! carreras_id (:carreras_id params))
+      (crear-puntos (:carreras_id params))))
   (try
-    (let [table "ciclistas_puntos"
+    (let [table "cartas"
           scolumns (convert-search-columns search-columns)
           aliases aliases-columns
-          join "join ciclistas on ciclistas.id = ciclistas_puntos.ciclistas_id
-                join cartas on cartas.id = ciclistas.cartas_id
+          join "left join puntos on puntos.cartas_id = cartas.id
                 join categorias on categorias.id = cartas.categoria"
           search (grid-search (:search params nil) scolumns)
-          search (grid-search-extra search (str "ciclistas.carreras_id = " @carreras_id))
+          search (grid-search-extra search (str "cartas.carreras_id = " @carreras_id))
           order (grid-sort (:sort params nil) (:order params nil))
-          order (grid-sort-extra order "categoria ASC,nombre ASC,apellido_paterno ASC")
+          order (grid-sort-extra order "categoria ASC,nombre ASC")
           offset (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
           rows (grid-rows table aliases join search order offset)]
       (generate-string rows))
@@ -58,20 +65,18 @@
 ;;End ciclistas_puntos grid
 
 ;;Start form
+
 (def form-sql
   "SELECT
    p.id,
-   s.nombre,
-   s.apellido_paterno,
-   s.apellido_materno,
-   s1.categoria,
-   p.puntos_p,
-   p.puntos_1,
-   p.puntos_2,
-   p.puntos_3
-   FROM ciclistas_puntos p
-   JOIN ciclistas s on s.id = p.ciclistas_id
-   JOIN cartas s1 on s1.id = s.cartas_id
+   p.nombre,
+   p.categoria,
+   s.puntos_p,
+   s.puntos_1,
+   s.puntos_2,
+   s.puntos_3
+   FROM cartas p
+   JOIN puntos s on s.cartas_id = p.id
    WHERE p.id = ?")
 
 (defn form-json [id]
@@ -80,12 +85,12 @@
 
 (defn puntos-save [{params :params}]
   (try
-    (let [id (fix-id (:id params))
-          postvars {:id id
+    (let [cartas_id (fix-id (:id params))
+          postvars {:cartas_id cartas_id
                     :puntos_1 (:puntos_1 params)
                     :puntos_2 (:puntos_2 params)
                     :puntos_3 (:puntos_3 params)}
-          result (Save db :ciclistas_puntos postvars ["id = ?" id])]
+          result (Save db :puntos postvars ["cartas_id = ?" cartas_id])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})
         (generate-string {:error "No se pudo processar!"})))

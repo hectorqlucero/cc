@@ -13,47 +13,29 @@
 
 (def carreras_id (atom nil))
 
-(def puntos-sql
-  "SELECT
-   s1.telefono,
-   s1.no_participacion,
-   s.nombre,
-   s.apellido_paterno,
-   s.apellido_materno,
-   s2.descripcion as categoria,
-   (IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0)) as puntos
-   FROM ciclistas_puntos p
-   JOIN ciclistas s ON s.id = p.ciclistas_id
-   JOIN cartas s1 on s1.id = s.cartas_id
-   JOIN categorias s2 on s2.id = s1.categoria
-   WHERE p.carreras_id = ?
-   ORDER BY s2.descripcion,s.nombre")
-
 (def totales-sql
   "SELECT
-   DISTINCT(s1.email) as email,
-   s1.nombre as nombre,
-   s2.descripcion as categoria,
-   SUM((IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0))) as puntos
-   FROM ciclistas_puntos p
-   JOIN ciclistas s ON s.id = p.ciclistas_id
-   JOIN cartas s1 on s1.id = s.cartas_id
-   JOIN categorias s2 on s2.id = s1.categoria
-   GROUP BY s1.email,s1.categoria
-   ORDER BY s2.descripcion,s.nombre")
+     p.email,
+     p.nombre,
+     s1.descripcion as categoria,
+     SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
+     FROM cartas p
+     JOIN puntos s on s.cartas_id = p.id
+     JOIN categorias s1 on s1.id = p.categoria
+     GROUP by p.email,p.categoria
+     ORDER BY s1.descripcion,puntos DESC,p.nombre")
 
 (def ptotales-sql
   "SELECT
-   DISTINCT(s1.email) as email,
-   s1.nombre as nombre,
-   s2.descripcion as categoria,
-   SUM((IFNULL(p.puntos_p,0) + IFNULL(p.puntos_1,0) + IFNULL(p.puntos_2,0) + IFNULL(p.puntos_3,0))) as puntos
-   FROM ciclistas_puntos p
-   JOIN ciclistas s ON s.id = p.ciclistas_id
-   JOIN cartas s1 on s1.id = s.cartas_id
-   JOIN categorias s2 on s2.id = s1.categoria
-   GROUP BY s1.email,s1.categoria
-   ORDER BY s2.descripcion,puntos DESC,s.nombre")
+   p.email,
+   p.nombre,
+   s1.descripcion as categoria,
+   SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
+   FROM cartas p
+   JOIN puntos s on s.cartas_id = p.id
+   JOIN categorias s1 on s1.id = p.categoria
+   GROUP BY p.email,p.categoria
+   ORDER BY s1.descripcion,puntos DESC,p.nombre")
 
 (defn carreras-row [] (first (Query db ["SELECT * FROM carreras WHERE id = ?" @carreras_id])))
 
@@ -73,13 +55,6 @@
   (let [crow (carreras-row)]
     (render-file "cartas/exoneracion/ptotal.html" {:title "Puntuación Total Serial"
                                                    :rows (Query db ptotales-sql)})))
-
-(defn resultados []
-  (let [crow (carreras-row)]
-    (render-file "cartas/exoneracion/resultados.html" {:title (str (:descripcion crow))
-                                                       :fecha (format-date-external (str (:fecha crow)))
-                                                       :user (or (get-session-id) "Anonimo")
-                                                       :rows (Query db [puntos-sql (:id crow)])})))
 
 (defn exoneracion
   []
@@ -517,7 +492,6 @@ personales."))
 
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
-  (GET "/resultados" [] (resultados))
   (GET "/cartas/fotos" request [] (slide request))
   (GET "/cartas/ptotal" [] (totales))
   (GET "/cartas/rtotal" [] (ptotal))

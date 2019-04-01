@@ -18,18 +18,18 @@
             </th>
           </tr>
           <tr>
-            <th>EMAIL</th>
-            <th>NOMBRE</th>
             <th>CATEGORIA</th>
+            <th>NOMBRE</th>
+            <th>EMAIL</th>
             <th>PUNTOS</th>
           </tr>
         </thead>
         <tbody>
           {% for row in rows %}
           <tr>
-            <td>{{ row.email }}</td>
-            <td>{{ row.nombre }}</td>
             <td>{{ row.categoria }}</td>
+            <td>{{ row.nombre }}</td>
+            <td>{{ row.email }}</td>
             <td>{{ row.puntos }}</td>
           </tr>
           {% endfor %}
