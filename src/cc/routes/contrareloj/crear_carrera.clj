@@ -2,9 +2,9 @@
   (:require [cc.models.crud :refer :all]
             [cc.models.util :refer [current_time_internal parse-int]]
             [cheshire.core :refer :all]
+            [compojure.core :refer :all]
             [noir.response :refer [redirect]]
-            [selmer.parser :refer [render-file]]
-            [compojure.core :refer :all]))
+            [selmer.parser :refer [render-file]]))
 
 (defn contra-reloj [_]
   (render-file "contrareloj/index.html" {:title "Carreras Contra Reloj"}))
