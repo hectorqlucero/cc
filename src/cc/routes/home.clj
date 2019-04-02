@@ -1,10 +1,12 @@
 (ns cc.routes.home
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [zpl get-session-id user-level parse-int get-month-name]]
+            [cc.models.util
+             :refer
+             [get-month-name get-session-id parse-int user-level zpl]]
             [cc.routes.table_ref :refer [months]]
             [cheshire.core :refer :all]
-            [compojure.core :refer :all]
             [clj-pdf.core :refer :all]
+            [compojure.core :refer :all]
             [noir.response :refer [redirect]]
             [noir.session :as session]
             [noir.util.crypt :as crypt]
