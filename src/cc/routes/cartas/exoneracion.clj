@@ -3,7 +3,6 @@
             [cc.models.email :refer [host send-email]]
             [cc.models.grid :refer :all]
             [cc.models.util :refer :all]
-            [cc.models.email :refer [host send-email]]
             [cc.routes.table_ref :refer [categorias]]
             [cheshire.core :refer :all]
             [clj-pdf.core :refer :all]
