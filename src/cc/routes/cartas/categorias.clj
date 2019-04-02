@@ -1,11 +1,9 @@
 (ns cc.routes.cartas.categorias
   (:require [cc.models.crud :refer :all]
             [cc.models.grid :refer :all]
-            [cc.models.util :refer [fix-id user-level parse-int]]
+            [cc.models.util :refer [parse-int user-level]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
-            [clj-pdf.core :refer :all]
-            [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
 (defn categorias []
