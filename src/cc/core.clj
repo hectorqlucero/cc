@@ -11,6 +11,7 @@
             [cc.routes.home :refer [home-routes]]
             [cc.routes.table_ref :refer [table_ref-routes]]
             [cc.routes.talleres :refer [talleres-routes]]
+            [cc.routes.upload :refer [upload-routes]]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
@@ -92,7 +93,8 @@
   imdecuf-routes
   cron-routes
   table_ref-routes
-  talleres-routes)
+  talleres-routes
+  upload-routes)
 
 (defroutes protected-routes
   admin-routes)
