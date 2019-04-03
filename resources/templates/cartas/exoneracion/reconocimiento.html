@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container col-12">
+    <div class="table-responsive">
+      <table class="table table-light table-striped">
+        <thead class="thead-dark">
+          <tr style="text-align: center;">
+            <th colspan=5 align='center'>
+              {{ title|upper }}
+            </th>
+          </tr>
+          <tr>
+            <th>CATEGORIA</th>
+            <th>NOMBRE</th>
+            <th>EMAIL</th>
+            <th>PUNTOS</th>
+            <th>RECONOCIMIENTO</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row.categoria }}</td>
+            <td>{{ row.nombre }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.puntos }}</td>
+            <td><button class="btn btn-primary" onclick="imprimir('{{row.nombre}}','{{row.categoria}}')">Imprimir</button>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script>
+ function imprimir(nombre,categoria) {
+     var the_url = "/cartas/reconocimiento/pdf/"+nombre+"/"+categoria;
+     window.location = the_url;
+ }
+</script>
+{% endblock %}

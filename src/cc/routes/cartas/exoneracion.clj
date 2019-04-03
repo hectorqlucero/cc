@@ -441,6 +441,49 @@ personales."))
      :body    (execute-blank-report)}))
 ;; End blank pdf
 
+;; Start reconocimiento pdf
+(defn execute-reconocimiento-report [nombre categoria]
+  (let [h1   "Reconociemiento"
+        row  {:categoria        nil
+              :nombre           nil
+              :no_participacion nil
+              :telefono         nil
+              :email            nil}
+        crow (carreras-row)]
+    (piped-input-stream
+     (fn [output-stream]
+       (pdf
+        [{:title         h1
+          :left-margin   25
+          :right-margin  10
+          :top-margin    5
+          :bottom-margin 5
+          :size          :letter
+          :orientation   :landscape
+          :font          {:family :helvetica :size 9}
+          :align         :center
+          :pages         false}
+         [:image {:width 740 :height 556 :align :cente} "uploads/reconocimiento.jpg"]
+         [:svg
+          (str
+           "<?xml version=\"1.0\"?>
+        <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
+        <svg height=\"400\" width=\"600\"><text x=\"125\" y=\"345\" style=\"font-size:28px;\">"nombre"</text></svg>")]
+         [:svg
+          (str
+           "<?xml version=\"1.0\"?>
+        <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
+        <svg height=\"420\" width=\"600\"><text x=\"265\" y=\"395\" style=\"font-size: 18px;\">"categoria"</text></svg>")]
+         ]
+        output-stream)))))
+
+(defn reconocimiento-pdf [nombre categoria]
+  (let [file-name (str "reconocimento.pdf")]
+    {:headers {"Content-type"        "application/pdf"
+               "Content-disposition" (str "attachment;filename=" file-name)}
+     :body    (execute-reconocimiento-report nombre categoria)}))
+;; End reconocimiento pdf
+
 (def cartas-sql
   "SELECT
    id,
@@ -489,6 +532,10 @@ personales."))
 (defn slide [request]
   (render-file "cartas/exoneracion/fotos.html" {:title "Carrera Mexicali-Algodones-Mexicali - Marzo 31 2019"}))
 
+(defn imprimir-r []
+  (render-file "cartas/exoneracion/reconocimiento.html" {:title "Imprimir Reconocimientos"
+                                                         :rows (Query db ptotales-sql)}))
+
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
   (GET "/cartas/fotos" request [] (slide request))
@@ -504,4 +551,6 @@ personales."))
   (POST "/cartas/exoneracion/save" request [] (exoneracion-save request))
   (POST "/cartas/exoneracion/delete" request [] (exoneracion-delete request))
   (GET "/cartas/exoneracion/pdf/:id" [id] (exoneracion-pdf id))
-  (GET "/cartas/blank/pdf" request [] (exoneracion-blank-pdf request)))
+  (GET "/cartas/blank/pdf" request [] (exoneracion-blank-pdf request))
+  (GET "/cartas/reconocimiento" [] (imprimir-r))
+  (GET "/cartas/reconocimiento/pdf/:nombre/:categoria" [nombre categoria] (reconocimiento-pdf nombre categoria)))
