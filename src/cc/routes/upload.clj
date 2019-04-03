@@ -4,7 +4,7 @@
             [ring.util.response :refer [redirect]]
             [selmer.parser :refer [render-file]]))
 
-(def UPLOADS (str (System/getProperty "user.home") "/uploads/sf/"))
+(def UPLOADS "/var/www/html/lucero-systems.cf/uploads/sf/")
 
 (defn main [_]
   (render-file "uploads.html" {:title "Subir Fotos"}))
