@@ -192,7 +192,7 @@
 ;;End events print month
 
 (defn slide [request]
-  (render-file "carousel.html" {:title "Reto San Felipe - Marzo 16 2019"}))
+  (render-file "carousel.html" {:title "Reto San Felipe"}))
 
 (defroutes home-routes
   (GET "/" request [] (slide request))
