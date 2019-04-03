@@ -463,17 +463,17 @@ personales."))
           :font          {:family :helvetica :size 9}
           :align         :center
           :pages         false}
-         [:image {:width 740 :height 556 :align :cente} "uploads/reconocimiento.jpg"]
+         [:image {:width 740 :height 556 :align :center} "http://lucero-systems.cf/uploads/reconocimiento.jpg"]
          [:svg
           (str
            "<?xml version=\"1.0\"?>
         <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
-        <svg height=\"400\" width=\"600\"><text x=\"125\" y=\"345\" style=\"font-size:28px;\">"nombre"</text></svg>")]
+        <svg height=\"400\" width=\"600\"><text x=\"133\" y=\"345\" style=\"font-size:28px;\">"nombre"</text></svg>")]
          [:svg
           (str
            "<?xml version=\"1.0\"?>
         <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
-        <svg height=\"420\" width=\"600\"><text x=\"265\" y=\"395\" style=\"font-size: 18px;\">"categoria"</text></svg>")]
+        <svg height=\"420\" width=\"600\"><text x=\"270\" y=\"395\" style=\"font-size: 18px;\">"categoria"</text></svg>")]
          ]
         output-stream)))))
 
