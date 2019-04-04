@@ -12,6 +12,7 @@
             [cc.routes.table_ref :refer [table_ref-routes]]
             [cc.routes.talleres :refer [talleres-routes]]
             [cc.routes.upload :refer [upload-routes]]
+            [cc.routes.podio :refer [podio-routes]]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
@@ -95,7 +96,8 @@
   cron-routes
   table_ref-routes
   talleres-routes
-  upload-routes)
+  upload-routes
+  podio-routes)
 
 (defroutes protected-routes
   admin-routes)

@@ -502,7 +502,7 @@ personales."))
                                                         :exists result})))
 
 (defn slide [request]
-  (render-file "cartas/exoneracion/fotos.html" {:title "Carrera Mexicali-Algodones-Mexicali - Marzo 31 2019"}))
+  (render-file "cartas/exoneracion/fotos.html" {:title "Serial Ciclista Municipal De Mexicali 2019"}))
 
 (defn imprimir-r []
   (render-file "cartas/exoneracion/reconocimiento.html" {:title "Imprimir Reconocimientos"

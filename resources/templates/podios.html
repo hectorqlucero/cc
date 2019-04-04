@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+<div class="container col-8">
+    <div class="card-header">
+        <h4 class="mb-0" ><span style="color:rgb(18,123,163);">{{title}}</span></h4>
+    <form class="fm"  method="post" action="/podio" enctype="multipart/form-data">
+        {% csrf-field %}
+        <div class="form-group col-10">
+            <label>Foto #1</label>
+            <input name="r1"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #2</label>
+            <input name="r2"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #3</label>
+            <input name="r3"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #4</label>
+            <input name="r4"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #5</label>
+            <input name="r5"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #6</label>
+            <input name="r6"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #7</label>
+            <input name="r7"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #8</label>
+            <input name="r8"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #9</label>
+            <input name="r9"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <label>Foto #10</label>
+            <input name="r10"  type="file" class="asyui-filebox form-control" style="width:100%">
+        </div>
+        <div class="form-group col-10">
+            <span><input type="submit" class="btn btn-primary" value="Subir Foto"></span>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% endblock %}
