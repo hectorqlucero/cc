@@ -1,6 +1,7 @@
 (ns cc.routes.upload
   (:require [clojure.java.io :as io]
             [compojure.core :refer :all]
+            [ring.util.io :refer [piped-input-stream]]
             [ring.util.response :refer [redirect]]
             [selmer.parser :refer [render-file]]))
 

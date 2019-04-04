@@ -6,6 +6,7 @@
             [cc.routes.table_ref :refer [categorias]]
             [cheshire.core :refer :all]
             [clj-pdf.core :refer :all]
+            [pdfkit-clj.core :refer :all]
             [compojure.core :refer :all]
             [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
@@ -442,47 +443,18 @@ personales."))
 ;; End blank pdf
 
 ;; Start reconocimiento pdf
-(defn execute-reconocimiento-report [nombre categoria]
-  (let [h1   "Reconociemiento"
-        row  {:categoria        nil
-              :nombre           nil
-              :no_participacion nil
-              :telefono         nil
-              :email            nil}
-        crow (carreras-row)]
-    (piped-input-stream
-     (fn [output-stream]
-       (pdf
-        [{:title         h1
-          :left-margin   25
-          :right-margin  10
-          :top-margin    5
-          :bottom-margin 5
-          :size          :letter
-          :orientation   :landscape
-          :font          {:family :helvetica :size 9}
-          :align         :center
-          :pages         false}
-         [:image {:width 740 :height 556 :align :center} "http://lucero-systems.cf/uploads/reconocimiento.jpg"]
-         [:svg
-          (str
-           "<?xml version=\"1.0\"?>
-        <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
-        <svg height=\"400\" width=\"600\"><text x=\"133\" y=\"345\" style=\"font-size:28px;\">"nombre"</text></svg>")]
-         [:svg
-          (str
-           "<?xml version=\"1.0\"?>
-        <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
-        <svg height=\"420\" width=\"600\"><text x=\"270\" y=\"395\" style=\"font-size: 18px;\">"categoria"</text></svg>")]
-         ]
-        output-stream)))))
+(defn pdf-report [nombre categoria]
+  (as-stream (gen-pdf (render-file "reporte.html" {:nombre nombre
+                                                   :categoria categoria})
+                      :page-size "letter"
+                      :orientation "landscape")))
 
 (defn reconocimiento-pdf [nombre categoria]
-  (let [file-name (str "reconocimento.pdf")]
+  (let [file-name (str nombre "_reconocimento.pdf")]
     {:headers {"Content-type"        "application/pdf"
                "Content-disposition" (str "attachment;filename=" file-name)}
-     :body    (execute-reconocimiento-report nombre categoria)}))
-;; End reconocimiento pdf
+     :body    (pdf-report nombre categoria)}))
+;; End testing reconocimiento pdf
 
 (def cartas-sql
   "SELECT
