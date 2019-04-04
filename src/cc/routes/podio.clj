@@ -1,11 +1,12 @@
 (ns cc.routes.podio
   (:require [clojure.java.io :as io]
+            [cc.models.crud :refer :all]
             [compojure.core :refer :all]
             [ring.util.io :refer [piped-input-stream]]
             [ring.util.response :refer [redirect]]
             [selmer.parser :refer [render-file]]))
 
-(def UPLOADS "/var/www/html/lucero-sytems.cf/uploads/mp/")
+(def UPLOADS (str (config :uploads) "mp/"))
 
 (defn main [_]
   (render-file "podios.html" {:title "Subir Fotos"}))
