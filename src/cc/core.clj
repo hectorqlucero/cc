@@ -66,6 +66,7 @@
                           <a class='dropdown-item' href='/cartas/puntos'>Actualizar Puntos</a>
                           <a class='dropdown-item' href='/cartas/ptotal'>Puntuación Total</a>
                           <a class='dropdown-item' href='/cartas/reconocimiento'>Reconocimientos</a>
+                          <a class='dropdown-item' href='/podio'>Subir Fotos</a>
                           </div>
                           </li>
                           <li class='nav-item'><a href='/logoff' class='nav-link'>Salir</a></li>")

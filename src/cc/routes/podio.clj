@@ -23,11 +23,11 @@
     result))
 
 (defn upload-picture [{params :params}]
-  (doseq [n (range 1 11)]
+  (doseq [n (range 1 15)]
     (let [rfile (str "r" n)
           kfile (keyword rfile)
           file  (kfile params)]
-      (podio-file file rfile)))
+      (upload-file file rfile)))
   (redirect "/cartas/fotos"))
 
 (defroutes podio-routes
