@@ -497,5 +497,5 @@
     next-numero))
 
 (defn deep-merge [& maps]
-  """Merge maps recursively"""
+  "Merge maps recursively"
   (apply merge-with deep-merge maps))
