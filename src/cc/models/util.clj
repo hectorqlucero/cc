@@ -495,3 +495,7 @@
                 :numero_registro (str next-numero)}
         result (Update db :contador values ["id = ?" "C"])]
     next-numero))
+
+(defn deep-merge [& maps]
+  """Merge maps recursively"""
+  (apply merge-with deep-merge maps))
