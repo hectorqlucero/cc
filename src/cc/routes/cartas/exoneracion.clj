@@ -151,7 +151,7 @@
   (try
     (let [id (:id params)
           categoria (:categoria params)
-          email (:email params)
+          email (clojure.string/lower-case (:email params))
           carreras_id @carreras_id
           nombre (capitalize-words (:nombre params))
           telefono (:telefono params)
