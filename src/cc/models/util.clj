@@ -2,14 +2,14 @@
   (:require [cc.models.crud :refer :all]
             [clj-time.core :as t]
             [clj-time.format :as f]
+            [clojure.string :refer [join]]
             [clojurewerkz.money.amounts :as ma]
             [clojurewerkz.money.currencies :as mc]
             [clojurewerkz.money.format :as mf]
-            [noir.session :as session]
-            [date-clj :as d])
+            [date-clj :as d]
+            [noir.session :as session])
   (:import java.text.SimpleDateFormat
-           java.util.Calendar
-           (java.util UUID)))
+           [java.util Calendar UUID]))
 
 ;;Example here: (t/from-time-zone (t/now) tz) -> gives me a joda datetime with correct timezone
 ;;(def halloween-2016 (t/date-time 2016 10 31 18 0 0))
@@ -499,3 +499,25 @@
 (defn deep-merge [& maps]
   "Merge maps recursively"
   (apply merge-with deep-merge maps))
+
+(defn- deprecated? [method]
+  (.isAnnotationPresent method java.lang.Deprecated))
+
+(defn- method-description [method]
+  (join " "
+        [(.getName method)
+         (java.util.Arrays/toString (.getParameterTypes method))
+         "->"
+         (.getReturnType method)]))
+
+(defn jmethods
+  "Returns a sequence of all public java methods available on a given class,
+  including the methods inherited from parent(s)."
+  ([clazz]
+   (jmethods clazz false))
+  ([clazz include-deprecated?]
+   (->> (:methods (bean clazz))
+        (filter #(or include-deprecated?
+                     (not (deprecated? %))))
+        (sort-by #(.getName %))
+        (map method-description))))
