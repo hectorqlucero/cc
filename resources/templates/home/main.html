@@ -78,9 +78,9 @@
 			eventClick: function(calEvent, jsEvent) {
 				var tdesc = calEvent.email || "";
 				if (calEvent.rodada == 'T') {
-					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nNivel: ' + calEvent.nivel + '\nDistancia: ' + calEvent.distancia + '\nVelocidad: ' + calEvent.velocidad + '\nPunto de reunión: ' + calEvent.donde + '\nLider: ' + calEvent.leader + '\nEmal: ' + tdesc + '\nConfirmados: ' + calEvent.confirmados + '\n\nCancelar/Cancel: Regresar al Calendario\nAceptar/OK: Para confirmar asistencia';
+					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nNivel: ' + calEvent.nivel + '\nDistancia: ' + calEvent.distancia + '\nVelocidad: ' + calEvent.velocidad + '\nPunto de reunión: ' + calEvent.donde + '\nSalida: ' + calEvent.hora + '\nLider: ' + calEvent.leader + '\nEmal: ' + tdesc + '\nConfirmados: ' + calEvent.confirmados + '\n\nCancelar/Cancel: Regresar al Calendario\nAceptar/OK: Para confirmar asistencia';
 				} else {
-					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nPunto de reunión: ' + calEvent.donde + '\nQuién Organiza: ' + calEvent.leader + '\nEmal: ' + tdesc;
+					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nPunto de reunión: ' + calEvent.donde + '\nSalida: ' + calEvent.hora +'\nQuién Organiza: ' + calEvent.leader + '\nEmal: ' + tdesc;
 				}
 				var r = confirm(datos);
 				if(calEvent.rodada == 'T') {

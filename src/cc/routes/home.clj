@@ -26,6 +26,7 @@
   id,
   descripcion_corta as title,
   descripcion as description,
+  DATE_FORMAT(hora,'%h:%i %p') as hora,
   CONCAT(fecha,'T',hora) as start,
   punto_reunion as donde,
   CASE WHEN nivel = 'P' THEN 'Principiantes' WHEN nivel = 'M' THEN 'Medio' WHEN nivel = 'A' THEN 'Avanzado' WHEN nivel = 'T' THEN 'TODOS' END as nivel,
