@@ -109,7 +109,8 @@ function defaultGridSaveItem() {
     form.form('submit', {
         url: '/cartas/exoneracion/save',
         queryParams: {
-            '__anti-forgery-token': token
+            '__anti-forgery-token': token,
+            'send_email': "T"
         },
         onSubmit: function () {
             $("#submitbtn").linkbutton('disable');

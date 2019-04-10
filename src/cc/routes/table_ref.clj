@@ -90,6 +90,12 @@
   (Query db [carreras_categorias-sql carreras_id]))
 ;; End carreras_categorias
 
+(def nombres-sql
+ "SELECT nombre as value,nombre as text FROM cartas ORDER BY nombre")
+
+(def correos-sql
+ "SELECT email as value,email as text FROM cartas ORDER BY email")
+
 (defroutes table_ref-routes
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))
@@ -104,4 +110,6 @@
   (GET "/table_ref/segundo" [] (generate-string (carreras-segundo)))
   (GET "/table_ref/tercero" [] (generate-string (carreras-tercero)))
   (GET "/table_ref/carreras" [] (generate-string (Query db get_carreras-sql)))
-  (GET "/table_ref/carreras_all" [] (generate-string (Query db get_carreras_all-sql))))
+  (GET "/table_ref/carreras_all" [] (generate-string (Query db get_carreras_all-sql)))
+  (GET "/table_ref/nombres" [] (generate-string (Query db nombres-sql)))
+  (GET "/table_ref/correos" [] (generate-string (Query db correos-sql))))

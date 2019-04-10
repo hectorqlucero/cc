@@ -150,6 +150,7 @@
   [{params :params}]
   (try
     (let [id (:id params)
+          send_email (or (params :send_email) "F")
           categoria (:categoria params)
           email (clojure.string/lower-case (:email params))
           carreras_id @carreras_id
@@ -172,7 +173,7 @@
           result   (Save db :cartas postvars ["id = ?" id])]
       (if (seq result)
         (do
-          (send-email host email-body)
+          (if (= send_email "T") (send-email host email-body))
           (generate-string {:success "Correctamente Processado!<br>Revise los datos con cuidado antes de cerrar esta pagina. En el encabezado aparece la informacion para realizar su pago. Muchas Gracias!"}))
         (generate-string {:error "No se pudo processar!"})))
     (catch Exception e (.getMessage e))))
