@@ -88,27 +88,24 @@
    PRIMARY KEY (`id`)
    ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8")
 
+(def puntos-sql
+  "CREATE TABLE `puntos` (
+                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                       `cartas_id` int(10) unsigned NOT NULL,
+                       `puntos_p` int(11) DEFAULT NULL,
+                       `puntos_1` int(11) DEFAULT NULL,
+                       `puntos_2` int(11) DEFAULT NULL,
+                       `puntos_3` int(11) DEFAULT NULL,
+                       `creado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+                       PRIMARY KEY (`id`),
+                       KEY `f_cartas_id` (`cartas_id`),
+                       CONSTRAINT `puntos_ibfk_1` FOREIGN KEY (`cartas_id`) REFERENCES `cartas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+                       ) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8")
+
 (def categorias-sql
   "CREATE TABLE `categorias` (
    `id` char(1) NOT NULL,
    `descripcion` varchar(100) DEFAULT NULL,
-   PRIMARY KEY (`id`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
-
-(def ciclistas-sql
-  "CREATE TABLE `ciclistas` (
-   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-   `cartas_id` int(11) unsigned DEFAULT NULL,
-   `nombre` varchar(100) DEFAULT NULL,
-   `apellido_paterno` varchar(100) DEFAULT NULL,
-   `apellido_materno` varchar(100) DEFAULT NULL,
-   `direccion` varchar(200) DEFAULT NULL,
-   `pais` varchar(100) DEFAULT NULL,
-   `ciudad` varchar(100) DEFAULT NULL,
-   `telefono` varchar(50) DEFAULT NULL,
-   `celular` varchar(50) DEFAULT NULL,
-   `dob` date DEFAULT NULL,
-   `email` varchar(100) DEFAULT NULL,
    PRIMARY KEY (`id`)
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
@@ -126,14 +123,61 @@
    PRIMARY KEY (`id`)
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
 
-(def ciclistas_puntos-sql
-  "CREATE TABLE `ciclistas_puntos` (
-   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-   `carreras_id` int(11) NOT NULL,
-   `ciclistas_id` varchar(100) DEFAULT NULL,
-   `puntos` int(11) DEFAULT NULL,
-   PRIMARY KEY (`id`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+(def carreras_categorias-sql
+  "CREATE TABLE `carreras_categorias` (
+                                    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                    `carreras_id` int(10) unsigned NOT NULL,
+                                    `categorias_id` char(1) DEFAULT NULL,
+                                    `status` char(1) DEFAULT NULL,
+                                    PRIMARY KEY (`id`)
+                                    ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8")
+
+(def contrareloj-sql
+  "CREATE TABLE `contrareloj` (
+                            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                            `cartas_id` int(11) unsigned NOT NULL,
+                            `carreras_id` int(11) unsigned NOT NULL,
+                            `categorias_id` char(1) NOT NULL,
+                            `empezar` time DEFAULT NULL,
+                            `split1` time DEFAULT NULL,
+                            `split2` time DEFAULT NULL,
+                            `terminar` time DEFAULT NULL,
+                            `penalty` int(11) unsigned DEFAULT NULL,
+                            PRIMARY KEY (`id`)
+                            ) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8")
+
+(def taller-sql
+  "CREATE TABLE `taller` (
+                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                       `nombre` varchar(200) DEFAULT NULL,
+                       `direccion` varchar(200) DEFAULT NULL,
+                       `telefono` varchar(100) NOT NULL,
+                       `horarios` text DEFAULT NULL,
+                       `sitio` varchar(200) DEFAULT NULL,
+                       `direcciones` text DEFAULT NULL,
+                       `historia` text DEFAULT NULL,
+                       PRIMARY KEY (`id`)
+                       ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8")
+
+(def imdecuf-sql
+  "CREATE TABLE `imdecuf` (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `descripcion_corta` varchar(100) DEFAULT NULL,
+                        `descripcion` text DEFAULT NULL,
+                        `punto_reunion` varchar(1000) DEFAULT NULL,
+                        `nivel` char(1) DEFAULT NULL COMMENT 'P=Principiantes,M=Medio,A=Avanzado,T=Todos',
+                        `distancia` varchar(100) DEFAULT NULL,
+                        `velocidad` varchar(100) DEFAULT NULL,
+                        `fecha` date DEFAULT NULL,
+                        `hora` time DEFAULT NULL,
+                        `leader` varchar(100) DEFAULT NULL,
+                        `leader_email` varchar(100) DEFAULT NULL,
+                        `cuadrante` int(11) DEFAULT NULL,
+                        `repetir` char(1) DEFAULT NULL COMMENT 'T=Si,F=No',
+                        `anonimo` char(1) DEFAULT 'F' COMMENT 'T=Si,F=No',
+                        `rodada` char(1) DEFAULT 'T' COMMENT 'T=Si,F=No',
+                        PRIMARY KEY (`id`)
+                        ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8")
 
 (def cuadrantes-rows
   [{:name         "Rositas"
@@ -521,9 +565,12 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db rodadas_link-sql)
   (Query! db cartas-sql)
   (Query! db categorias-sql)
-  (Query! db ciclistas-sql)
   (Query! db carreras-sql)
-  (Query! db ciclistas_puntos-sql)
+  (Query! db puntos-sql)
+  (Query! db carreras_categorias-sql)
+  (Query! db contrareloj-sql)
+  (Query! db taller-sql)
+  (Query! db imdecuf-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :rodadas rodadas-rows)
   (Insert-multi db :rodadas_link rodadas_link-rows)
@@ -537,19 +584,25 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db "DROP table IF EXISTS rodadas_link")
   (Query! db "DROP table IF EXISTS rodadas")
   (Query! db "DROP table IF EXISTS cartas")
+  (Query! db "DROP table IF EXISTS puntos")
   (Query! db "DROP table IF EXISTS categorias")
-  (Query! db "DROP table IF EXISTS ciclistas")
   (Query! db "DROP table IF EXISTS carreras")
-  (Query! db "DROP table IF EXISTS ciclistas_puntos")
+  (Query! db "DROP table IF EXISTS carreras_categorias")
+  (Query! db "DROP table IF EXISTS contrareloj")
+  (Query! db "DROP table IF EXISTS taller")
+  (Query! db "DROP table IF EXISTS imdecuf")
   (Query! db users-sql)
   (Query! db cuadrantes-sql)
   (Query! db rodadas-sql)
   (Query! db rodadas_link-sql)
   (Query! db cartas-sql)
+  (Query! db puntos-sql)
   (Query! db categorias-sql)
-  (Query! db ciclistas-sql)
   (Query! db carreras-sql)
-  (Query! db ciclistas_puntos-sql)
+  (Query! db carreras_categorias-sql)
+  (Query! db contrareloj-sql)
+  (Query! db taller-sql)
+  (Query! db imdefuf-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :cuadrantes cuadrantes-rows)
   (Insert-multi db :rodadas rodadas-rows)
@@ -558,25 +611,20 @@ Informes: (653) 103-1460 * (653) 119-0725"
 
 (defn migrate []
   "migrate by the seat of my pants"
-  (Query! db "DROP table IF EXISTS ciclistas")
-  (Query! db "DROP table IF EXISTS carreras")
-  (Query! db "DROP table IF EXISTS ciclistas_puntos")
-  (Query! db ciclistas-sql)
-  (Query! db carreras-sql)
-  (Query! db ciclistas_puntos-sql))
+  (Query! db "DROP table IF EXISTS carreras"))
 
-(defn create-carreras-categorias []
-  (doseq [item (Query db "SELECT * FROM categorias")]
-    (doseq [sitem (Query db "SELECT * FROM carreras")]
-      (let [carreras_id (str (:id sitem))
-            categorias_id (str (:id item))
-            status "T"
-            id (:id (first (Query db ["SELECT id from carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id])))
-            postvars {:id (str id)
-                      :carreras_id carreras_id
-                      :categorias_id categorias_id
-                      :status status}]
-        (Save db :carreras_categorias postvars ["id = ?" id])))))
+;; This is to create carreras_categorias example
+;; (defn create-carreras-categorias []
+;;   (doseq [item (Query db "SELECT * FROM categorias")]
+;;     (doseq [sitem (Query db "SELECT * FROM carreras")]
+;;       (let [carreras_id (str (:id sitem))
+;;             categorias_id (str (:id item))
+;;             status "T"
+;;             id (:id (first (Query db ["SELECT id from carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id])))
+;;             postvars {:id (str id)
+;;                       :carreras_id carreras_id
+;;                       :categorias_id categorias_id
+;;                       :status status}]
+;;         (Save db :carreras_categorias postvars ["id = ?" id])))))
 
-;;(create-carreras-categorias)
 ;;(migrate)
