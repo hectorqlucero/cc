@@ -602,7 +602,7 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Query! db carreras_categorias-sql)
   (Query! db contrareloj-sql)
   (Query! db taller-sql)
-  (Query! db imdefuf-sql)
+  (Query! db imdecuf-sql)
   (Insert-multi db :users user-rows)
   (Insert-multi db :cuadrantes cuadrantes-rows)
   (Insert-multi db :rodadas rodadas-rows)
