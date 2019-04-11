@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+<style>
+.table-text-center {
+  text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<table class="table-dark table-striped table-bordered btn-table">
+  <thead class=".thead-dark">
+    <tr>
+      <th colspan="6" class="table-text-center">{{title}}</th>
+    </tr>
+    <tr>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Categoria</th>
+      <th>Puntos</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for crow in crows %}
+    <tr>
+      <th colspan=6>{{crow.categoria}}</th>
+    </tr>
+    {% for row in rows %}
+    {% ifequal crow.categorias_id row.categorias_id %}
+    <tr>
+      <td>{{row.nombre}}</td>
+      <td>{{row.email}}</td>
+      <td>{{row.categoria}}</td>
+      <td>{{row.puntos}}</td>
+    </tr>
+    {% endifequal %}
+    {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% endblock %}

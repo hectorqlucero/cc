@@ -6,8 +6,8 @@
             [cc.routes.table_ref :refer [categorias]]
             [cheshire.core :refer :all]
             [clj-pdf.core :refer :all]
-            [pdfkit-clj.core :refer :all]
             [compojure.core :refer :all]
+            [pdfkit-clj.core :refer :all]
             [ring.util.io :refer :all]
             [selmer.parser :refer [render-file]]))
 
@@ -17,6 +17,7 @@
   "SELECT
      p.email,
      p.nombre,
+     s1.id as categorias_id,
      s1.descripcion as categoria,
      SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
      FROM cartas p
@@ -509,6 +510,44 @@ personales."))
   (render-file "cartas/exoneracion/reconocimiento.html" {:title "Imprimir Reconocimientos"
                                                          :rows (Query db ptotales-sql)}))
 
+;; Start totales-categoria
+(def totales-categoria-sql
+  "SELECT
+     p.email,
+     p.nombre,
+     p.categoria as categorias_id,
+     s1.descripcion as categoria,
+     SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
+     FROM cartas p
+     JOIN puntos s on s.cartas_id = p.id
+     JOIN categorias s1 on s1.id = p.categoria
+     WHERE p.categoria = ?
+     GROUP by p.email,p.categoria
+     ORDER BY puntos DESC,p.nombre
+     LIMIT 3")
+
+(def total-rows
+  (Query db totales-sql))
+
+(def categoria-rows
+  (create-categorias total-rows))
+
+(defn get-limited-row [categorias_id]
+  (let [rows (Query db [totales-categoria-sql categorias_id])]
+    rows))
+
+(defn totales-categoria []
+  (let [rows  total-rows
+        crows categoria-rows]
+    (for [crow crows]
+      (get-limited-row (crow :categorias_id)))))
+
+(defn totales-report []
+  (render-file "cartas/exoneracion/totales_report.html" {:title "Totales de Lideres"
+                                                         :rows  (flatten (totales-categoria))
+                                                         :crows categoria-rows}))
+;; End totales-categoria
+
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
   (GET "/cartas/fotos" request [] (slide request))
@@ -516,6 +555,7 @@ personales."))
   (GET "/cartas/rtotal" [] (ptotal))
   (GET "/cartas/creporte" request [] (creporte request))
   (POST "/cartas/creporte/processar" request [] (creporte-processar request))
+  (GET "/cartas/treporte" [] (totales-report))
   (POST "/cartas/processar" request [] (cartas-processar request))
   (GET "/cartas/exoneracion" [] (exoneracion))
   (POST "/cartas/exoneracion" request (exoneracion-processar request))

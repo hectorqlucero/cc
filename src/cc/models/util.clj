@@ -390,7 +390,8 @@
       (if (> processed 0) 1 0))))
 
 (defn get-description [tablename fieldname idname id]
-  (let [sql          (str "select " fieldname " from " tablename " where " idname " = " id)
+  (let [id           (str "'" id "'")
+        sql          (str "select " fieldname " from " tablename " where " idname " = " id)
         row          (first (Query db [sql]))
         return-value ((keyword fieldname) row)]
     return-value))
@@ -525,4 +526,4 @@
 (defn create-categorias [rows]
   (map (fn [cid]
          {:categorias_id cid
-          :categoria (get-description "categorias" "descripcion" cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))
+          :categoria (get-description "categorias" "descripcion" "id" cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))

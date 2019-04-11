@@ -1,6 +1,6 @@
 (ns cc.routes.contrareloj.crear_carrera
   (:require [cc.models.crud :refer :all]
-            [cc.models.util :refer [current_time_internal parse-int]]
+            [cc.models.util :refer [current_time_internal parse-int create-categorias]]
             [cheshire.core :refer :all]
             [compojure.core :refer :all]
             [noir.response :refer [redirect]]
