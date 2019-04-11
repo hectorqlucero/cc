@@ -521,3 +521,8 @@
                      (not (deprecated? %))))
         (sort-by #(.getName %))
         (map method-description))))
+
+(defn create-categorias [rows]
+  (map (fn [cid]
+         {:categorias_id cid
+          :categoria (get-description "categorias" "descripcion" cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))

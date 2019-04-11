@@ -106,14 +106,6 @@
    AND p.carreras_id = ?
    ORDER BY s0.descripcion,result")
 
-(defn get-categoria-descripcion [id]
-  (:descripcion (first (Query db ["SELECT descripcion FROM categorias WHERE id = ?" id]))))
-
-(defn create-categorias [rows]
-  (map (fn [cid]
-         {:categorias_id cid
-          :categoria (get-categoria-descripcion cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))
-
 (defn calculate-speed [distance seconds]
   (let [hours (/ (parse-int seconds) 3600.0)
         speed (/ (/ (parse-int distance) 1000) hours)]
