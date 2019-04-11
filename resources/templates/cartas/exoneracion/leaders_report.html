@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+<style>
+ <!--
+ body {
+     background-image: url(/images/registro.jpg);
+     background-repeat: no-repeat;
+     background-attachment: fixed;
+     background-size: cover;
+     background-position: bottom;
+ }
+ //-->
+</style>
+</style>
+{% endblock %}
+
+{% block navbar_content %}
+{% include "cartas/exoneracion/registro_menu.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container col-8">
+        <div class="table-responsive">
+            <table class="table table-light table-striped">
+                <thead class="thead-dark">
+                    <tr style="text-align: center;">
+                        <th colspan="6" class="table-text-center">{{title|upper}}</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Categoria</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for crow in crows %}
+                    <tr>
+                        <th colspan=6>{{crow.categoria}}</th>
+                    </tr>
+                    {% for row in rows %}
+                    {% ifequal crow.categorias_id row.categorias_id %}
+                    <tr>
+                        <td>{{row.nombre}}</td>
+                        <td>{{row.categoria}}</td>
+                        <td>{{row.puntos}}</td>
+                    </tr>
+                    {% endifequal %}
+                    {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% endblock %}

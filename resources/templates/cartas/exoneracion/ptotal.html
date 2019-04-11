@@ -19,20 +19,7 @@ body {
 {% endblock %}
 
 {% block navbar_content %}
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-        <a href="http://www.facebook.com/ciclismourbanomexicali" class="navbar-brand" style="margin-bottom: 0; ">Ciclismo Urbano</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-	    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	<span class="navbar-toggler-icon"></span>
-	</button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto" id="cum">
-                <li class="nav-item"><a href="/cartas/fotos" class="nav-link">Fotos</a></li>
-                <li class="nav-item"><a href="/cartas/rtotal" class="nav-link">Puntuacion</a></li>
-                <li class="nav-item"><a href="/registro" class="nav-link">Registrate</a></li>
-            </ul>
-        </div>
-    </nav>
+{% include "cartas/exoneracion/registro_menu.html" %}
 {% endblock %}
 
 {% block content %}

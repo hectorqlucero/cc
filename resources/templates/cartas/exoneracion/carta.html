@@ -18,51 +18,7 @@ body {
 {% endblock %}
 
 {% block navbar_content %}
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-        <a href="http://www.facebook.com/ciclismourbanomexicali" class="navbar-brand" style="margin-bottom: 0; ">Ciclismo Competitivo</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-	    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	<span class="navbar-toggler-icon"></span>
-	</button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto" id="cum">
-                <li class="nav-item"><a href="/cartas/fotos" class="nav-link">Fotos</a></li>
-                <li class="nav-item"><a href="/cartas/rtotal" class="nav-link">Puntuacion</a></li>
-                <li class="nav-item"><a href="/registro" class="nav-link">Registrate</a></li>
-            </ul>
-        </div>
-    </nav>
-{% endblock %}
-
-{% block content %}
-<div class="container col-8">
-    <div class="card-header">
-        <h4 class="mb-0"><span style="color:rgb(18,123,163);">Registrate Aquí</span></h4>
-    </div>
-    <form class="fm" method="post" action="/cartas/processar" novalidate style="width:100%;background-color:#EFEFEF;">
-        {% csrf-field %}
-        <div class="form-group col-10">
-          <label for="carreras_id">Seleccionar Carrera:</label>
-            <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras',
-            method:'GET',
-            onSelect:function(record){
-            var url = '/table_ref/carreras_categorias/'+record.value;
-            $('#categoria').combobox('reload',url);
-            }">
-        </div>
-        <div class="form-group col-10">
-            <label for="categoria">Categoria:</label>
-            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="method:'GET'">
-        </div>
-        <div class="form-group col-10">
-            <label for="email">Email:</label>
-            <input name="email" class="form-control easyui-validatebox" id="email" data-options="required: true,validType:'email'">
-        </div>
-        <div class="form-group col-10">
-          <input id="registrarse" type="submit" class="btn btn-primary" value="Registrate">
-        </div>
-    </form>
-</div>
+{% include "cartas/exoneracion/registro_menu.html" %}
 {% endblock %}
 
 {% block scripts %}

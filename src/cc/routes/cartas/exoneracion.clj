@@ -547,6 +547,10 @@ personales."))
                                                          :rows  (flatten (totales-categoria))
                                                          :crows categoria-rows}))
 ;; End totales-categoria
+(defn leaders-report []
+  (render-file "cartas/exoneracion/leaders_report.html" {:title "Totales de Lideres"
+                                                         :rows  (flatten (totales-categoria))
+                                                         :crows categoria-rows}))
 
 (defroutes exoneracion-routes
   (GET "/registro" [] (cartas))
@@ -556,6 +560,7 @@ personales."))
   (GET "/cartas/creporte" request [] (creporte request))
   (POST "/cartas/creporte/processar" request [] (creporte-processar request))
   (GET "/cartas/treporte" [] (totales-report))
+  (GET "/cartas/rleaders" [] (leaders-report))
   (POST "/cartas/processar" request [] (cartas-processar request))
   (GET "/cartas/exoneracion" [] (exoneracion))
   (POST "/cartas/exoneracion" request (exoneracion-processar request))
