@@ -3,7 +3,7 @@
             [cc.routes.admin.cuadrantes :refer [cuadrantes-routes]]
             [cc.routes.admin.taller :refer [taller-routes]]
             [cc.routes.admin.users :refer [users-routes]]
-            [compojure.core :refer :all]))
+            [compojure.core :refer [defroutes]]))
 
 (defroutes admin-routes
   users-routes
