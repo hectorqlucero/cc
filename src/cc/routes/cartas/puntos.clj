@@ -179,5 +179,4 @@
   (POST "/cartas/puntos" request [] (if-not (= (user-level) "U") (process-puntos request)))
   (POST "/cartas/puntos/json/grid" request [] (if-not (= (user-level) "U") (grid-json request)))
   (GET "/cartas/puntos/json/form/:id" [id] (if-not (= (user-level) "U") (form-json id)))
-  (POST "/cartas/puntos/save" request [] (if-not (= (user-level) "U") (puntos-save request)))
-  (GET "/cartas/puntos/pdf" request [] (puntos-pdf request)))
+  (POST "/cartas/puntos/save" request [] (if-not (= (user-level) "U") (puntos-save request))))

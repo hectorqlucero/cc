@@ -45,12 +45,4 @@
 {% script "/easyui/plugins/jquery.datagrid.js" %}
 {% script "/js/jquery.maskedinput.min.js" %}
 {% script "/easyui/locale/easyui-lang-es.js" %}
-<script>
-$('#registrarse').click(function(event) {
-    var the_email = $("#email").val();
-    if (!the_email) {
-        return $('.fm').form('validate');
-    }
-});
-</script>
 {% endblock %}
