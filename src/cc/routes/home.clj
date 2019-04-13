@@ -90,7 +90,7 @@
 (defn login [_]
   (if-not (nil? (get-session-id))
     (redirect "/eventos")
-    (render-file "home/login.html" {:title "Accesar el Sito!"})))
+    (render-file "home/login.html" {:title "Accesar al Sitio!"})))
 
 (defn login! [username password]
   (let [row    (first (Query db ["select * from users where username = ?" username]))
