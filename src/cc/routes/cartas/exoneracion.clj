@@ -9,7 +9,8 @@
             [compojure.core :refer :all]
             [pdfkit-clj.core :refer :all]
             [ring.util.io :refer :all]
-            [selmer.parser :refer [render-file]]))
+            [selmer.parser :refer [render-file]])
+  (:import java.util.UUID))
 
 (def carreras_id (atom nil))
 
@@ -504,7 +505,8 @@ personales."))
                                                         :exists result})))
 
 (defn slide [request]
-  (render-file "cartas/exoneracion/fotos.html" {:title "Serial Ciclista Municipal De Mexicali 2019"}))
+  (render-file "cartas/exoneracion/fotos.html" {:title "Serial Ciclista Municipal De Mexicali 2019"
+                                                :uuid (str (UUID/randomUUID))}))
 
 (defn imprimir-r []
   (render-file "cartas/exoneracion/reconocimiento.html" {:title "Imprimir Reconocimientos"
