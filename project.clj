@@ -9,7 +9,7 @@
                  [lib-noir "0.9.9"]
                  [com.draines/postal "2.0.3"]
                  [cheshire "5.8.1"]
-                 [clj-pdf "2.3.3" :exclusions [commons-codec]]
+                 [clj-pdf "2.3.3" :exclusions [xalan commons-codec]]
                  [pdfkit-clj "0.1.7" :exclusions [commons-codec commons-logging]]
                  [clj-time "0.15.1"]
                  [date-clj "1.0.1"]
